@@ -3,7 +3,12 @@ export/
 FbExportData/
 python/
 venv/
-GodotProject/
 *.exe
 *.glb
 *.glb.import
+GodotProject/.godot
+GodotProject/addons
+GodotProject/objects
+GodotProject/raw
+GodotProject/scripts
+GodotProject/static
