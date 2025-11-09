@@ -1,0 +1,9 @@
+code/
+export/
+FbExportData/
+python/
+venv/
+GodotProject/
+*.exe
+*.glb
+*.glb.import

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "outDir": "dist",
+    "lib": ["ES2023"],
+    "types": [
+      "./index.d.ts",
+      "./globals.d.ts"
+    ]
+  }
+}
