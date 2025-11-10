@@ -1,0 +1,10 @@
+{
+  "name": "fallofcairo",
+  "scripts": {
+    "build": "node combine.js",
+    "debug": "node --inspect-brk combine.js"
+  },
+  "devDependencies": {
+    "ts-morph": "27.0.2"
+  }
+}

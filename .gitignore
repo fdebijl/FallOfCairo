@@ -9,3 +9,4 @@ venv/
 GodotProject/.godot
 GodotProject/scripts
 GodotProject/objects
+node_modules
