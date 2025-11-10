@@ -1,4 +1,4 @@
-// Auto-generated combined file
+import * as modlib from 'modlib';
 
 // ===== helpers\helpers.ts =====
 function IsObjectIDsEqual(left: any, right: any) {
@@ -7,6 +7,11 @@ function IsObjectIDsEqual(left: any, right: any) {
   }
 
   return mod.GetObjId(left) == mod.GetObjId(right)
+}
+
+function IsAIAllowedVehicle(vehicle: mod.Vehicle) {
+  return mod.CompareVehicleName(vehicle, mod.VehicleList.M2Bradley)
+  || mod.CompareVehicleName(vehicle, mod.VehicleList.Abrams);
 }
 
 // ===== classes\AIBehaviorHandler.ts =====
@@ -233,7 +238,7 @@ class PlayerHandler {
 }
 
 // ===== constants.ts =====
-const VERSION = '0.1.5';
+const VERSION = '0.1.6';
 
 const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -276,21 +281,29 @@ const WEAPON_EMPLACEMENTS: {
 
 const WAVES: Wave[] = [
   {
-    startsAt: 30,
+    waveNumber: 1,
+    startsAt: 60,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
-    infantryCount: 1,
+    infantryCounts: [10],
   },
   {
-    startsAt: 60,
-    spawnPoints: [AI_SPAWN_POINTS.MOSQUE],
-    infantryCount: 6,
+    waveNumber: 2,
+    startsAt: 120,
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [10, 10],
     vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCount: 1,
+    vehicleCounts: [1],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+  },
+  {
+    waveNumber: 3,
+    startsAt: 180,
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE, AI_SPAWN_POINTS.FLANK_RIGHT, AI_SPAWN_POINTS.FLANK_LEFT],
+    infantryCounts: [8, 8, 8, 8],
   }
 ]
 
-const INTERSPAWN_DELAY = 2;
+const INTERSPAWN_DELAY = 1;
 
 // ===== helpers\setup.ts =====
 /** Run all one-time setup methods */
@@ -307,6 +320,9 @@ function SetupScoreboard(): void {
 }
 
 function SetupEmplacements() {
+  // EmplacementSpawners only spawn TOW's at the moment, this is a known bug
+  return;
+
   console.log('Setting up weapon emplacements');
 
   for (const emplacementLocation of Object.values(WEAPON_EMPLACEMENTS)) {
@@ -320,11 +336,15 @@ function SetupEmplacements() {
 }
 
 // ===== FallOfCairo.ts =====
+let uiManager: UIManager;
+
 export async function OnGameModeStarted(): Promise<void> {
   await mod.Wait(5);
 
   console.log(`Fall of Cairo v${VERSION} initializing`);
-  mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementTitle, VERSION));
+  mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementTitle));
+
+  uiManager = new UIManager();
 
   const capturePoint = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
   const teamNato = mod.GetTeam(TEAMS.NATO);
@@ -362,19 +382,25 @@ export async function OnCapturePointCaptured(capturePoint: mod.CapturePoint): Pr
 
 export async function OnPlayerDeployed(player: mod.Player) {
   if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier)) {
-    console.log('AI Player deployed, setting up behavior');
-    AIBehaviorHandler.OnAIPlayerSpawn(player);
-    return;
+    return AIBehaviorHandler.OnAIPlayerSpawn(player);
   } else {
-    PlayerHandler.OnHumanPlayerSpawn(player);
-    console.log('Human Player deployed, setup complete');
-    return;
+    return PlayerHandler.OnHumanPlayerSpawn(player);
   }
 }
 
 export async function OnVehicleSpawned(vehicle: mod.Vehicle) {
   console.log('Vehicle spawned, checking for nearby AI to enter vehicle');
   await AIBehaviorHandler.VehicleSpawned(vehicle);
+}
+
+export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehicle) {
+  const isBot = mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
+  const isAIAllowedToDriveThis = IsAIAllowedVehicle(vehicle);
+
+  if (isBot && !isAIAllowedToDriveThis) {
+    await mod.Wait(0.5);
+    mod.ForcePlayerExitVehicle(player);
+  }
 }
 
 // ======
@@ -405,12 +431,30 @@ async function TriggerWaveSpawns() {
 }
 
 async function SpawnWave(wave: Wave) {
-  console.log(`Spawning wave at ${wave.startsAt} seconds`);
+  console.log(`Spawning wave ${wave.waveNumber} at ${wave.startsAt} seconds`);
 
-  if (wave.infantryCount && wave.spawnPoints) {
-    const infantryPerSpawnPoint = Math.floor(wave.infantryCount / wave.spawnPoints.length);
+  // Calculate total infantry count
+  const totalInfantry = wave.infantryCounts
+    ? wave.infantryCounts.reduce((sum, count) => sum + count, 0)
+    : 0;
 
+  // Calculate total vehicle count
+  const totalVehicles = wave.vehicleCounts
+    ? wave.vehicleCounts.reduce((sum, count) => sum + count, 0)
+    : 0;
+
+  // Update UI based on wave composition
+  if (wave.infantryCounts && wave.vehicleCounts) {
+    uiManager.UpdateWaveInfoMixed(wave.waveNumber, totalInfantry, totalVehicles);
+  } else if (wave.infantryCounts) {
+    uiManager.UpdateWaveInfoInfantry(wave.waveNumber, totalInfantry);
+  }
+
+  if (wave.spawnPoints && wave.infantryCounts) {
     for (const spawnPointId of wave.spawnPoints) {
+      const index = wave.spawnPoints.indexOf(spawnPointId);
+      const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+
       const spawnPoint = mod.GetSpawner(spawnPointId);
       for (let i = 0; i < infantryPerSpawnPoint; i++) {
         AIBehaviorHandler.SpawnAI(spawnPoint);
@@ -430,17 +474,19 @@ async function SpawnWave(wave: Wave) {
     }
   }
 
-  if (wave.vehicleCount && wave.vehicleSpawnPoints && wave.vehicleTypes) {
-    const vehiclesPerSpawnPoint = Math.floor(wave.vehicleCount / wave.vehicleSpawnPoints.length);
-
+  if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
     for (const spawnPointId of wave.vehicleSpawnPoints) {
+      const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
+      const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
+
       const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
 
       for (let i = 0; i < vehiclesPerSpawnPoint; i++) {
         const vehicleType = wave.vehicleTypes[i % wave.vehicleTypes.length];
         mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
+        mod.SetVehicleSpawnerAutoSpawn(spawnPoint, true);
         mod.ForceVehicleSpawnerSpawn(spawnPoint);
-        await mod.Wait(2); // Small delay between spawns
+        await mod.Wait(INTERSPAWN_DELAY);
       }
     }
   }
@@ -448,10 +494,85 @@ async function SpawnWave(wave: Wave) {
 
 // ===== interfaces\Wave.ts =====
 interface Wave {
+  waveNumber: number; // The wave number (for display purposes)
   startsAt: number; // in seconds
   spawnPoints?: number[]; // AI spawn point IDs
-  infantryCount?: number; // Total number of infantry to spawn for this wave
-  vehicleCount?: number; // Total number of vehicles to spawn for this wave
+  infantryCounts?: number[]; // Number of infantry to spawn per spawn point
+  vehicleCounts?: number[]; // Number of vehicles to spawn per vehicle spawn point
   vehicleTypes?: mod.VehicleList[]; // Types of vehicles to spawn
   vehicleSpawnPoints?: number[]; // Vehicle spawn point IDs
 }
+
+// ===== UI\UIManager.ts =====
+class UIManager {
+  waveInfoWidgetContainer: mod.UIWidget;
+  waveInfoWidgetwaveNumber: mod.UIWidget;
+  waveInfoWidgetWaveDetails: mod.UIWidget;
+
+  constructor() {
+    modlib.ParseUI(WaveInfoWidgetDefinition);
+    this.waveInfoWidgetContainer = mod.FindUIWidgetWithName('Container_WaveInfo');
+    this.waveInfoWidgetwaveNumber = mod.FindUIWidgetWithName('Text_WaveInfo_waveNumber');
+    this.waveInfoWidgetWaveDetails = mod.FindUIWidgetWithName('Text_WaveInfo_WaveDetails');
+  }
+
+  UpdateWaveInfoInfantry(waveNumber: number, infantryCount: number) {
+    mod.SetUITextLabel(this.waveInfoWidgetwaveNumber, mod.Message(mod.stringkeys.waveNumber, waveNumber));
+    mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.waveDetailsInfantry, infantryCount));
+  }
+
+  UpdateWaveInfoMixed(waveNumber: number, infantryCount: number, vehicleCount: number) {
+    mod.SetUITextLabel(this.waveInfoWidgetwaveNumber, mod.Message(mod.stringkeys.waveNumber, waveNumber));
+    mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.waveDetailsVehicles, infantryCount, vehicleCount));
+  }
+}
+
+// ===== UI\WaveInfoWidget.ts =====
+const WaveInfoWidgetDefinition = {
+  name: "Container_WaveInfo",
+  type: "Container",
+  position: [25, 25],
+  size: [400, 104],
+  anchor: mod.UIAnchor.TopLeft,
+  visible: true,
+  padding: 5,
+  bgColor: [0.2118, 0.2235, 0.2353],
+  bgAlpha: 0.2,
+  bgFill: mod.UIBgFill.Blur,
+  children: [
+    {
+      name: "Text_WaveInfo_waveNumber",
+      type: "Text",
+      position: [15, 10],
+      size: [150, 50],
+      anchor: mod.UIAnchor.TopLeft,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.waveNumberInit,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 24,
+      textAnchor: mod.UIAnchor.CenterLeft
+    },
+    {
+      name: "Text_WaveInfo_WaveDetails",
+      type: "Text",
+      position: [15, 50],
+      size: [390, 35],
+      anchor: mod.UIAnchor.TopLeft,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.waveDetailsInit,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 20,
+      textAnchor: mod.UIAnchor.CenterLeft
+    }
+  ]
+};

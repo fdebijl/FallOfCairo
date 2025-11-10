@@ -9,7 +9,7 @@
 
 import { Wave } from './interfaces/Wave';
 
-export const VERSION = '0.1.5';
+export const VERSION = '0.1.6';
 
 export const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -52,18 +52,26 @@ export const WEAPON_EMPLACEMENTS: {
 
 export const WAVES: Wave[] = [
   {
-    startsAt: 30,
+    waveNumber: 1,
+    startsAt: 60,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
-    infantryCount: 1,
+    infantryCounts: [10],
   },
   {
-    startsAt: 60,
-    spawnPoints: [AI_SPAWN_POINTS.MOSQUE],
-    infantryCount: 6,
+    waveNumber: 2,
+    startsAt: 120,
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [10, 10],
     vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCount: 1,
+    vehicleCounts: [1],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+  },
+  {
+    waveNumber: 3,
+    startsAt: 180,
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE, AI_SPAWN_POINTS.FLANK_RIGHT, AI_SPAWN_POINTS.FLANK_LEFT],
+    infantryCounts: [8, 8, 8, 8],
   }
 ]
 
-export const INTERSPAWN_DELAY = 2;
+export const INTERSPAWN_DELAY = 1;

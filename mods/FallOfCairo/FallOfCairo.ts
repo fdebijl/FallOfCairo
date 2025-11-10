@@ -1,14 +1,20 @@
 import { AIBehaviorHandler } from './classes/AIBehaviorHandler';
 import { PlayerHandler } from './classes/PlayerHandler';
 import { CAPTURE_POINTS, INTERSPAWN_DELAY, TEAMS, VERSION, WAVES } from './constants';
+import { IsAIAllowedVehicle } from './helpers/helpers';
 import { Setup } from './helpers/setup';
 import { Wave } from './interfaces/Wave';
+import { UIManager } from './UI/UIManager';
+
+let uiManager: UIManager;
 
 export async function OnGameModeStarted(): Promise<void> {
   await mod.Wait(5);
 
   console.log(`Fall of Cairo v${VERSION} initializing`);
-  mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementTitle, VERSION));
+  mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementTitle));
+
+  uiManager = new UIManager();
 
   const capturePoint = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
   const teamNato = mod.GetTeam(TEAMS.NATO);
@@ -46,19 +52,25 @@ export async function OnCapturePointCaptured(capturePoint: mod.CapturePoint): Pr
 
 export async function OnPlayerDeployed(player: mod.Player) {
   if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier)) {
-    console.log('AI Player deployed, setting up behavior');
-    AIBehaviorHandler.OnAIPlayerSpawn(player);
-    return;
+    return AIBehaviorHandler.OnAIPlayerSpawn(player);
   } else {
-    PlayerHandler.OnHumanPlayerSpawn(player);
-    console.log('Human Player deployed, setup complete');
-    return;
+    return PlayerHandler.OnHumanPlayerSpawn(player);
   }
 }
 
 export async function OnVehicleSpawned(vehicle: mod.Vehicle) {
   console.log('Vehicle spawned, checking for nearby AI to enter vehicle');
   await AIBehaviorHandler.VehicleSpawned(vehicle);
+}
+
+export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehicle) {
+  const isBot = mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
+  const isAIAllowedToDriveThis = IsAIAllowedVehicle(vehicle);
+
+  if (isBot && !isAIAllowedToDriveThis) {
+    await mod.Wait(0.5);
+    mod.ForcePlayerExitVehicle(player);
+  }
 }
 
 // ======
@@ -89,12 +101,30 @@ async function TriggerWaveSpawns() {
 }
 
 async function SpawnWave(wave: Wave) {
-  console.log(`Spawning wave at ${wave.startsAt} seconds`);
+  console.log(`Spawning wave ${wave.waveNumber} at ${wave.startsAt} seconds`);
 
-  if (wave.infantryCount && wave.spawnPoints) {
-    const infantryPerSpawnPoint = Math.floor(wave.infantryCount / wave.spawnPoints.length);
+  // Calculate total infantry count
+  const totalInfantry = wave.infantryCounts
+    ? wave.infantryCounts.reduce((sum, count) => sum + count, 0)
+    : 0;
 
+  // Calculate total vehicle count
+  const totalVehicles = wave.vehicleCounts
+    ? wave.vehicleCounts.reduce((sum, count) => sum + count, 0)
+    : 0;
+
+  // Update UI based on wave composition
+  if (wave.infantryCounts && wave.vehicleCounts) {
+    uiManager.UpdateWaveInfoMixed(wave.waveNumber, totalInfantry, totalVehicles);
+  } else if (wave.infantryCounts) {
+    uiManager.UpdateWaveInfoInfantry(wave.waveNumber, totalInfantry);
+  }
+
+  if (wave.spawnPoints && wave.infantryCounts) {
     for (const spawnPointId of wave.spawnPoints) {
+      const index = wave.spawnPoints.indexOf(spawnPointId);
+      const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+
       const spawnPoint = mod.GetSpawner(spawnPointId);
       for (let i = 0; i < infantryPerSpawnPoint; i++) {
         AIBehaviorHandler.SpawnAI(spawnPoint);
@@ -114,17 +144,19 @@ async function SpawnWave(wave: Wave) {
     }
   }
 
-  if (wave.vehicleCount && wave.vehicleSpawnPoints && wave.vehicleTypes) {
-    const vehiclesPerSpawnPoint = Math.floor(wave.vehicleCount / wave.vehicleSpawnPoints.length);
-
+  if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
     for (const spawnPointId of wave.vehicleSpawnPoints) {
+      const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
+      const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
+
       const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
 
       for (let i = 0; i < vehiclesPerSpawnPoint; i++) {
         const vehicleType = wave.vehicleTypes[i % wave.vehicleTypes.length];
         mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
+        mod.SetVehicleSpawnerAutoSpawn(spawnPoint, true);
         mod.ForceVehicleSpawnerSpawn(spawnPoint);
-        await mod.Wait(2); // Small delay between spawns
+        await mod.Wait(INTERSPAWN_DELAY);
       }
     }
   }

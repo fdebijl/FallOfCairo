@@ -175,6 +175,7 @@ function findAllTsFiles(rootDir = ".") {
       return filePath.endsWith(".ts") &&
         !filePath.endsWith(".d.ts") &&
         !filePath.includes("combined.ts") &&
+        !filePath.includes("modlib.ts") &&
         !filePath.includes("node_modules");
     })
     .crawl(rootDir);
@@ -289,8 +290,8 @@ function combineFiles(files) {
   const graph = buildDependencyGraph(files);
   const sortedNodes = topologicalSort(graph);
 
-  // let modlibString = "import * as modlib from 'modlib';\n\n"
-  let modlibString = '// Auto-generated combined file\n\n';
+  let modlibString = "import * as modlib from 'modlib';\n\n"
+  // let modlibString = '// Auto-generated combined file\n\n';
 
   let combined = "";
   combined += modlibString;

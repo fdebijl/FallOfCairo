@@ -14,6 +14,9 @@ function SetupScoreboard(): void {
 }
 
 function SetupEmplacements() {
+  // EmplacementSpawners only spawn TOW's at the moment, this is a known bug
+  return;
+
   console.log('Setting up weapon emplacements');
 
   for (const emplacementLocation of Object.values(WEAPON_EMPLACEMENTS)) {

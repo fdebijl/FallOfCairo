@@ -4,11 +4,13 @@
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "strict": true,
+    "declaration": true,
     "outDir": "dist",
     "lib": ["ES2023"],
     "types": [
       "./index.d.ts",
-      "./globals.d.ts"
+      "./globals.d.ts",
+      "./modlib.d.ts"
     ]
   }
 }

@@ -1,8 +1,9 @@
 export interface Wave {
+  waveNumber: number; // The wave number (for display purposes)
   startsAt: number; // in seconds
   spawnPoints?: number[]; // AI spawn point IDs
-  infantryCount?: number; // Total number of infantry to spawn for this wave
-  vehicleCount?: number; // Total number of vehicles to spawn for this wave
+  infantryCounts?: number[]; // Number of infantry to spawn per spawn point
+  vehicleCounts?: number[]; // Number of vehicles to spawn per vehicle spawn point
   vehicleTypes?: mod.VehicleList[]; // Types of vehicles to spawn
   vehicleSpawnPoints?: number[]; // Vehicle spawn point IDs
 }
