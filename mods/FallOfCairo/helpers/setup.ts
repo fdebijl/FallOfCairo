@@ -1,12 +1,20 @@
 import { WEAPON_EMPLACEMENTS } from '../constants';
+import { UIManager } from '../UI/UIManager';
 
 /** Run all one-time setup methods */
-export function Setup(): void {
+export async function Setup(uiManager: UIManager): Promise<void> {
   SetupScoreboard();
   SetupEmplacements();
+
+  uiManager.ShowIntroWidget();
+  await mod.Wait(20);
+  uiManager.HideIntroWidget();
 }
 
-// TODO: Flesh this out
+// TODO: Flesh this out:
+// - Can we hide PAX?
+// - Set column names
+// - Set scores somewhere
 function SetupScoreboard(): void {
   console.log('Setting up scoreboard');
   mod.SetScoreboardType(mod.ScoreboardType.CustomTwoTeams);

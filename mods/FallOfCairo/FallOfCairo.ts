@@ -12,8 +12,6 @@ export async function OnGameModeStarted(): Promise<void> {
   await mod.Wait(5);
 
   console.log(`Fall of Cairo v${VERSION} initializing`);
-  mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementTitle));
-
   uiManager = new UIManager();
 
   const capturePoint = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
@@ -21,6 +19,7 @@ export async function OnGameModeStarted(): Promise<void> {
 
   mod.EnableGameModeObjective(capturePoint, true);
 
+  // Almost all of these are currently broken, seemingly
   mod.SetCapturePointCapturingTime(capturePoint, 5);
   mod.SetCapturePointNeutralizationTime(capturePoint, 5);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
@@ -28,8 +27,7 @@ export async function OnGameModeStarted(): Promise<void> {
 
   mod.DeployAllPlayers();
 
-  Setup();
-  await mod.Wait(5);
+  Setup(uiManager);
 
   // FastTick();
   SlowTick();
@@ -43,6 +41,7 @@ export async function OnCapturePointCaptured(capturePoint: mod.CapturePoint): Pr
   if (capturePointId === CAPTURE_POINTS.HUMAN_CAPTURE_POINT && controllingTeamId === TEAMS.PAX_ARMATA) {
     const teamPax = mod.GetTeam(TEAMS.PAX_ARMATA);
     console.log('Team 2 captured the point, ending game mode with defeat for humans.');
+    // TODO: Replace with custom defeat message and UI widget
     mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementDefeat));
     await mod.Wait(5);
     mod.EndGameMode(teamPax);

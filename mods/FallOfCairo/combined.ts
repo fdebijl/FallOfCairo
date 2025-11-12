@@ -307,12 +307,19 @@ const INTERSPAWN_DELAY = 1;
 
 // ===== helpers\setup.ts =====
 /** Run all one-time setup methods */
-function Setup(): void {
+async function Setup(uiManager: UIManager): Promise<void> {
   SetupScoreboard();
   SetupEmplacements();
+
+  uiManager.ShowIntroWidget();
+  await mod.Wait(20);
+  uiManager.HideIntroWidget();
 }
 
-// TODO: Flesh this out
+// TODO: Flesh this out:
+// - Can we hide PAX?
+// - Set column names
+// - Set scores somewhere
 function SetupScoreboard(): void {
   console.log('Setting up scoreboard');
   mod.SetScoreboardType(mod.ScoreboardType.CustomTwoTeams);
@@ -342,8 +349,6 @@ export async function OnGameModeStarted(): Promise<void> {
   await mod.Wait(5);
 
   console.log(`Fall of Cairo v${VERSION} initializing`);
-  mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementTitle));
-
   uiManager = new UIManager();
 
   const capturePoint = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
@@ -351,6 +356,7 @@ export async function OnGameModeStarted(): Promise<void> {
 
   mod.EnableGameModeObjective(capturePoint, true);
 
+  // Almost all of these are currently broken, seemingly
   mod.SetCapturePointCapturingTime(capturePoint, 5);
   mod.SetCapturePointNeutralizationTime(capturePoint, 5);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
@@ -358,8 +364,7 @@ export async function OnGameModeStarted(): Promise<void> {
 
   mod.DeployAllPlayers();
 
-  Setup();
-  await mod.Wait(5);
+  Setup(uiManager);
 
   // FastTick();
   SlowTick();
@@ -503,26 +508,167 @@ interface Wave {
   vehicleSpawnPoints?: number[]; // Vehicle spawn point IDs
 }
 
+// ===== UI\IntroWidget.ts =====
+const containerIntroWidget = {
+  name: "Container_Intro",
+  type: "Container",
+  position: [0, 0],
+  size: [3840, 500],
+  anchor: mod.UIAnchor.Center,
+  visible: true,
+  padding: 0,
+  bgColor: [0.0314, 0.0431, 0.0431],
+  bgAlpha: 0.8,
+  bgFill: mod.UIBgFill.Blur,
+  children: [
+    {
+      name: "Text_Intro_Pretitle",
+      type: "Text",
+      position: [0, -192.11],
+      size: [1000, 50],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_Intro_Pretitle,
+      textColor: [1, 0.5137, 0.3804],
+      textAlpha: 1,
+      textSize: 22,
+      textAnchor: mod.UIAnchor.Center
+    },
+    {
+      name: "Text_Intro_Title",
+      type: "Text",
+      position: [0, -154.37],
+      size: [1000, 50],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_Intro_Title,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 30,
+      textAnchor: mod.UIAnchor.Center
+    },
+    {
+      name: "Text_Intro_Instructions1",
+      type: "Text",
+      position: [0, -70.9],
+      size: [650.03, 114.04],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_Intro_Instructions1,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 16,
+      textAnchor: mod.UIAnchor.Center
+    },
+    {
+      name: "Text_Intro_Instructions2",
+      type: "Text",
+      position: [0, 0],
+      size: [650.03, 48.86],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_Intro_Instructions2,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 16,
+      textAnchor: mod.UIAnchor.Center
+    },
+    {
+      name: "Text_Intro_Instructions3",
+      type: "Text",
+      position: [0, 82.33],
+      size: [650.03, 90.03],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_Intro_Instructions3,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 16,
+      textAnchor: mod.UIAnchor.Center
+    },
+    {
+      name: "Text_Intro_Instructions4",
+      type: "Text",
+      position: [0, 173.81],
+      size: [650.03, 48.86],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_Intro_Instructions4,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 18,
+      textAnchor: mod.UIAnchor.Center
+    }
+  ]
+};
+
 // ===== UI\UIManager.ts =====
 class UIManager {
   waveInfoWidgetContainer: mod.UIWidget;
-  waveInfoWidgetwaveNumber: mod.UIWidget;
+  waveInfoWidgetWaveNumber: mod.UIWidget;
   waveInfoWidgetWaveDetails: mod.UIWidget;
+  introWidgetContainer: mod.UIWidget;
 
   constructor() {
     modlib.ParseUI(WaveInfoWidgetDefinition);
+    modlib.ParseUI(containerIntroWidget);
+
     this.waveInfoWidgetContainer = mod.FindUIWidgetWithName('Container_WaveInfo');
-    this.waveInfoWidgetwaveNumber = mod.FindUIWidgetWithName('Text_WaveInfo_waveNumber');
+    this.waveInfoWidgetWaveNumber = mod.FindUIWidgetWithName('Text_WaveInfo_waveNumber');
     this.waveInfoWidgetWaveDetails = mod.FindUIWidgetWithName('Text_WaveInfo_WaveDetails');
+    this.introWidgetContainer = mod.FindUIWidgetWithName('Container_Intro');
+
+    mod.SetUIWidgetVisible(this.waveInfoWidgetContainer, false);
+    mod.SetUIWidgetVisible(this.introWidgetContainer, false);
+  }
+
+  ShowWaveInfoWidget() {
+    mod.SetUIWidgetVisible(this.waveInfoWidgetContainer, true);
+  }
+
+  HideWaveInfoWidget() {
+    mod.SetUIWidgetVisible(this.waveInfoWidgetContainer, false);
+  }
+
+  ShowIntroWidget() {
+    mod.SetUIWidgetVisible(this.introWidgetContainer, true);
+  }
+
+  HideIntroWidget() {
+    mod.SetUIWidgetVisible(this.introWidgetContainer, false);
   }
 
   UpdateWaveInfoInfantry(waveNumber: number, infantryCount: number) {
-    mod.SetUITextLabel(this.waveInfoWidgetwaveNumber, mod.Message(mod.stringkeys.waveNumber, waveNumber));
+    mod.SetUITextLabel(this.waveInfoWidgetWaveNumber, mod.Message(mod.stringkeys.waveNumber, waveNumber));
     mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.waveDetailsInfantry, infantryCount));
   }
 
   UpdateWaveInfoMixed(waveNumber: number, infantryCount: number, vehicleCount: number) {
-    mod.SetUITextLabel(this.waveInfoWidgetwaveNumber, mod.Message(mod.stringkeys.waveNumber, waveNumber));
+    mod.SetUITextLabel(this.waveInfoWidgetWaveNumber, mod.Message(mod.stringkeys.waveNumber, waveNumber));
     mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.waveDetailsVehicles, infantryCount, vehicleCount));
   }
 }

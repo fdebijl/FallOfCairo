@@ -19,7 +19,7 @@
   "name8": "Pvt. Dileep",
   "name9": "Lt. Shelomit",
   "name10": "Cpl. Chetan",
-  "name11": "Maj. Ábel",
+  "name11": "Maj. Abel",
   "name12": "Pvt. Gijs",
   "name13": "Capt. Yara",
   "name14": "Sgt. Tariq",
@@ -52,5 +52,11 @@
   "name41": "Pvt. Kofi",
   "name42": "Cpl. Imani",
   "name43": "Lt. Taye",
-  "name44": "Maj. Sade"
+  "name44": "Maj. Sade",
+  "Text_Intro_Pretitle": "INCOMING PRIORITY TRANSMISSION",
+  "Text_Intro_Title": "FINAL PERIMETER DIRECTIVE",
+  "Text_Intro_Instructions1": "Cairo is lost. PAX Armata control every major district, and their armored spearheads have cut off all remaining withdrawal routes. You are part of the last functional unit inside the perimeter. There will be no reinforcements. Air support is impossible. Evacuation is not an option.",
+  "Text_Intro_Instructions2": "Your task is simple and final: hold the designated zone.",
+  "Text_Intro_Instructions3": "Once you deploy, move to the marked position immediately. Establish a perimeter, fortify what you can, and maintain control of that ground until the timer expires. Expect continuous assaults. PAX forces will not negotiate, and they will not break off. They intend to extinguish the last resistance in the city.",
+  "Text_Intro_Instructions4": "Hold the point. Hold it to the last. High Command out."
 }
