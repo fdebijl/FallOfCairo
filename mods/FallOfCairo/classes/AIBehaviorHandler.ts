@@ -8,7 +8,7 @@ export class AIBehaviorHandler {
   static MaxRadius = 25;
   static MinRadius = 5;
 
-  private static GetSoldierClass() {
+  static GetSoldierClass() {
     const rand = Math.random();
     if (rand < 0.50) {
       // 50% chance
@@ -25,7 +25,7 @@ export class AIBehaviorHandler {
     }
   }
 
-  private static GetSoldierName() {
+  static GetSoldierName() {
     switch (Math.floor(Math.random() * 44)) {
       case 0: return mod.Message(mod.stringkeys.name0)
       case 1: return mod.Message(mod.stringkeys.name1)
@@ -78,23 +78,28 @@ export class AIBehaviorHandler {
   static async SpawnAI(spawnPoint: mod.Spawner): Promise<void> {
     if (AIBehaviorHandler.botPlayers.length >= AIBehaviorHandler.maxAmountOfAi) {
       console.log('Max AI limit reached, backing off spawn.');
-      await mod.Wait(2);
+      await mod.Wait(5);
       return AIBehaviorHandler.SpawnAI(spawnPoint);
     }
 
     const team = mod.GetTeam(TEAMS.PAX_ARMATA);
     const soldierClass = this.GetSoldierClass();
     const name = this.GetSoldierName();
-    console.log('Spawning AI soldier');
     mod.SpawnAIFromAISpawner(spawnPoint, soldierClass, name, team);
   }
 
   static OnAIPlayerSpawn(player: mod.Player) {
     const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
-    const newAIProfile = { player: player, team: mod.GetTeam(player) }
+    const team = mod.GetTeam(player);
+    const newAIProfile = { player: player, team }
 
-    AIBehaviorHandler.botPlayers.push(newAIProfile)
-    AIBehaviorHandler.DirectAiToAttackPoint(newAIProfile, targetPos)
+    if (IsObjectIDsEqual(team, mod.GetTeam(TEAMS.PAX_ARMATA))) {
+      AIBehaviorHandler.botPlayers.push(newAIProfile)
+      AIBehaviorHandler.DirectAiToAttackPoint(newAIProfile, targetPos)
+    } else {
+
+      AIBehaviorHandler.DirectAiToAttackPoint(newAIProfile, targetPos, true)
+    }
   }
 
   static GetAllAIPlayers() {
@@ -132,7 +137,7 @@ export class AIBehaviorHandler {
     }
   }
 
-  static async DirectAiToAttackPoint(botPlayer: BotPlayer, targetPosition: mod.Vector) {
+  static async DirectAiToAttackPoint(botPlayer: BotPlayer, targetPosition: mod.Vector, defendOnArrival = false) {
     botPlayer.currentTargetPosition = targetPosition;
 
     mod.AISetMoveSpeed(botPlayer.player, mod.MoveSpeed.InvestigateRun);
@@ -145,11 +150,15 @@ export class AIBehaviorHandler {
       mod.AIMoveToBehavior(botPlayer.player, _targetPosition);
 
       if (mod.DistanceBetween(playerPosition, targetPosition) < AIBehaviorHandler.MaxRadius) {
-        console.log(`AI ${mod.GetObjId(botPlayer.player)} reached target point, switching to battlefield behavior`);
-        mod.AIBattlefieldBehavior(botPlayer.player);
+        if (defendOnArrival) {
+          console.log(`AI ${mod.GetObjId(botPlayer.player)} reached target point, switching to defend position behavior`);
+          mod.AIDefendPositionBehavior(botPlayer.player, targetPosition, AIBehaviorHandler.MinRadius, AIBehaviorHandler.MaxRadius);
+        } else {
+          console.log(`AI ${mod.GetObjId(botPlayer.player)} reached target point, switching to battlefield behavior`);
+          mod.AIBattlefieldBehavior(botPlayer.player);
+        }
 
-        // Alternative mode: defend position
-        // mod.AIDefendPositionBehavior(aIProfile.player, targetPosition, AIBehaviorHandler.MinRadius, AIBehaviorHandler.MaxRadius);
+        // We no longer have to manager this AI
         return;
       }
 

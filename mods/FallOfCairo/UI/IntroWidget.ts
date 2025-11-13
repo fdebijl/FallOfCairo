@@ -1,4 +1,4 @@
-export const containerIntroWidget = {
+export const IntroWidgetDefinition = {
   name: "Container_Intro",
   type: "Container",
   position: [0, 0],

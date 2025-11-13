@@ -1,4 +1,4 @@
-export const WaveInfoWidgetDefinition = {
+export const WaveInfoWidgetDefinition = modlib.ParseUI({
   name: "Container_WaveInfo",
   type: "Container",
   position: [25, 25],
@@ -45,4 +45,4 @@ export const WaveInfoWidgetDefinition = {
       textAnchor: mod.UIAnchor.CenterLeft
     }
   ]
-};
+});

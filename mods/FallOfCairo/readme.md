@@ -3,8 +3,11 @@ TODO:
 - Spawn points for bots
 - Spawn points for vehicles
 - Upgrades for players?
-- Difficulties?
-- Number-of-players scaling?
+- Difficulty
+  - DifficultyManager class
+  - UI for selecting difficulty
+- Number-of-players scaling
+- NATO bot backfill
 - UI?
 
 Notes:
@@ -13,3 +16,4 @@ Notes:
 
 Upstream blocked bugs:
 - Emplacements spawn TOWS instead of MG's
+- Setting capture point owner doesn't work

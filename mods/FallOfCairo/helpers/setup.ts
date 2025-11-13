@@ -1,14 +1,17 @@
 import { WEAPON_EMPLACEMENTS } from '../constants';
 import { UIManager } from '../UI/UIManager';
+import { freezePlayers, unfreezePlayers } from './helpers';
 
 /** Run all one-time setup methods */
 export async function Setup(uiManager: UIManager): Promise<void> {
   SetupScoreboard();
   SetupEmplacements();
 
+  freezePlayers();
   uiManager.ShowIntroWidget();
   await mod.Wait(20);
   uiManager.HideIntroWidget();
+  unfreezePlayers();
 }
 
 // TODO: Flesh this out:

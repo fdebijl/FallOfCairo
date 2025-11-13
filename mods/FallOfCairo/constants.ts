@@ -31,6 +31,7 @@ export const AI_SPAWN_POINTS = {
   FLANK_RIGHT: 302,
   FLANK_LEFT: 303,
   PLAZA: 304,
+  NATO: 399
 };
 
 export const VEHICLE_SPAWN_POINTS = {

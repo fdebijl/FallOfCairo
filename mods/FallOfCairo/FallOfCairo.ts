@@ -1,7 +1,7 @@
 import { AIBehaviorHandler } from './classes/AIBehaviorHandler';
 import { PlayerHandler } from './classes/PlayerHandler';
 import { CAPTURE_POINTS, INTERSPAWN_DELAY, TEAMS, VERSION, WAVES } from './constants';
-import { IsAIAllowedVehicle } from './helpers/helpers';
+import { backfillNATO, IsAIAllowedVehicle, triggerDefeat } from './helpers/helpers';
 import { Setup } from './helpers/setup';
 import { Wave } from './interfaces/Wave';
 import { UIManager } from './UI/UIManager';
@@ -34,20 +34,13 @@ export async function OnGameModeStarted(): Promise<void> {
 }
 
 export async function OnCapturePointCaptured(capturePoint: mod.CapturePoint): Promise<void> {
-  console.log('Capture point captured, checking conditions');
   const capturePointId = mod.GetObjId(capturePoint);
   const controllingTeamId = mod.GetObjId(mod.GetCurrentOwnerTeam(capturePoint));
 
   if (capturePointId === CAPTURE_POINTS.HUMAN_CAPTURE_POINT && controllingTeamId === TEAMS.PAX_ARMATA) {
-    const teamPax = mod.GetTeam(TEAMS.PAX_ARMATA);
-    console.log('Team 2 captured the point, ending game mode with defeat for humans.');
-    // TODO: Replace with custom defeat message and UI widget
-    mod.DisplayNotificationMessage(mod.Message(mod.stringkeys.announcementDefeat));
-    await mod.Wait(5);
-    mod.EndGameMode(teamPax);
+    triggerDefeat(uiManager);
   }
 }
-
 
 export async function OnPlayerDeployed(player: mod.Player) {
   if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier)) {
@@ -70,6 +63,14 @@ export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehi
     await mod.Wait(0.5);
     mod.ForcePlayerExitVehicle(player);
   }
+}
+
+export async function OnPlayerJoinGame(eventPlayer: mod.Player): Promise<void> {
+  PlayerHandler.OnHumanPlayerJoin(eventPlayer);
+}
+
+export async function OnPlayerLeaveGame(eventPlayer: mod.Player): Promise<void> {
+  PlayerHandler.OnHumanPlayerLeave(eventPlayer);
 }
 
 // ======
