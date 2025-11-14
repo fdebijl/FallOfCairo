@@ -1,11 +1,12 @@
 {
   "name": "fallofcairo",
   "scripts": {
-    "prebuild": "node charmancer.js",
-    "build": "node combine.js",
-    "debug": "node --inspect-brk combine.js"
+    "prebuild": "node bin/charmancer.js && node bin/widgetter.js",
+    "build": "node bin/combine.js",
+    "debug": "node --inspect-brk bin/combine.js"
   },
   "devDependencies": {
+    "glob": "11.0.3",
     "ts-morph": "27.0.2"
   }
 }

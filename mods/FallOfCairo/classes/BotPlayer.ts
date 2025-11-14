@@ -1,10 +1,5 @@
-export class BotPlayer {
-  player: mod.Player;
-  team: mod.Team;
-  currentTargetPosition?: mod.Vector;
+import { Actor } from './Actor';
 
-  constructor(player: mod.Player, team: mod.Team) {
-    this.player = player;
-    this.team = team;
-  }
+export class BotPlayer extends Actor{
+  currentTargetPosition?: mod.Vector;
 }

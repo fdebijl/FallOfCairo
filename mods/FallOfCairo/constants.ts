@@ -6,10 +6,11 @@
 // Vehicle Spawn Points: 400-499
 // Weapon emplacements: 500-599
 // Area Triggers: 600-699
+// Loot spawners: 700-799
 
 import { Wave } from './interfaces/Wave';
 
-export const VERSION = '0.1.8';
+export const VERSION = '0.2.0';
 
 export const TARGET_GAME_LENGTH_MINUTES = 20;
 export const TARGET_GAME_LENGTH_SECONDS = TARGET_GAME_LENGTH_MINUTES * 60;

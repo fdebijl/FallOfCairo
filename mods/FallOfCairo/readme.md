@@ -9,6 +9,7 @@ TODO:
 - Number-of-players scaling
 - UI?
 - Out of bounds area
+- SFX?
 
 Notes:
 - Vehicles dont spawn
@@ -20,22 +21,9 @@ Upstream blocked bugs:
 
 Playtest notes:
 - Hide intro on death
-- Waveinfo widget init text overflows
-- Increase waveinfo widget opacity
-- Once all bots dead, show next wave info
-- Depluralize vehicles in wave info
+- Replace 'Wave 1' with 'Next wave in' if all bots dead
+- Also hide wave desc in that case?
+- Remove bus ladder
 
-Issue:
-```js
-Exception: NoMatchingOverload
-Function: GetObjId
-Error info:
-	Provided parameters () do not match any overload. Function supports the following overloads: (Object).
-QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
-    at <eval> (<input>:1)
-    at GetObjId (native)
-    at <anonymous> (main:423)
-    at filter (native)
-    at OnHumanPlayerLeave (main:423)
-    at OnPlayerLeaveGame (main:667)
-```
+Issues:
+- Currently none

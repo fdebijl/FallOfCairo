@@ -1,11 +1,19 @@
 import { backfillNATO, isAI } from '../helpers/helpers';
-import { HumanPlayer } from './Player';
+import { HumanPlayer } from './HumanPlayer';
 
 /**
  * Handles human player related events and data, maintains a list of human players and their state.
  */
 export class PlayerHandler {
   static humanPlayers: HumanPlayer[] = [];
+
+  static get humanPlayerCount(): number {
+    return this.humanPlayers.length;
+  }
+
+  static getPlayerById(id: number): HumanPlayer | undefined {
+    return this.humanPlayers.find(hp => hp.id === id);
+  }
 
   static OnHumanPlayerSpawn(player: mod.Player) {
     if (!player || isAI(player)) {
@@ -17,9 +25,17 @@ export class PlayerHandler {
     if (humanPlayer) {
       humanPlayer.isAlive = true;
     }
+
+    mod.Wait(2).then(() => {
+      mod.SetInventoryAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
+      mod.SetInventoryAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
+      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
+      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
+      mod.Resupply(player, mod.ResupplyTypes.AmmoCrate);
+    });
   }
 
-  static OnHumanPlayerDeath(player: mod.Player) {
+  static OnHumanPlayerDeath(player: mod.Player, killer?: mod.Player | null) {
     if (!player || isAI(player)) {
       return;
     }

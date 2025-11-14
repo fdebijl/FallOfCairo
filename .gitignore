@@ -7,6 +7,11 @@ venv/
 *.glb
 *.glb.import
 GodotProject/.godot
+GodotProject/addons
 GodotProject/scripts
 GodotProject/objects
+GodotProject/raw
+GodotProject/static
+GodotProject/levels/*.tscn
+!GodotProject/level/MP_Abbasid_TD.tscn
 node_modules

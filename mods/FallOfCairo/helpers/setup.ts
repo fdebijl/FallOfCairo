@@ -1,7 +1,7 @@
 import { DifficultyManager } from '../classes/DifficultyManager';
 import { Difficulty } from '../combined';
 import { WEAPON_EMPLACEMENTS } from '../constants';
-import { UIManager } from '../UI/UIManager';
+import { UIManager } from '../interfaces/UI/UIManager';
 import { freezePlayers, unfreezePlayers } from './helpers';
 
 /** Run all one-time setup methods */
@@ -17,20 +17,34 @@ export async function Setup(uiManager: UIManager): Promise<void> {
   uiManager.HideIntroWidget();
   unfreezePlayers();
   uiManager.ShowWaveInfoWidget();
+
+  const lootSpawner1 = mod.GetLootSpawner(700);
+  mod.SpawnLoot(lootSpawner1, mod.Gadgets.CallIn_UAV_Overwatch);
+
+  const lootSpawner2 = mod.GetLootSpawner(701);
+  mod.SpawnLoot(lootSpawner2, mod.Gadgets.CallIn_Air_Strike);
+
+  const lootSpawner3 = mod.GetLootSpawner(702);
+  mod.SpawnLoot(lootSpawner3, mod.Gadgets.CallIn_Ammo_Drop);
 }
 
-// TODO: Flesh this out:
-// - Can we hide PAX?
-// - Set column names
-// - Set scores somewhere
+
 function SetupScoreboard(): void {
+  mod.SetScoreboardType(mod.ScoreboardType.NotSet);
+  return;
+
+  // TODO: Flesh this out:
+  // - Can we hide PAX?
+  // - Set column names
+  // - Set scores somewhere
+  // - Set number of columns to just three?
   console.log('Setting up scoreboard');
   mod.SetScoreboardType(mod.ScoreboardType.CustomTwoTeams);
   mod.SetScoreboardHeader(mod.Message(mod.stringkeys.teamNameNato), mod.Message(mod.stringkeys.teamNamePax));
   mod.SetScoreboardColumnNames(
     mod.Message(mod.stringkeys.scoreboardKills),
     mod.Message(mod.stringkeys.scoreboardDeaths),
-    mod.Message(mod.stringkeys.scoreboardScore
+    mod.Message(mod.stringkeys.scoreboardScore)
   )
 }
 

@@ -1,8 +1,12 @@
-import { AIBehaviorHandler } from '../classes/AIBehaviorHandler';
+import { BotHandler } from '../classes/BotHandler';
 import { AI_SPAWN_POINTS, TEAMS } from '../constants';
-import { UIManager } from '../UI/UIManager';
+import { UIManager } from '../interfaces/UI/UIManager';
 
 export function isAI(player: mod.Player): boolean {
+  if (!player) {
+    return true;
+  }
+
   return mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
 }
 
@@ -76,59 +80,67 @@ let isBackFillRunning = false;
  * Safe to call repeatedly - will adjust bot count based on current human players.
  */
 export async function backfillNATO(): Promise<void> {
+  console.log('backfillNATO called');
   if (isBackFillRunning) {
+    console.log('backfillNATO already running, exiting.');
     return;
   }
 
+  console.log('backfillNATO starting');
   isBackFillRunning = true;
 
-  const TARGET_TEAM_SIZE = 4;
-  const natoTeam = mod.GetTeam(TEAMS.NATO);
+  try {
+    const TARGET_TEAM_SIZE = 4;
+    const natoTeam = mod.GetTeam(TEAMS.NATO);
 
-  const allPlayers = mod.AllPlayers();
-  const playerCount = mod.CountOf(allPlayers);
+    const allPlayers = mod.AllPlayers();
+    const playerCount = mod.CountOf(allPlayers);
 
-  let natoHumanCount = 0;
-  let natoBots: mod.Player[] = [];
+    let natoHumanCount = 0;
+    let natoBots: mod.Player[] = [];
 
-  for (let i = 0; i < playerCount; i++) {
-    const player = mod.ValueInArray(allPlayers, i);
-    const playerTeam = mod.GetTeam(player);
+    for (let i = 0; i < playerCount; i++) {
+      const player = mod.ValueInArray(allPlayers, i);
+      const playerTeam = mod.GetTeam(player);
 
-    // Check if player is on NATO team
-    if (mod.GetObjId(playerTeam) === mod.GetObjId(natoTeam)) {
-      const isAI = mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
+      // Check if player is on NATO team
+      if (mod.GetObjId(playerTeam) === mod.GetObjId(natoTeam)) {
+        const isAI = mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
 
-      if (isAI) {
-        natoBots.push(player);
-      } else {
-        natoHumanCount++;
+        if (isAI) {
+          natoBots.push(player);
+        } else {
+          natoHumanCount++;
+        }
       }
     }
-  }
 
-  const currentNATOCount = natoHumanCount + natoBots.length;
-  const botsNeeded = TARGET_TEAM_SIZE - currentNATOCount;
+    const currentNATOCount = natoHumanCount + natoBots.length;
+    const botsNeeded = TARGET_TEAM_SIZE - currentNATOCount;
 
-  if (botsNeeded > 0) {
-    console.log(`Spawning ${botsNeeded} NATO bots (current: ${currentNATOCount}, humans: ${natoHumanCount})`);
+    if (botsNeeded > 0) {
+      console.log(`Spawning ${botsNeeded} NATO bots (current: ${currentNATOCount}, humans: ${natoHumanCount})`);
 
-    const spawner = mod.GetSpawner(AI_SPAWN_POINTS.NATO);
+      const spawner = mod.GetSpawner(AI_SPAWN_POINTS.NATO);
 
-    for (let i = 0; i < botsNeeded; i++) {
-      mod.SpawnAIFromAISpawner(spawner, AIBehaviorHandler.GetSoldierClass(), AIBehaviorHandler.GetSoldierName(), natoTeam);
-      await mod.Wait(2);
+      for (let i = 0; i < botsNeeded; i++) {
+        mod.SpawnAIFromAISpawner(spawner, BotHandler.GetSoldierClass(), BotHandler.GetSoldierName(), natoTeam);
+        await mod.Wait(2);
+      }
+    } else if (botsNeeded < 0) {
+      const botsToRemove = Math.abs(botsNeeded);
+      console.log(`Removing ${botsToRemove} NATO bots (current: ${currentNATOCount}, humans: ${natoHumanCount})`);
+
+      for (let i = 0; i < botsToRemove && i < natoBots.length; i++) {
+        mod.Kill(natoBots[i]);
+      }
+    } else {
+      console.log(`NATO team at target size: ${currentNATOCount} (${natoHumanCount} humans, ${natoBots.length} bots)`);
     }
-  } else if (botsNeeded < 0) {
-    const botsToRemove = Math.abs(botsNeeded);
-    console.log(`Removing ${botsToRemove} NATO bots (current: ${currentNATOCount}, humans: ${natoHumanCount})`);
-
-    for (let i = 0; i < botsToRemove && i < natoBots.length; i++) {
-      mod.Kill(natoBots[i]);
-    }
-  } else {
-    console.log(`NATO team at target size: ${currentNATOCount} (${natoHumanCount} humans, ${natoBots.length} bots)`);
+  } catch (error) {
+    console.log('Error in backfillNATO:', error);
+  } finally {
+    console.log('backfillNATO completed');
+    isBackFillRunning = false;
   }
-
-  isBackFillRunning = false;
 }

@@ -1,10 +1,10 @@
-import { AIBehaviorHandler } from './classes/AIBehaviorHandler';
+import { BotHandler } from './classes/BotHandler';
 import { PlayerHandler } from './classes/PlayerHandler';
 import { CAPTURE_POINTS, TEAMS, VERSION } from './constants';
-import { isAI, IsAIAllowedVehicle, triggerDefeat } from './helpers/helpers';
+import { backfillNATO, isAI, IsAIAllowedVehicle, triggerDefeat } from './helpers/helpers';
 import { Setup } from './helpers/setup';
-import { TriggerWaveSpawns } from './helpers/waves';
-import { UIManager } from './UI/UIManager';
+import { DoWaveLoop } from './helpers/waveHelpers';
+import { UIManager } from './interfaces/UI/UIManager';
 
 export let uiManager: UIManager;
 
@@ -27,11 +27,12 @@ export async function OnGameModeStarted(): Promise<void> {
 
   mod.DeployAllPlayers();
 
-  await mod.Wait(1);
+  await mod.Wait(0.5);
   Setup(uiManager);
 
   // FastTick();
   SlowTick();
+  SlowestTick();
 }
 
 export async function OnCapturePointCaptured(capturePoint: mod.CapturePoint): Promise<void> {
@@ -45,15 +46,23 @@ export async function OnCapturePointCaptured(capturePoint: mod.CapturePoint): Pr
 
 export async function OnPlayerDeployed(player: mod.Player) {
   if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier)) {
-    return AIBehaviorHandler.OnAIPlayerSpawn(player);
+    return BotHandler.OnAIPlayerSpawn(player);
   } else {
     return PlayerHandler.OnHumanPlayerSpawn(player);
   }
 }
 
+export async function OnPlayerKilled(victim: mod.Player, killer: mod.Player | null) {
+  if (mod.GetSoldierState(victim, mod.SoldierStateBool.IsAISoldier)) {
+    BotHandler.OnAIPlayerDied(victim);
+  } else {
+    PlayerHandler.OnHumanPlayerDeath(victim, killer);
+  }
+}
+
 export async function OnVehicleSpawned(vehicle: mod.Vehicle) {
   console.log('Vehicle spawned, checking for nearby AI to enter vehicle');
-  await AIBehaviorHandler.VehicleSpawned(vehicle);
+  await BotHandler.VehicleSpawned(vehicle);
 }
 
 export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehicle) {
@@ -74,17 +83,16 @@ export async function OnPlayerJoinGame(eventPlayer: mod.Player): Promise<void> {
   }
 }
 
-export async function OnPlayerLeaveGame(eventPlayer: mod.Player): Promise<void> {
-  if (isAI(eventPlayer)) {
+export async function OnPlayerLeaveGame(playerId: number): Promise<void> {
+  const botPlayer = BotHandler.GetBotById(playerId);
+  const humanPlayer = PlayerHandler.getPlayerById(playerId);
+
+  if (botPlayer) {
     // Might want to do something for AI players here later
-  } else {
-    PlayerHandler.OnHumanPlayerLeave(eventPlayer);
+  } else if(humanPlayer) {
+    PlayerHandler.OnHumanPlayerLeave(humanPlayer.player);
   }
 }
-
-// ======
-// Logic
-// ======
 
 async function FastTick() {
   await mod.Wait(0.1);
@@ -92,6 +100,13 @@ async function FastTick() {
 
 async function SlowTick() {
   await mod.Wait(1);
-  await TriggerWaveSpawns();
+  await DoWaveLoop();
   SlowTick();
+}
+
+async function SlowestTick() {
+  await mod.Wait(10);
+  await backfillNATO();
+  await BotHandler.PurgeBotList();
+  SlowestTick();
 }
