@@ -1,6 +1,7 @@
 {
   "name": "fallofcairo",
   "scripts": {
+    "prebuild": "node charmancer.js",
     "build": "node combine.js",
     "debug": "node --inspect-brk combine.js"
   },

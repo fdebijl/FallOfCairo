@@ -1,3 +1,5 @@
+import { DifficultyManager } from '../classes/DifficultyManager';
+import { Difficulty } from '../combined';
 import { WEAPON_EMPLACEMENTS } from '../constants';
 import { UIManager } from '../UI/UIManager';
 import { freezePlayers, unfreezePlayers } from './helpers';
@@ -7,11 +9,14 @@ export async function Setup(uiManager: UIManager): Promise<void> {
   SetupScoreboard();
   SetupEmplacements();
 
+  DifficultyManager.applyDifficultySettings(Difficulty.Medium);
+
   freezePlayers();
   uiManager.ShowIntroWidget();
-  await mod.Wait(20);
+  await mod.Wait(14);
   uiManager.HideIntroWidget();
   unfreezePlayers();
+  uiManager.ShowWaveInfoWidget();
 }
 
 // TODO: Flesh this out:
@@ -22,6 +27,11 @@ function SetupScoreboard(): void {
   console.log('Setting up scoreboard');
   mod.SetScoreboardType(mod.ScoreboardType.CustomTwoTeams);
   mod.SetScoreboardHeader(mod.Message(mod.stringkeys.teamNameNato), mod.Message(mod.stringkeys.teamNamePax));
+  mod.SetScoreboardColumnNames(
+    mod.Message(mod.stringkeys.scoreboardKills),
+    mod.Message(mod.stringkeys.scoreboardDeaths),
+    mod.Message(mod.stringkeys.scoreboardScore
+  )
 }
 
 function SetupEmplacements() {

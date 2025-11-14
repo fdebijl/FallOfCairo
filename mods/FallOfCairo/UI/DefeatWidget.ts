@@ -1,4 +1,4 @@
-export const DefeatWidgetDefinition = {
+export const DefeatWidgetDefinition = modlib.ParseUI({
   name: "Container_Defeat",
   type: "Container",
   position: [0, 0],
@@ -7,7 +7,7 @@ export const DefeatWidgetDefinition = {
   visible: true,
   padding: 0,
   bgColor: [0.251, 0.0941, 0.0667],
-  bgAlpha: 0.8,
+  bgAlpha: 0.95,
   bgFill: mod.UIBgFill.Blur,
   children: [
     {
@@ -45,4 +45,4 @@ export const DefeatWidgetDefinition = {
       textAnchor: mod.UIAnchor.Center
     }
   ]
-}
+});

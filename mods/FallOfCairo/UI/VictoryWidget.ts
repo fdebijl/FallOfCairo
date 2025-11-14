@@ -7,7 +7,7 @@ export const VictoryWidgetDefinition = {
   visible: true,
   padding: 0,
   bgColor: [0.0745, 0.1843, 0.2471],
-  bgAlpha: 0.8,
+  bgAlpha: 0.95,
   bgFill: mod.UIBgFill.Blur,
   children: [
     {

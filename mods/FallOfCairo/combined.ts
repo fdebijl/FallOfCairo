@@ -1,7 +1,11 @@
 import * as modlib from 'modlib';
 
 // ===== helpers\helpers.ts =====
-function IsObjectIDsEqual(left: any, right: any) {
+function isAI(player: mod.Player): boolean {
+  return mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
+}
+
+function isObjectIDsEqual(left: any, right: any) {
   if (left == undefined || right == undefined) {
     return false
   }
@@ -12,62 +16,6 @@ function IsObjectIDsEqual(left: any, right: any) {
 function IsAIAllowedVehicle(vehicle: mod.Vehicle) {
   return mod.CompareVehicleName(vehicle, mod.VehicleList.M2Bradley)
   || mod.CompareVehicleName(vehicle, mod.VehicleList.Abrams);
-}
-
-/**
- * Spawn a vehicle supply station at the given position and orientation, by having a bot deploy one.
- * Caveat 1: The position is not exact, the bot will teleport to that position and deploy the station there.
- * Play around with position and orientation to get the desired result.
- * Caveat 2: Supply stations spawned this way will only last a couple of minutes, you may want to loop this method to keep them up.
- * Caveat 3: I recommend setting `mod.AISetUnspawnOnDead(spawner, false)` on the spawner you use for this so the crate doesn't get removed when the bot dies.
- *
- * @param position The position to spawn the supply station from
- * @param orientation The orientation (in radians) to spawn the supply station towards
- * @param team The team to spawn the supply station for
- * @param spawnerId The ID of the spawner to use to spawn the bot that will deploy the supply station
- *
- * @example SpawnSupplyStation(pos, 270, mod.GetTeam(0), 200);
- * @author Fdebijl
- */
-async function spawnSupplyStation(position: mod.Vector, orientation: number, team: mod.Team, spawnerId: number = 0) {
-  const spawner = mod.GetSpawner(spawnerId);
-  const soldierClass = mod.SoldierClass.Engineer;
-  mod.SpawnAIFromAISpawner(spawner, soldierClass, team);
-
-  await mod.Wait(1);
-
-  let botPlayer: mod.Player | undefined;
-  const players = mod.AllPlayers();
-  const playerCount = mod.CountOf(players);
-
-  // Find our bot by looping over the most recently spawned players, this prevents us having to hook into OnPlayerDeployed
-  for (let i = playerCount - 1; i >= 0; i--) {
-    const player = mod.ValueInArray(players, i);
-    const isAI = mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
-    const isEngineer = mod.IsSoldierClass(player, soldierClass);
-    const playerTeam = mod.GetTeam(player);
-
-    if (isAI && isEngineer && (mod.GetObjId(playerTeam) == mod.GetObjId(team))) {
-      botPlayer = player;
-      break;
-    }
-  }
-
-  if (!botPlayer) {
-    console.log('No AI bot found on specified team to spawn supply station');
-    return;
-  }
-
-  mod.AddEquipment(botPlayer, mod.Gadgets.Deployable_Vehicle_Supply_Crate, mod.InventorySlots.GadgetOne);
-  mod.Teleport(botPlayer, position, orientation);
-  await mod.Wait(1);
-  mod.ForceSwitchInventory(botPlayer, mod.InventorySlots.GadgetOne);
-  mod.AIGadgetSettings(botPlayer, false, false, false);
-  await mod.Wait(1);
-  mod.AIForceFire(botPlayer, 1);
-  await mod.Wait(1.1);
-
-  mod.Kill(botPlayer);
 }
 
 async function triggerDefeat(uiManager: UIManager) {
@@ -120,11 +68,19 @@ function unfreezePlayers(): void {
   }
 }
 
+let isBackFillRunning = false;
+
 /**
  * Maintains a team size of 4 players on NATO team by adding/removing AI bots as needed.
  * Safe to call repeatedly - will adjust bot count based on current human players.
  */
 async function backfillNATO(): Promise<void> {
+  if (isBackFillRunning) {
+    return;
+  }
+
+  isBackFillRunning = true;
+
   const TARGET_TEAM_SIZE = 4;
   const natoTeam = mod.GetTeam(TEAMS.NATO);
 
@@ -159,7 +115,6 @@ async function backfillNATO(): Promise<void> {
     const spawner = mod.GetSpawner(AI_SPAWN_POINTS.NATO);
 
     for (let i = 0; i < botsNeeded; i++) {
-      AIBehaviorHandler;
       mod.SpawnAIFromAISpawner(spawner, AIBehaviorHandler.GetSoldierClass(), AIBehaviorHandler.GetSoldierName(), natoTeam);
       await mod.Wait(2);
     }
@@ -173,14 +128,20 @@ async function backfillNATO(): Promise<void> {
   } else {
     console.log(`NATO team at target size: ${currentNATOCount} (${natoHumanCount} humans, ${natoBots.length} bots)`);
   }
+
+  isBackFillRunning = false;
 }
 
 // ===== classes\AIBehaviorHandler.ts =====
 class AIBehaviorHandler {
   static maxAmountOfAi = 32;
   static botPlayers: BotPlayer[] = [];
-  static MaxRadius = 25;
-  static MinRadius = 5;
+  static MaxRadius = 15;
+  static MinRadius = 1;
+
+  static get botPlayerCount() {
+    return AIBehaviorHandler.botPlayers.length;
+  }
 
   static GetSoldierClass() {
     const rand = Math.random();
@@ -267,11 +228,11 @@ class AIBehaviorHandler {
     const team = mod.GetTeam(player);
     const newAIProfile = { player: player, team }
 
-    if (IsObjectIDsEqual(team, mod.GetTeam(TEAMS.PAX_ARMATA))) {
+    if (isObjectIDsEqual(team, mod.GetTeam(TEAMS.PAX_ARMATA))) {
       AIBehaviorHandler.botPlayers.push(newAIProfile)
       AIBehaviorHandler.DirectAiToAttackPoint(newAIProfile, targetPos)
     } else {
-
+      mod.SetPlayerMaxHealth(player, DifficultyManager.natoBotsHealth);
       AIBehaviorHandler.DirectAiToAttackPoint(newAIProfile, targetPos, true)
     }
   }
@@ -287,7 +248,7 @@ class AIBehaviorHandler {
   }
 
   static OnAIPlayerDied(player: mod.Player) {
-    const index = AIBehaviorHandler.botPlayers.findIndex(x => IsObjectIDsEqual(x.player, player));
+    const index = AIBehaviorHandler.botPlayers.findIndex(x => isObjectIDsEqual(x.player, player));
 
     if (index !== -1) {
       AIBehaviorHandler.botPlayers.splice(index, 1);
@@ -388,7 +349,54 @@ class BotPlayer {
 // ===== classes\DifficultyManager.ts =====
 // TODO: Implement difficulty settings
 class DifficultyManager {
+  static difficulty: Difficulty;
 
+  static applyDifficultySettings(difficulty: Difficulty) {
+    this.difficulty = difficulty;
+
+    switch (difficulty) {
+      case Difficulty.Easy: {
+        console.log('Applying Easy difficulty settings');
+        mod.SetAIToHumanDamageModifier(0.75);
+        break;
+      }
+      case Difficulty.Hard: {
+        console.log('Applying Hard difficulty settings');
+        mod.SetAIToHumanDamageModifier(1.5);
+        break;
+      }
+      case Difficulty.Medium:
+      default: {
+        console.log('Apply Medium difficulty settings');
+        mod.SetAIToHumanDamageModifier(1.0);
+        break;
+      }
+    }
+  }
+
+  static get natoBotsHealth(): number {
+    switch (this.difficulty) {
+      case Difficulty.Easy:
+        return 300;
+      case Difficulty.Hard:
+        return 75;
+      case Difficulty.Medium:
+      default:
+        return 150;
+    }
+  }
+
+  static get paxBotsHealth(): number {
+    switch (this.difficulty) {
+      case Difficulty.Easy:
+        return 75;
+      case Difficulty.Hard:
+        return 200;
+      case Difficulty.Medium:
+      default:
+        return 100;
+    }
+  }
 }
 
 // ===== classes\Player.ts =====
@@ -396,6 +404,9 @@ class HumanPlayer {
   player: mod.Player;
   team: mod.Team;
   isAlive: boolean = true;
+  kills: number = 0;
+  deaths: number = 0;
+  score: number = 0;
 
   constructor(player: mod.Player, team: mod.Team) {
     this.player = player;
@@ -415,6 +426,10 @@ class PlayerHandler {
   static humanPlayers: HumanPlayer[] = [];
 
   static OnHumanPlayerSpawn(player: mod.Player) {
+    if (!player || isAI(player)) {
+      return;
+    }
+
     const humanPlayer = this.humanPlayers.find((hp) => hp.id === mod.GetObjId(player));
 
     if (humanPlayer) {
@@ -423,14 +438,23 @@ class PlayerHandler {
   }
 
   static OnHumanPlayerDeath(player: mod.Player) {
+    if (!player || isAI(player)) {
+      return;
+    }
+
     const humanPlayer = this.humanPlayers.find((hp) => hp.id === mod.GetObjId(player));
 
     if (humanPlayer) {
       humanPlayer.isAlive = false;
+      humanPlayer.deaths += 1;
     }
   }
 
   static OnHumanPlayerJoin(player: mod.Player) {
+    if (!player || isAI(player)) {
+      return;
+    }
+
     const team = mod.GetTeam(player);
     const humanPlayer = new HumanPlayer(player, team);
     this.humanPlayers.push(humanPlayer);
@@ -439,14 +463,35 @@ class PlayerHandler {
   }
 
   static OnHumanPlayerLeave(player: mod.Player) {
+    if (!player || isAI(player)) {
+      return;
+    }
+
     this.humanPlayers = this.humanPlayers.filter((hp) => hp.id !== mod.GetObjId(player));
 
     backfillNATO();
   }
+
+  static OnHumanPlayerEarnedKill(player: mod.Player) {
+    if (!player || isAI(player)) {
+      return;
+    }
+
+    const humanPlayer = this.humanPlayers.find((hp) => hp.id === mod.GetObjId(player));
+
+    if (humanPlayer) {
+      humanPlayer.kills += 1;
+    }
+  }
 }
 
 // ===== constants.ts =====
-const VERSION = '0.1.6';
+const VERSION = '0.1.8';
+
+const TARGET_GAME_LENGTH_MINUTES = 20;
+const TARGET_GAME_LENGTH_SECONDS = TARGET_GAME_LENGTH_MINUTES * 60;
+const MAX_GAME_LENGTH_MINUTES = 25;
+const MAX_GAME_LENGTH_SECONDS = MAX_GAME_LENGTH_MINUTES * 60;
 
 const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -498,8 +543,8 @@ const WAVES: Wave[] = [
   {
     waveNumber: 2,
     startsAt: 180, // 3:00
-    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
-    infantryCounts: [10, 10],
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
+    infantryCounts: [15],
     vehicleTypes: [mod.VehicleList.M2Bradley],
     vehicleCounts: [1],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
@@ -507,8 +552,8 @@ const WAVES: Wave[] = [
   {
     waveNumber: 3,
     startsAt: 300, // 5:00
-    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE, AI_SPAWN_POINTS.FLANK_RIGHT, AI_SPAWN_POINTS.FLANK_LEFT],
-    infantryCounts: [8, 8, 8, 8],
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [10, 10],
   },
     {
     waveNumber: 4,
@@ -574,6 +619,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.MOSQUE,
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
+      AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
     vehicleTypes: [mod.VehicleList.M2Bradley],
@@ -588,6 +634,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.MOSQUE,
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
+      AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [20, 20, 20, 20],
     vehicleTypes: [mod.VehicleList.M2Bradley],
@@ -602,6 +649,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.MOSQUE,
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
+      AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
     vehicleTypes: [mod.VehicleList.M2Bradley],
@@ -618,11 +666,14 @@ async function Setup(uiManager: UIManager): Promise<void> {
   SetupScoreboard();
   SetupEmplacements();
 
+  DifficultyManager.applyDifficultySettings(Difficulty.Medium);
+
   freezePlayers();
   uiManager.ShowIntroWidget();
-  await mod.Wait(20);
+  await mod.Wait(14);
   uiManager.HideIntroWidget();
   unfreezePlayers();
+  uiManager.ShowWaveInfoWidget();
 }
 
 // TODO: Flesh this out:
@@ -633,6 +684,11 @@ function SetupScoreboard(): void {
   console.log('Setting up scoreboard');
   mod.SetScoreboardType(mod.ScoreboardType.CustomTwoTeams);
   mod.SetScoreboardHeader(mod.Message(mod.stringkeys.teamNameNato), mod.Message(mod.stringkeys.teamNamePax));
+  mod.SetScoreboardColumnNames(
+    mod.Message(mod.stringkeys.scoreboardKills),
+    mod.Message(mod.stringkeys.scoreboardDeaths),
+    mod.Message(mod.stringkeys.scoreboardScore
+  )
 }
 
 function SetupEmplacements() {
@@ -651,8 +707,95 @@ function SetupEmplacements() {
   }
 }
 
+// ===== helpers\waves.ts =====
+async function SpawnWave(wave: Wave) {
+  console.log(`Spawning wave ${wave.waveNumber} at ${wave.startsAt} seconds`);
+
+  // Calculate total infantry count
+  const totalInfantry = wave.infantryCounts
+    ? wave.infantryCounts.reduce((sum, count) => sum + count, 0)
+    : 0;
+
+  // Calculate total vehicle count
+  const totalVehicles = wave.vehicleCounts
+    ? wave.vehicleCounts.reduce((sum, count) => sum + count, 0)
+    : 0;
+
+  // Update UI based on wave composition
+  if (wave.infantryCounts && wave.vehicleCounts) {
+    console.log(`Wave ${wave.waveNumber} has ${totalInfantry} infantry and ${totalVehicles} vehicles`);
+    uiManager.UpdateWaveInfoMixed(wave.waveNumber, totalInfantry, totalVehicles);
+  } else if (wave.infantryCounts) {
+    console.log(`Wave ${wave.waveNumber} has ${totalInfantry} infantry`);
+    uiManager.UpdateWaveInfoInfantry(wave.waveNumber, totalInfantry);
+  }
+
+  if (wave.spawnPoints && wave.infantryCounts) {
+    for (const spawnPointId of wave.spawnPoints) {
+      const index = wave.spawnPoints.indexOf(spawnPointId);
+      const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+
+      const spawnPoint = mod.GetSpawner(spawnPointId);
+      for (let i = 0; i < infantryPerSpawnPoint; i++) {
+        AIBehaviorHandler.SpawnAI(spawnPoint);
+        await mod.Wait(INTERSPAWN_DELAY);
+      }
+    }
+
+    const players = mod.AllPlayers();
+    const n = mod.CountOf(players);
+
+    for (let i = 0; i < n; i++) {
+      const loopPlayer = mod.ValueInArray(players, i);
+
+      if (mod.IsPlayerValid(loopPlayer) && mod.GetSoldierState(loopPlayer, mod.SoldierStateBool.IsAISoldier)) {
+        mod.AIBattlefieldBehavior(loopPlayer);
+      }
+    }
+  }
+
+  if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
+    for (const spawnPointId of wave.vehicleSpawnPoints) {
+      const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
+      const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
+
+      const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
+
+      for (let i = 0; i < vehiclesPerSpawnPoint; i++) {
+        console.log(`Spawning vehicle for wave ${wave.waveNumber}`);
+        const vehicleType = wave.vehicleTypes[index];
+        mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
+        // mod.SetVehicleSpawnerAutoSpawn(spawnPoint, true);
+        mod.ForceVehicleSpawnerSpawn(spawnPoint);
+        await mod.Wait(INTERSPAWN_DELAY);
+      }
+    }
+  }
+}
+
+async function TriggerWaveSpawns() {
+  const gameTime = mod.GetMatchTimeElapsed();
+
+  for (const wave of WAVES) {
+    if (gameTime >= wave.startsAt) {
+      await SpawnWave(wave);
+
+      // Remove the wave from the list to prevent re-spawning
+      WAVES.splice(WAVES.indexOf(wave), 1);
+    }
+  }
+
+  const aiCount = AIBehaviorHandler.botPlayerCount;
+  const hasNoAIAlive = aiCount === 0;
+  const hasNoWaves = WAVES.length === 0;
+  const isLateGame = gameTime > TARGET_GAME_LENGTH_SECONDS - 60;
+  if (hasNoAIAlive && hasNoWaves && isLateGame) {
+    triggerVictory(uiManager);
+  }
+}
+
 // ===== FallOfCairo.ts =====
-let uiManager: UIManager;
+export let uiManager: UIManager;
 
 export async function OnGameModeStarted(): Promise<void> {
   await mod.Wait(5);
@@ -673,6 +816,7 @@ export async function OnGameModeStarted(): Promise<void> {
 
   mod.DeployAllPlayers();
 
+  await mod.Wait(1);
   Setup(uiManager);
 
   // FastTick();
@@ -712,11 +856,19 @@ export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehi
 }
 
 export async function OnPlayerJoinGame(eventPlayer: mod.Player): Promise<void> {
-  PlayerHandler.OnHumanPlayerJoin(eventPlayer);
+  if (isAI(eventPlayer)) {
+    // Might want to do something for AI players here later
+  } else {
+    PlayerHandler.OnHumanPlayerJoin(eventPlayer);
+  }
 }
 
 export async function OnPlayerLeaveGame(eventPlayer: mod.Player): Promise<void> {
-  PlayerHandler.OnHumanPlayerLeave(eventPlayer);
+  if (isAI(eventPlayer)) {
+    // Might want to do something for AI players here later
+  } else {
+    PlayerHandler.OnHumanPlayerLeave(eventPlayer);
+  }
 }
 
 // ======
@@ -731,81 +883,6 @@ async function SlowTick() {
   await mod.Wait(1);
   await TriggerWaveSpawns();
   SlowTick();
-}
-
-async function TriggerWaveSpawns() {
-  const gameTime = mod.GetMatchTimeElapsed();
-
-  for (const wave of WAVES) {
-    if (gameTime >= wave.startsAt) {
-      await SpawnWave(wave);
-
-      // Remove the wave from the list to prevent re-spawning
-      WAVES.splice(WAVES.indexOf(wave), 1);
-    }
-  }
-}
-
-async function SpawnWave(wave: Wave) {
-  console.log(`Spawning wave ${wave.waveNumber} at ${wave.startsAt} seconds`);
-
-  // Calculate total infantry count
-  const totalInfantry = wave.infantryCounts
-    ? wave.infantryCounts.reduce((sum, count) => sum + count, 0)
-    : 0;
-
-  // Calculate total vehicle count
-  const totalVehicles = wave.vehicleCounts
-    ? wave.vehicleCounts.reduce((sum, count) => sum + count, 0)
-    : 0;
-
-  // Update UI based on wave composition
-  if (wave.infantryCounts && wave.vehicleCounts) {
-    uiManager.UpdateWaveInfoMixed(wave.waveNumber, totalInfantry, totalVehicles);
-  } else if (wave.infantryCounts) {
-    uiManager.UpdateWaveInfoInfantry(wave.waveNumber, totalInfantry);
-  }
-
-  if (wave.spawnPoints && wave.infantryCounts) {
-    for (const spawnPointId of wave.spawnPoints) {
-      const index = wave.spawnPoints.indexOf(spawnPointId);
-      const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
-
-      const spawnPoint = mod.GetSpawner(spawnPointId);
-      for (let i = 0; i < infantryPerSpawnPoint; i++) {
-        AIBehaviorHandler.SpawnAI(spawnPoint);
-        await mod.Wait(INTERSPAWN_DELAY);
-      }
-    }
-
-    const players = mod.AllPlayers();
-    const n = mod.CountOf(players);
-
-    for (let i = 0; i < n; i++) {
-      const loopPlayer = mod.ValueInArray(players, i);
-
-      if (mod.IsPlayerValid(loopPlayer) && mod.GetSoldierState(loopPlayer, mod.SoldierStateBool.IsAISoldier)) {
-        mod.AIBattlefieldBehavior(loopPlayer);
-      }
-    }
-  }
-
-  if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
-    for (const spawnPointId of wave.vehicleSpawnPoints) {
-      const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
-      const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
-
-      const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
-
-      for (let i = 0; i < vehiclesPerSpawnPoint; i++) {
-        const vehicleType = wave.vehicleTypes[i % wave.vehicleTypes.length];
-        mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
-        mod.SetVehicleSpawnerAutoSpawn(spawnPoint, true);
-        mod.ForceVehicleSpawnerSpawn(spawnPoint);
-        await mod.Wait(INTERSPAWN_DELAY);
-      }
-    }
-  }
 }
 
 // ===== interfaces\Difficulty.ts =====
@@ -827,7 +904,7 @@ interface Wave {
 }
 
 // ===== UI\DefeatWidget.ts =====
-const DefeatWidgetDefinition = {
+const DefeatWidgetDefinition = modlib.ParseUI({
   name: "Container_Defeat",
   type: "Container",
   position: [0, 0],
@@ -836,7 +913,7 @@ const DefeatWidgetDefinition = {
   visible: true,
   padding: 0,
   bgColor: [0.251, 0.0941, 0.0667],
-  bgAlpha: 0.8,
+  bgAlpha: 0.95,
   bgFill: mod.UIBgFill.Blur,
   children: [
     {
@@ -874,7 +951,7 @@ const DefeatWidgetDefinition = {
       textAnchor: mod.UIAnchor.Center
     }
   ]
-}
+});
 
 // ===== UI\IntroWidget.ts =====
 const IntroWidgetDefinition = {
@@ -886,7 +963,7 @@ const IntroWidgetDefinition = {
   visible: true,
   padding: 0,
   bgColor: [0.0314, 0.0431, 0.0431],
-  bgAlpha: 0.8,
+  bgAlpha: 0.95,
   bgFill: mod.UIBgFill.Blur,
   children: [
     {
@@ -1080,7 +1157,7 @@ const VictoryWidgetDefinition = {
   visible: true,
   padding: 0,
   bgColor: [0.0745, 0.1843, 0.2471],
-  bgAlpha: 0.8,
+  bgAlpha: 0.95,
   bgFill: mod.UIBgFill.Blur,
   children: [
     {
@@ -1121,30 +1198,30 @@ const VictoryWidgetDefinition = {
 };
 
 // ===== UI\WaveInfoWidget.ts =====
-const WaveInfoWidgetDefinition = modlib.ParseUI({
+const WaveInfoWidgetDefinition = {
   name: "Container_WaveInfo",
   type: "Container",
-  position: [25, 25],
-  size: [400, 104],
+  position: [25.99, 25],
+  size: [416.9, 104],
   anchor: mod.UIAnchor.TopLeft,
   visible: true,
   padding: 5,
   bgColor: [0.2118, 0.2235, 0.2353],
-  bgAlpha: 0.2,
+  bgAlpha: 0.4,
   bgFill: mod.UIBgFill.Blur,
   children: [
     {
       name: "Text_WaveInfo_waveNumber",
       type: "Text",
-      position: [15, 10],
-      size: [150, 50],
+      position: [20, 8],
+      size: [374.72, 50],
       anchor: mod.UIAnchor.TopLeft,
       visible: true,
       padding: 0,
       bgColor: [0.2, 0.2, 0.2],
       bgAlpha: 1,
       bgFill: mod.UIBgFill.None,
-      textLabel: mod.stringkeys.waveNumberInit,
+      textLabel: mod.stringkeys.Text_WaveInfo_waveNumber,
       textColor: [1, 1, 1],
       textAlpha: 1,
       textSize: 24,
@@ -1153,19 +1230,19 @@ const WaveInfoWidgetDefinition = modlib.ParseUI({
     {
       name: "Text_WaveInfo_WaveDetails",
       type: "Text",
-      position: [15, 50],
-      size: [390, 35],
+      position: [20, 50],
+      size: [367.13, 35],
       anchor: mod.UIAnchor.TopLeft,
       visible: true,
       padding: 0,
       bgColor: [0.2, 0.2, 0.2],
       bgAlpha: 1,
       bgFill: mod.UIBgFill.None,
-      textLabel: mod.stringkeys.waveDetailsInit,
+      textLabel: mod.stringkeys.Text_WaveInfo_WaveDetails,
       textColor: [1, 1, 1],
       textAlpha: 1,
       textSize: 20,
       textAnchor: mod.UIAnchor.CenterLeft
     }
   ]
-});
+}

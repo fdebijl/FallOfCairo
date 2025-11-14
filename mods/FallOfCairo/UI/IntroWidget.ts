@@ -7,7 +7,7 @@ export const IntroWidgetDefinition = {
   visible: true,
   padding: 0,
   bgColor: [0.0314, 0.0431, 0.0431],
-  bgAlpha: 0.8,
+  bgAlpha: 0.95,
   bgFill: mod.UIBgFill.Blur,
   children: [
     {

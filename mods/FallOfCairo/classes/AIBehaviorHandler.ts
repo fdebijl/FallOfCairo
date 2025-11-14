@@ -1,12 +1,17 @@
 import { CAPTURE_POINTS, TEAMS } from '../constants';
-import { IsObjectIDsEqual } from '../helpers/helpers';
+import { isObjectIDsEqual } from '../helpers/helpers';
 import { BotPlayer } from './BotPlayer';
+import { DifficultyManager } from './DifficultyManager';
 
 export class AIBehaviorHandler {
   static maxAmountOfAi = 32;
   static botPlayers: BotPlayer[] = [];
-  static MaxRadius = 25;
-  static MinRadius = 5;
+  static MaxRadius = 15;
+  static MinRadius = 1;
+
+  static get botPlayerCount() {
+    return AIBehaviorHandler.botPlayers.length;
+  }
 
   static GetSoldierClass() {
     const rand = Math.random();
@@ -93,11 +98,11 @@ export class AIBehaviorHandler {
     const team = mod.GetTeam(player);
     const newAIProfile = { player: player, team }
 
-    if (IsObjectIDsEqual(team, mod.GetTeam(TEAMS.PAX_ARMATA))) {
+    if (isObjectIDsEqual(team, mod.GetTeam(TEAMS.PAX_ARMATA))) {
       AIBehaviorHandler.botPlayers.push(newAIProfile)
       AIBehaviorHandler.DirectAiToAttackPoint(newAIProfile, targetPos)
     } else {
-
+      mod.SetPlayerMaxHealth(player, DifficultyManager.natoBotsHealth);
       AIBehaviorHandler.DirectAiToAttackPoint(newAIProfile, targetPos, true)
     }
   }
@@ -113,7 +118,7 @@ export class AIBehaviorHandler {
   }
 
   static OnAIPlayerDied(player: mod.Player) {
-    const index = AIBehaviorHandler.botPlayers.findIndex(x => IsObjectIDsEqual(x.player, player));
+    const index = AIBehaviorHandler.botPlayers.findIndex(x => isObjectIDsEqual(x.player, player));
 
     if (index !== -1) {
       AIBehaviorHandler.botPlayers.splice(index, 1);

@@ -9,7 +9,12 @@
 
 import { Wave } from './interfaces/Wave';
 
-export const VERSION = '0.1.6';
+export const VERSION = '0.1.8';
+
+export const TARGET_GAME_LENGTH_MINUTES = 20;
+export const TARGET_GAME_LENGTH_SECONDS = TARGET_GAME_LENGTH_MINUTES * 60;
+export const MAX_GAME_LENGTH_MINUTES = 25;
+export const MAX_GAME_LENGTH_SECONDS = MAX_GAME_LENGTH_MINUTES * 60;
 
 export const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -61,8 +66,8 @@ export const WAVES: Wave[] = [
   {
     waveNumber: 2,
     startsAt: 180, // 3:00
-    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
-    infantryCounts: [10, 10],
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
+    infantryCounts: [15],
     vehicleTypes: [mod.VehicleList.M2Bradley],
     vehicleCounts: [1],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
@@ -70,8 +75,8 @@ export const WAVES: Wave[] = [
   {
     waveNumber: 3,
     startsAt: 300, // 5:00
-    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE, AI_SPAWN_POINTS.FLANK_RIGHT, AI_SPAWN_POINTS.FLANK_LEFT],
-    infantryCounts: [8, 8, 8, 8],
+    spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [10, 10],
   },
     {
     waveNumber: 4,
@@ -137,6 +142,7 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.MOSQUE,
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
+      AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
     vehicleTypes: [mod.VehicleList.M2Bradley],
@@ -151,6 +157,7 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.MOSQUE,
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
+      AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [20, 20, 20, 20],
     vehicleTypes: [mod.VehicleList.M2Bradley],
@@ -165,6 +172,7 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.MOSQUE,
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
+      AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
     vehicleTypes: [mod.VehicleList.M2Bradley],
