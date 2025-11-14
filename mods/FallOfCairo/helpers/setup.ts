@@ -18,14 +18,13 @@ export async function Setup(uiManager: UIManager): Promise<void> {
   unfreezePlayers();
   uiManager.ShowWaveInfoWidget();
 
-  const lootSpawner1 = mod.GetLootSpawner(700);
-  mod.SpawnLoot(lootSpawner1, mod.Gadgets.CallIn_UAV_Overwatch);
-
-  const lootSpawner2 = mod.GetLootSpawner(701);
-  mod.SpawnLoot(lootSpawner2, mod.Gadgets.CallIn_Air_Strike);
-
-  const lootSpawner3 = mod.GetLootSpawner(702);
-  mod.SpawnLoot(lootSpawner3, mod.Gadgets.CallIn_Ammo_Drop);
+  // TODO: This is not adding too much right now, let's work on a proper loot system later
+  // const lootSpawner1 = mod.GetLootSpawner(700);
+  // mod.SpawnLoot(lootSpawner1, mod.Gadgets.CallIn_UAV_Overwatch);
+  // const lootSpawner2 = mod.GetLootSpawner(701);
+  // mod.SpawnLoot(lootSpawner2, mod.Gadgets.CallIn_Air_Strike);
+  // const lootSpawner3 = mod.GetLootSpawner(702);
+  // mod.SpawnLoot(lootSpawner3, mod.Gadgets.CallIn_Ammo_Drop);
 }
 
 
@@ -49,7 +48,7 @@ function SetupScoreboard(): void {
 }
 
 function SetupEmplacements() {
-  // EmplacementSpawners only spawn TOW's at the moment, this is a known bug
+  // TODO: EmplacementSpawners only spawn TOW's at the moment, this is a known bug
   return;
 
   console.log('Setting up weapon emplacements');

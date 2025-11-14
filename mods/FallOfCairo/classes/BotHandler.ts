@@ -92,9 +92,7 @@ export class BotHandler {
   }
 
   static async PurgeBotList(): Promise<void> {
-    console.log('Purging bot player list.');
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => mod.GetSoldierState(bot.player, mod.SoldierStateBool.IsAlive));
-    console.log(`Remaining botPlayers count after purge: ${BotHandler.botPlayers.length}`);
   }
 
   static async SpawnAI(spawnPoint: mod.Spawner): Promise<void> {
@@ -143,9 +141,7 @@ export class BotHandler {
   }
 
   static OnAIPlayerDied(player: mod.Player) {
-    console.log(`AI player ${mod.GetObjId(player)} died, removing from botPlayers list.`);
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => bot.id !== mod.GetObjId(player));
-    console.log(`Remaining botPlayers count: ${BotHandler.botPlayers.length}`);
   }
 
   static async VehicleSpawned(vehicle: mod.Vehicle) {

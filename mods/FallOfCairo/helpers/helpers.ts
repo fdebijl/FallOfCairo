@@ -80,13 +80,10 @@ let isBackFillRunning = false;
  * Safe to call repeatedly - will adjust bot count based on current human players.
  */
 export async function backfillNATO(): Promise<void> {
-  console.log('backfillNATO called');
   if (isBackFillRunning) {
-    console.log('backfillNATO already running, exiting.');
     return;
   }
 
-  console.log('backfillNATO starting');
   isBackFillRunning = true;
 
   try {
@@ -140,7 +137,6 @@ export async function backfillNATO(): Promise<void> {
   } catch (error) {
     console.log('Error in backfillNATO:', error);
   } finally {
-    console.log('backfillNATO completed');
     isBackFillRunning = false;
   }
 }

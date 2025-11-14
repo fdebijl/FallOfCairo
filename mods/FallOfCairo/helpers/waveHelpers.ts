@@ -20,18 +20,6 @@ export async function SpawnWave(wave: Wave) {
         await mod.Wait(INTERSPAWN_DELAY);
       }
     }
-
-    // TODO: Needed?
-    // const players = mod.AllPlayers();
-    // const n = mod.CountOf(players);
-
-    // for (let i = 0; i < n; i++) {
-    //   const loopPlayer = mod.ValueInArray(players, i);
-
-    //   if (mod.IsPlayerValid(loopPlayer) && mod.GetSoldierState(loopPlayer, mod.SoldierStateBool.IsAISoldier)) {
-    //     mod.AIBattlefieldBehavior(loopPlayer);
-    //   }
-    // }
   }
 
   if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
@@ -59,11 +47,10 @@ export async function SetWaveDetailsUI(wave: Wave) {
     ? wave.infantryCounts.reduce((sum, count) => sum + count, 0)
     : 0;
 
-  // TODO: Re-enable once vehicle spawns work - Calculate total vehicle count
-  // const totalVehicles = wave.vehicleCounts
-  //   ? wave.vehicleCounts.reduce((sum, count) => sum + count, 0)
-  //   : 0;
-  const totalVehicles = 0;
+  // Calculate total vehicle count
+  const totalVehicles = wave.vehicleCounts
+    ? wave.vehicleCounts.reduce((sum, count) => sum + count, 0)
+    : 0;
 
   // Update UI based on wave composition
   if (wave.infantryCounts && wave.vehicleCounts) {

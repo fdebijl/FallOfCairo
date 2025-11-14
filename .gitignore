@@ -12,6 +12,5 @@ GodotProject/scripts
 GodotProject/objects
 GodotProject/raw
 GodotProject/static
-GodotProject/levels/*.tscn
-!GodotProject/level/MP_Abbasid_TD.tscn
+GodotProject/levels/*
 node_modules

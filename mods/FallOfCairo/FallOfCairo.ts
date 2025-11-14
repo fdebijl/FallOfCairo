@@ -52,7 +52,7 @@ export async function OnPlayerDeployed(player: mod.Player) {
   }
 }
 
-export async function OnPlayerKilled(victim: mod.Player, killer: mod.Player | null) {
+export async function OnPlayerDied(victim: mod.Player, killer: mod.Player | null, eventDeathType: mod.DeathType, eventWeapon: mod.WeaponUnlock) {
   if (mod.GetSoldierState(victim, mod.SoldierStateBool.IsAISoldier)) {
     BotHandler.OnAIPlayerDied(victim);
   } else {

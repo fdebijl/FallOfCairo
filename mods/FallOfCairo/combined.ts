@@ -97,13 +97,10 @@ let isBackFillRunning = false;
  * Safe to call repeatedly - will adjust bot count based on current human players.
  */
 async function backfillNATO(): Promise<void> {
-  console.log('backfillNATO called');
   if (isBackFillRunning) {
-    console.log('backfillNATO already running, exiting.');
     return;
   }
 
-  console.log('backfillNATO starting');
   isBackFillRunning = true;
 
   try {
@@ -157,7 +154,6 @@ async function backfillNATO(): Promise<void> {
   } catch (error) {
     console.log('Error in backfillNATO:', error);
   } finally {
-    console.log('backfillNATO completed');
     isBackFillRunning = false;
   }
 }
@@ -252,9 +248,7 @@ class BotHandler {
   }
 
   static async PurgeBotList(): Promise<void> {
-    console.log('Purging bot player list.');
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => mod.GetSoldierState(bot.player, mod.SoldierStateBool.IsAlive));
-    console.log(`Remaining botPlayers count after purge: ${BotHandler.botPlayers.length}`);
   }
 
   static async SpawnAI(spawnPoint: mod.Spawner): Promise<void> {
@@ -303,9 +297,7 @@ class BotHandler {
   }
 
   static OnAIPlayerDied(player: mod.Player) {
-    console.log(`AI player ${mod.GetObjId(player)} died, removing from botPlayers list.`);
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => bot.id !== mod.GetObjId(player));
-    console.log(`Remaining botPlayers count: ${BotHandler.botPlayers.length}`);
   }
 
   static async VehicleSpawned(vehicle: mod.Vehicle) {
@@ -534,7 +526,7 @@ class PlayerHandler {
 }
 
 // ===== constants.ts =====
-const VERSION = '0.2.0';
+const VERSION = '1.0.0';
 
 const TARGET_GAME_LENGTH_MINUTES = 20;
 const TARGET_GAME_LENGTH_SECONDS = TARGET_GAME_LENGTH_MINUTES * 60;
@@ -593,9 +585,9 @@ const WAVES: Wave[] = [
     startsAt: 180, // 3:00
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
     infantryCounts: [15],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [1],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 3,
@@ -612,10 +604,10 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
-    infantryCounts: [10, 10, 10, 10],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [8, 8, 8, 8],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [1],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 5,
@@ -627,9 +619,9 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
     infantryCounts: [12, 12, 12, 12],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [2],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [2],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 6,
@@ -641,9 +633,9 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
     infantryCounts: [14, 14, 14, 14],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [2],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [2],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 7,
@@ -655,9 +647,9 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
     infantryCounts: [16, 16, 16, 16],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [3],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [3],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 8,
@@ -670,9 +662,9 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [3],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [3],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 9,
@@ -685,9 +677,9 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [20, 20, 20, 20],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [4],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [4],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 10,
@@ -700,9 +692,9 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [4],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    // vehicleTypes: [mod.VehicleList.M2Bradley],
+    // vehicleCounts: [4],
+    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
 ]
 
@@ -723,21 +715,25 @@ async function Setup(uiManager: UIManager): Promise<void> {
   unfreezePlayers();
   uiManager.ShowWaveInfoWidget();
 
-  const lootSpawner1 = mod.GetLootSpawner(700);
-  mod.SpawnLoot(lootSpawner1, mod.Gadgets.CallIn_UAV_Overwatch);
-
-  const lootSpawner2 = mod.GetLootSpawner(701);
-  mod.SpawnLoot(lootSpawner2, mod.Gadgets.CallIn_Air_Strike);
-
-  const lootSpawner3 = mod.GetLootSpawner(702);
-  mod.SpawnLoot(lootSpawner3, mod.Gadgets.CallIn_Ammo_Drop);
+  // TODO: This is not adding too much right now, let's work on a proper loot system later
+  // const lootSpawner1 = mod.GetLootSpawner(700);
+  // mod.SpawnLoot(lootSpawner1, mod.Gadgets.CallIn_UAV_Overwatch);
+  // const lootSpawner2 = mod.GetLootSpawner(701);
+  // mod.SpawnLoot(lootSpawner2, mod.Gadgets.CallIn_Air_Strike);
+  // const lootSpawner3 = mod.GetLootSpawner(702);
+  // mod.SpawnLoot(lootSpawner3, mod.Gadgets.CallIn_Ammo_Drop);
 }
 
-// TODO: Flesh this out:
-// - Can we hide PAX?
-// - Set column names
-// - Set scores somewhere
+
 function SetupScoreboard(): void {
+  mod.SetScoreboardType(mod.ScoreboardType.NotSet);
+  return;
+
+  // TODO: Flesh this out:
+  // - Can we hide PAX?
+  // - Set column names
+  // - Set scores somewhere
+  // - Set number of columns to just three?
   console.log('Setting up scoreboard');
   mod.SetScoreboardType(mod.ScoreboardType.CustomTwoTeams);
   mod.SetScoreboardHeader(mod.Message(mod.stringkeys.teamNameNato), mod.Message(mod.stringkeys.teamNamePax));
@@ -749,7 +745,7 @@ function SetupScoreboard(): void {
 }
 
 function SetupEmplacements() {
-  // EmplacementSpawners only spawn TOW's at the moment, this is a known bug
+  // TODO: EmplacementSpawners only spawn TOW's at the moment, this is a known bug
   return;
 
   console.log('Setting up weapon emplacements');
@@ -781,18 +777,6 @@ async function SpawnWave(wave: Wave) {
         await mod.Wait(INTERSPAWN_DELAY);
       }
     }
-
-    // TODO: Needed?
-    // const players = mod.AllPlayers();
-    // const n = mod.CountOf(players);
-
-    // for (let i = 0; i < n; i++) {
-    //   const loopPlayer = mod.ValueInArray(players, i);
-
-    //   if (mod.IsPlayerValid(loopPlayer) && mod.GetSoldierState(loopPlayer, mod.SoldierStateBool.IsAISoldier)) {
-    //     mod.AIBattlefieldBehavior(loopPlayer);
-    //   }
-    // }
   }
 
   if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
@@ -921,7 +905,7 @@ export async function OnPlayerDeployed(player: mod.Player) {
   }
 }
 
-async function OnPlayerKilled(victim: mod.Player, killer: mod.Player | null) {
+export async function OnPlayerDied(victim: mod.Player, killer: mod.Player | null, eventDeathType: mod.DeathType, eventWeapon: mod.WeaponUnlock) {
   if (mod.GetSoldierState(victim, mod.SoldierStateBool.IsAISoldier)) {
     BotHandler.OnAIPlayerDied(victim);
   } else {
@@ -962,10 +946,6 @@ export async function OnPlayerLeaveGame(playerId: number): Promise<void> {
     PlayerHandler.OnHumanPlayerLeave(humanPlayer.player);
   }
 }
-
-// ======
-// Logic
-// ======
 
 async function FastTick() {
   await mod.Wait(0.1);
