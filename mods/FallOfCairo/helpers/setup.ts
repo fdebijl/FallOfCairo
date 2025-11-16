@@ -11,11 +11,9 @@ export async function Setup(uiManager: UIManager): Promise<void> {
 
   DifficultyManager.applyDifficultySettings(Difficulty.Medium);
 
-  freezePlayers();
   uiManager.ShowIntroWidget();
-  await mod.Wait(14);
+  await mod.Wait(10);
   uiManager.HideIntroWidget();
-  unfreezePlayers();
   uiManager.ShowWaveInfoWidget();
 
   // TODO: This is not adding too much right now, let's work on a proper loot system later

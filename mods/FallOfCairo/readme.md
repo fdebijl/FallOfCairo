@@ -13,7 +13,6 @@ TODO:
 
 Notes:
 - Vehicles dont spawn
-- SpawnCam is fucked
 
 Upstream blocked bugs:
 - Emplacements spawn TOWS instead of MG's
@@ -24,6 +23,6 @@ Playtest notes:
 - Replace 'Wave 1' with 'Next wave in' if all bots dead
 - Also hide wave desc in that case?
 - Remove bus ladder
-
-Issues:
-- Currently none
+- Make waves 1:30, or have a dynamic wave trigger with 30 second pauses
+- Enemies left counter
+- Make widgets invisible by default to avoid flashing

@@ -10,12 +10,10 @@
 
 import { Wave } from './interfaces/Wave';
 
-export const VERSION = '1.0.0';
+export const VERSION = '1.1.0';
 
-export const TARGET_GAME_LENGTH_MINUTES = 20;
-export const TARGET_GAME_LENGTH_SECONDS = TARGET_GAME_LENGTH_MINUTES * 60;
-export const MAX_GAME_LENGTH_MINUTES = 25;
-export const MAX_GAME_LENGTH_SECONDS = MAX_GAME_LENGTH_MINUTES * 60;
+export const INTERMISSION_DURATION_SECONDS = 30;
+export const FIRST_WAVE_START_TIME = 60;
 
 export const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -60,13 +58,11 @@ export const WEAPON_EMPLACEMENTS: {
 export const WAVES: Wave[] = [
   {
     waveNumber: 1,
-    startsAt: 60, // 1:00
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
     infantryCounts: [10],
   },
   {
     waveNumber: 2,
-    startsAt: 180, // 3:00
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
     infantryCounts: [15],
     // vehicleTypes: [mod.VehicleList.M2Bradley],
@@ -75,13 +71,11 @@ export const WAVES: Wave[] = [
   },
   {
     waveNumber: 3,
-    startsAt: 300, // 5:00
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
     infantryCounts: [10, 10],
   },
     {
     waveNumber: 4,
-    startsAt: 420, // 7:00
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
       AI_SPAWN_POINTS.MOSQUE,
@@ -95,7 +89,6 @@ export const WAVES: Wave[] = [
   },
   {
     waveNumber: 5,
-    startsAt: 540, // 9:00
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
       AI_SPAWN_POINTS.MOSQUE,
@@ -109,7 +102,6 @@ export const WAVES: Wave[] = [
   },
   {
     waveNumber: 6,
-    startsAt: 660, // 11:00
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
       AI_SPAWN_POINTS.MOSQUE,
@@ -123,7 +115,6 @@ export const WAVES: Wave[] = [
   },
   {
     waveNumber: 7,
-    startsAt: 780, // 13:00
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
       AI_SPAWN_POINTS.MOSQUE,
@@ -137,7 +128,6 @@ export const WAVES: Wave[] = [
   },
   {
     waveNumber: 8,
-    startsAt: 900, // 15:00
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
       AI_SPAWN_POINTS.MOSQUE,
@@ -152,7 +142,6 @@ export const WAVES: Wave[] = [
   },
   {
     waveNumber: 9,
-    startsAt: 1020, // 17:00
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
       AI_SPAWN_POINTS.MOSQUE,
@@ -167,7 +156,6 @@ export const WAVES: Wave[] = [
   },
   {
     waveNumber: 10,
-    startsAt: 1140, // 19:00 (final push)
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
       AI_SPAWN_POINTS.MOSQUE,

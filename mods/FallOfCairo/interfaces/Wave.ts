@@ -1,6 +1,5 @@
 export interface Wave {
   waveNumber: number; // The wave number (for display purposes)
-  startsAt: number; // in seconds
   spawnPoints?: number[]; // AI spawn point IDs
   infantryCounts?: number[]; // Number of infantry to spawn per spawn point
   vehicleCounts?: number[]; // Number of vehicles to spawn per vehicle spawn point

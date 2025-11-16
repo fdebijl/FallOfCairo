@@ -120,12 +120,14 @@ export class BotHandler {
 
       await mod.Wait(2);
 
-      mod.SetInventoryAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
-      mod.SetInventoryAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
-      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
-      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
-      mod.RemoveEquipment(player, mod.InventorySlots.GadgetOne);
-      mod.RemoveEquipment(player, mod.InventorySlots.GadgetTwo);
+      if (mod.IsPlayerValid(player)) {
+        if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAlive)) {
+          mod.SetInventoryAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
+          mod.SetInventoryAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
+          mod.RemoveEquipment(player, mod.InventorySlots.GadgetOne);
+          mod.RemoveEquipment(player, mod.InventorySlots.GadgetTwo);
+        }
+      }
     } else {
       // NATO AI
       mod.SetPlayerMaxHealth(player, DifficultyManager.natoBotsHealth);
@@ -133,10 +135,12 @@ export class BotHandler {
 
       await mod.Wait(2);
 
-      mod.SetInventoryAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
-      mod.SetInventoryAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
-      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
-      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
+      if (mod.IsPlayerValid(player)) {
+        if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAlive)) {
+          mod.SetInventoryAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
+          mod.SetInventoryAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
+        }
+      }
     }
   }
 

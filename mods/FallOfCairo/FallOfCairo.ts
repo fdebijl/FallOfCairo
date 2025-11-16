@@ -1,12 +1,13 @@
 import { BotHandler } from './classes/BotHandler';
 import { PlayerHandler } from './classes/PlayerHandler';
+import { WaveManager } from './classes/WaveManager';
 import { CAPTURE_POINTS, TEAMS, VERSION } from './constants';
 import { backfillNATO, isAI, IsAIAllowedVehicle, triggerDefeat } from './helpers/helpers';
 import { Setup } from './helpers/setup';
-import { DoWaveLoop } from './helpers/waveHelpers';
 import { UIManager } from './interfaces/UI/UIManager';
 
 export let uiManager: UIManager;
+let waveManager: WaveManager;
 
 export async function OnGameModeStarted(): Promise<void> {
   await mod.Wait(5);
@@ -29,6 +30,7 @@ export async function OnGameModeStarted(): Promise<void> {
 
   await mod.Wait(0.5);
   Setup(uiManager);
+  waveManager = new WaveManager(uiManager);
 
   // FastTick();
   SlowTick();
@@ -55,6 +57,7 @@ export async function OnPlayerDeployed(player: mod.Player) {
 export async function OnPlayerDied(victim: mod.Player, killer: mod.Player | null, eventDeathType: mod.DeathType, eventWeapon: mod.WeaponUnlock) {
   if (mod.GetSoldierState(victim, mod.SoldierStateBool.IsAISoldier)) {
     BotHandler.OnAIPlayerDied(victim);
+    waveManager.OnPlayerDied(victim);
   } else {
     PlayerHandler.OnHumanPlayerDeath(victim, killer);
   }
@@ -100,7 +103,7 @@ async function FastTick() {
 
 async function SlowTick() {
   await mod.Wait(1);
-  await DoWaveLoop();
+  await waveManager.DoWaveLoop();
   SlowTick();
 }
 

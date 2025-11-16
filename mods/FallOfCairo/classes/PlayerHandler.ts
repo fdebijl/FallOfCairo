@@ -27,11 +27,15 @@ export class PlayerHandler {
     }
 
     mod.Wait(2).then(() => {
-      mod.SetInventoryAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
-      mod.SetInventoryAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
-      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
-      mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
-      mod.Resupply(player, mod.ResupplyTypes.AmmoCrate);
+      if (mod.IsPlayerValid(player)) {
+        if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAlive)) {
+          mod.SetInventoryAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
+          mod.SetInventoryAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
+          mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.PrimaryWeapon, 9999);
+          mod.SetInventoryMagazineAmmo(player, mod.InventorySlots.SecondaryWeapon, 9999);
+          mod.Resupply(player, mod.ResupplyTypes.AmmoCrate);
+        }
+      }
     });
   }
 

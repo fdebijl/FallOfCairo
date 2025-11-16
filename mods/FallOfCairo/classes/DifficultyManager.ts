@@ -1,4 +1,5 @@
 import { Difficulty } from '../interfaces/Difficulty';
+import { PlayerHandler } from './PlayerHandler';
 
 // TODO: Implement difficulty settings
 export class DifficultyManager {
