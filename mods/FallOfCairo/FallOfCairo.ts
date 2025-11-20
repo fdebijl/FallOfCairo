@@ -1,7 +1,7 @@
 import { BotHandler } from './classes/BotHandler';
 import { PlayerHandler } from './classes/PlayerHandler';
 import { WaveManager } from './classes/WaveManager';
-import { CAPTURE_POINTS, TEAMS, VERSION } from './constants';
+import { CAPTURE_POINTS, TEAMS, VEHICLE_SPAWN_POINTS, VERSION } from './constants';
 import { backfillNATO, isAI, IsAIAllowedVehicle, triggerDefeat } from './helpers/helpers';
 import { Setup } from './helpers/setup';
 import { UIManager } from './interfaces/UI/UIManager';
@@ -32,7 +32,6 @@ export async function OnGameModeStarted(): Promise<void> {
   Setup(uiManager);
   waveManager = new WaveManager(uiManager);
 
-  // FastTick();
   SlowTick();
   SlowestTick();
 }
@@ -95,10 +94,6 @@ export async function OnPlayerLeaveGame(playerId: number): Promise<void> {
   } else if(humanPlayer) {
     PlayerHandler.OnHumanPlayerLeave(humanPlayer.player);
   }
-}
-
-async function FastTick() {
-  await mod.Wait(0.1);
 }
 
 async function SlowTick() {

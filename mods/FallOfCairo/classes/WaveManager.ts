@@ -104,33 +104,49 @@ export class WaveManager {
     this.currentWave = wave;
     await this.SetWaveDetailsUI(wave, true);
 
-    if (wave.spawnPoints && wave.infantryCounts) {
-      for (const spawnPointId of wave.spawnPoints) {
-        const index = wave.spawnPoints.indexOf(spawnPointId);
-        const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+    this.SpawnWaveVehicles(wave);
+    await this.SpawnWaveInfantry(wave);
+  }
 
-        const spawnPoint = mod.GetSpawner(spawnPointId);
-        for (let i = 0; i < infantryPerSpawnPoint; i++) {
-          BotHandler.SpawnAI(spawnPoint);
-          await mod.Wait(INTERSPAWN_DELAY);
+  private async SpawnWaveInfantry(wave: Wave) {
+        if (wave.spawnPoints && wave.infantryCounts) {
+      const maxInfantryCount = Math.max(...wave.infantryCounts);
+
+      for (let round = 0; round < maxInfantryCount; round++) {
+        for (const spawnPointId of wave.spawnPoints) {
+          const index = wave.spawnPoints.indexOf(spawnPointId);
+          const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+
+          if (round < infantryPerSpawnPoint) {
+            const spawnPoint = mod.GetSpawner(spawnPointId);
+            BotHandler.SpawnAI(spawnPoint);
+            await mod.Wait(INTERSPAWN_DELAY);
+          }
         }
       }
     }
+  }
 
+  private async SpawnWaveVehicles(wave: Wave) {
     if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
-      for (const spawnPointId of wave.vehicleSpawnPoints) {
-        const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
-        const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
+      const maxVehicleCount = Math.max(...wave.vehicleCounts);
 
-        const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
+      for (let round = 0; round < maxVehicleCount; round++) {
+        for (const spawnPointId of wave.vehicleSpawnPoints) {
+          const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
+          const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
 
-        for (let i = 0; i < vehiclesPerSpawnPoint; i++) {
-          console.log(`Spawning vehicle for wave ${wave.waveNumber}`);
-          const vehicleType = wave.vehicleTypes[index];
-          mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
-          // mod.SetVehicleSpawnerAutoSpawn(spawnPoint, true);
-          mod.ForceVehicleSpawnerSpawn(spawnPoint);
-          await mod.Wait(INTERSPAWN_DELAY);
+          if (round < vehiclesPerSpawnPoint) {
+            console.log(`Spawning vehicle for wave ${wave.waveNumber} at ${Math.round(this.elapsedMatchTimeSeconds)} seconds`);
+            const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
+            const vehicleType = wave.vehicleTypes[index];
+            mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
+            mod.ForceVehicleSpawnerSpawn(spawnPoint);
+          }
+        }
+
+        if (round < maxVehicleCount - 1) {
+          await mod.Wait(10);
         }
       }
     }

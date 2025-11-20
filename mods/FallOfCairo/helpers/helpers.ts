@@ -10,7 +10,7 @@ export function isAI(player: mod.Player): boolean {
   return mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
 }
 
-export function isObjectIDsEqual(left: any, right: any) {
+export function isObjectIDsEqual(left: mod.Object, right: mod.Object): boolean {
   if (left == undefined || right == undefined) {
     return false
   }

@@ -4,7 +4,7 @@ export const VictoryWidgetDefinition = {
   position: [0, 0],
   size: [3840, 500],
   anchor: mod.UIAnchor.Center,
-  visible: true,
+  visible: false,
   padding: 0,
   bgColor: [0.0745, 0.1843, 0.2471],
   bgAlpha: 0.95,

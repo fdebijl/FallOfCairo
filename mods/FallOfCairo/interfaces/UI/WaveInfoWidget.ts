@@ -4,7 +4,7 @@ export const WaveInfoWidgetDefinition = {
   position: [25, 25],
   size: [420, 106],
   anchor: mod.UIAnchor.TopLeft,
-  visible: true,
+  visible: false,
   padding: 5,
   bgColor: [0.2118, 0.2235, 0.2353],
   bgAlpha: 0.6,

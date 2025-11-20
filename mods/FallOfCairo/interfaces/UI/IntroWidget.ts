@@ -4,7 +4,7 @@ export const IntroWidgetDefinition = {
   position: [0, 0],
   size: [3840, 500],
   anchor: mod.UIAnchor.Center,
-  visible: true,
+  visible: false,
   padding: 0,
   bgColor: [0.0314, 0.0431, 0.0431],
   bgAlpha: 1,

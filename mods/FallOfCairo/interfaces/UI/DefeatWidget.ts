@@ -4,7 +4,7 @@ export const DefeatWidgetDefinition = {
   position: [0, 0],
   size: [3840, 500],
   anchor: mod.UIAnchor.Center,
-  visible: true,
+  visible: false,
   padding: 0,
   bgColor: [0.251, 0.0941, 0.0667],
   bgAlpha: 0.95,

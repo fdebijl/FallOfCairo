@@ -27,7 +27,7 @@ function isAI(player: mod.Player): boolean {
   return mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
 }
 
-function isObjectIDsEqual(left: any, right: any) {
+function isObjectIDsEqual(left: mod.Object, right: mod.Object): boolean {
   if (left == undefined || right == undefined) {
     return false
   }
@@ -304,31 +304,63 @@ class BotHandler {
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => bot.id !== mod.GetObjId(player));
   }
 
+  // TODO: Might also want to use DirectAiToAttackPoint instead of AISetTarget
   static async VehicleSpawned(vehicle: mod.Vehicle) {
+    // Ensure there's some AI around
+    await mod.Wait(3);
+
+    const MAX_DISTANCE_FOR_ENTRY = 75;
+    const DESIRED_OCCUPANT_COUNT = 2;
+    const FIRST_AVAILABLE_SEAT = -1;
+
     const vehPos = mod.GetVehicleState(vehicle, mod.VehicleStateVector.VehiclePosition);
     const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
     const aiPlayers = BotHandler.botPlayers;
+    const humanPlayer = PlayerHandler.humanPlayers[0];
+
+    let entered = 0, occupants = [];
 
     for (let index = 0; index < aiPlayers.length; index++) {
       const aiPlayer = aiPlayers[index];
       const aiPlayerpos = mod.GetSoldierState(aiPlayer.player, mod.SoldierStateVector.GetPosition);
+      const aiTeam = mod.GetTeam(aiPlayer.player);
 
-      if (mod.DistanceBetween(aiPlayerpos, vehPos) < 100) {
-        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
-        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, 0)
-        return;
+      // Only PAX AI should enter PAX vehicles
+      if (!isObjectIDsEqual(aiTeam, mod.GetTeam(TEAMS.PAX_ARMATA))) {
+        continue;
       }
+
+      if (mod.DistanceBetween(aiPlayerpos, vehPos) < MAX_DISTANCE_FOR_ENTRY && entered < DESIRED_OCCUPANT_COUNT) {
+        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
+        // mod.AISetTarget(aiPlayer.player, humanPlayer.player);
+        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, FIRST_AVAILABLE_SEAT)
+        // mod.AIBattlefieldBehavior(aiPlayer.player);
+
+        entered = modlib.ConvertArray(mod.GetAllPlayersInVehicle(vehicle)).length;
+        occupants.push(aiPlayer);
+      } else if (entered >= DESIRED_OCCUPANT_COUNT) {
+        break;
+      }
+
+      await mod.Wait(1);
+    }
+
+
+    await mod.Wait(1);
+    console.log(`Vehicle ${mod.GetObjId(vehicle)} has ${entered} occupants after entry attempts.`);
+    for (const occupant of occupants) {
+      this.DirectAiToAttackPoint(occupant, targetPos, false, 25)
     }
   }
 
-  static async DirectAiToAttackPoint(botPlayer: BotPlayer, targetPosition: mod.Vector, defendOnArrival = false) {
+  static async DirectAiToAttackPoint(botPlayer: BotPlayer, targetPosition: mod.Vector, defendOnArrival = false, maxStep = 25) {
     botPlayer.currentTargetPosition = targetPosition;
 
     mod.AISetMoveSpeed(botPlayer.player, mod.MoveSpeed.InvestigateRun);
 
     while (mod.GetSoldierState(botPlayer.player, mod.SoldierStateBool.IsAlive)) {
       const playerPosition = mod.GetSoldierState(botPlayer.player, mod.SoldierStateVector.GetPosition);
-      const _targetPosition = BotHandler.AIHelpMoveTowardsPoint(playerPosition, targetPosition);
+      const _targetPosition = BotHandler.AIHelpMoveTowardsPoint(playerPosition, targetPosition, maxStep);
 
       mod.AIMoveToBehavior(botPlayer.player, _targetPosition);
 
@@ -615,10 +647,8 @@ class WaveManager {
         this.uiManager.ShowWaveTime();
       }
     } else {
-      console.log('hasWaves and hasNoAIAlive false branch');
       // Wave is still ongoing or there are no more waves
       if (this.currentWave) {
-        console.log('Updating current wave UI in false branch');
         await this.SetWaveDetailsUI(this.currentWave, true);
       }
 
@@ -636,33 +666,49 @@ class WaveManager {
     this.currentWave = wave;
     await this.SetWaveDetailsUI(wave, true);
 
-    if (wave.spawnPoints && wave.infantryCounts) {
-      for (const spawnPointId of wave.spawnPoints) {
-        const index = wave.spawnPoints.indexOf(spawnPointId);
-        const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+    this.SpawnWaveVehicles(wave);
+    await this.SpawnWaveInfantry(wave);
+  }
 
-        const spawnPoint = mod.GetSpawner(spawnPointId);
-        for (let i = 0; i < infantryPerSpawnPoint; i++) {
-          BotHandler.SpawnAI(spawnPoint);
-          await mod.Wait(INTERSPAWN_DELAY);
+  private async SpawnWaveInfantry(wave: Wave) {
+        if (wave.spawnPoints && wave.infantryCounts) {
+      const maxInfantryCount = Math.max(...wave.infantryCounts);
+
+      for (let round = 0; round < maxInfantryCount; round++) {
+        for (const spawnPointId of wave.spawnPoints) {
+          const index = wave.spawnPoints.indexOf(spawnPointId);
+          const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+
+          if (round < infantryPerSpawnPoint) {
+            const spawnPoint = mod.GetSpawner(spawnPointId);
+            BotHandler.SpawnAI(spawnPoint);
+            await mod.Wait(INTERSPAWN_DELAY);
+          }
         }
       }
     }
+  }
 
+  private async SpawnWaveVehicles(wave: Wave) {
     if (wave.vehicleCounts && wave.vehicleSpawnPoints && wave.vehicleTypes) {
-      for (const spawnPointId of wave.vehicleSpawnPoints) {
-        const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
-        const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
+      const maxVehicleCount = Math.max(...wave.vehicleCounts);
 
-        const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
+      for (let round = 0; round < maxVehicleCount; round++) {
+        for (const spawnPointId of wave.vehicleSpawnPoints) {
+          const index = wave.vehicleSpawnPoints.indexOf(spawnPointId);
+          const vehiclesPerSpawnPoint = wave.vehicleCounts[index] || 0;
 
-        for (let i = 0; i < vehiclesPerSpawnPoint; i++) {
-          console.log(`Spawning vehicle for wave ${wave.waveNumber}`);
-          const vehicleType = wave.vehicleTypes[index];
-          mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
-          // mod.SetVehicleSpawnerAutoSpawn(spawnPoint, true);
-          mod.ForceVehicleSpawnerSpawn(spawnPoint);
-          await mod.Wait(INTERSPAWN_DELAY);
+          if (round < vehiclesPerSpawnPoint) {
+            console.log(`Spawning vehicle for wave ${wave.waveNumber} at ${Math.round(this.elapsedMatchTimeSeconds)} seconds`);
+            const spawnPoint = mod.GetVehicleSpawner(spawnPointId);
+            const vehicleType = wave.vehicleTypes[index];
+            mod.SetVehicleSpawnerVehicleType(spawnPoint, vehicleType);
+            mod.ForceVehicleSpawnerSpawn(spawnPoint);
+          }
+        }
+
+        if (round < maxVehicleCount - 1) {
+          await mod.Wait(10);
         }
       }
     }
@@ -690,7 +736,6 @@ class WaveManager {
   async OnPlayerDied(player: mod.Player) {
     if (isAI(player) && (mod.GetObjId(mod.GetTeam(player)) == TEAMS.PAX_ARMATA)) {
       if (this.infantryRemaining > 0) {
-        console.log(`Decrementing infantry remaining for wave ${this.currentWave?.waveNumber}`);
         this.infantryRemaining -= 1;
       }
     }
@@ -757,9 +802,9 @@ const WAVES: Wave[] = [
     waveNumber: 2,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
     infantryCounts: [15],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [1],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.Vector],
+    vehicleCounts: [1],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 3,
@@ -774,10 +819,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
-    infantryCounts: [8, 8, 8, 8],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [1],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [8, 8, 6, 6],
   },
   {
     waveNumber: 5,
@@ -787,10 +829,10 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
-    infantryCounts: [12, 12, 12, 12],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [2],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [12, 12, 8, 8],
+    vehicleTypes: [mod.VehicleList.Vector, mod.VehicleList.Vector],
+    vehicleCounts: [1, 1],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.FLANK_RIGHT, VEHICLE_SPAWN_POINTS.FLANK_LEFT],
   },
   {
     waveNumber: 6,
@@ -800,10 +842,10 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_RIGHT,
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
-    infantryCounts: [14, 14, 14, 14],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [2],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    infantryCounts: [14, 14, 12, 12],
+    vehicleTypes: [mod.VehicleList.Marauder_Pax, mod.VehicleList.Marauder_Pax],
+    vehicleCounts: [1, 1],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE, VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 7,
@@ -949,7 +991,6 @@ export async function OnGameModeStarted(): Promise<void> {
   Setup(uiManager);
   waveManager = new WaveManager(uiManager);
 
-  // FastTick();
   SlowTick();
   SlowestTick();
 }
@@ -1012,10 +1053,6 @@ export async function OnPlayerLeaveGame(playerId: number): Promise<void> {
   } else if(humanPlayer) {
     PlayerHandler.OnHumanPlayerLeave(humanPlayer.player);
   }
-}
-
-async function FastTick() {
-  await mod.Wait(0.1);
 }
 
 async function SlowTick() {
