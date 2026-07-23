@@ -252,7 +252,7 @@ class BotHandler {
   }
 
   static async PurgeBotList(): Promise<void> {
-    BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => mod.GetSoldierState(bot.player, mod.SoldierStateBool.IsAlive));
+    BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => mod.IsPlayerValid(bot.player) && mod.GetSoldierState(bot.player, mod.SoldierStateBool.IsAlive));
   }
 
   static async SpawnAI(spawnPoint: mod.Spawner): Promise<void> {
@@ -291,7 +291,7 @@ class BotHandler {
     } else {
       // NATO AI
       mod.SetPlayerMaxHealth(player, DifficultyManager.natoBotsHealth);
-      BotHandler.DirectAiToAttackPoint(newAIProfile, targetPos, true)
+      BotHandler.DirectAiToAttackPoint(newAIProfile, targetPos, false) // TODO: Testing if false here works better
 
       await mod.Wait(2);
 
@@ -310,7 +310,7 @@ class BotHandler {
 
   static async VehicleSpawned(vehicle: mod.Vehicle) {
     // Ensure there's some AI around
-    await mod.Wait(3);
+    await mod.Wait(5);
 
     const MAX_DISTANCE_FOR_ENTRY = 75;
     const DESIRED_OCCUPANT_COUNT = 2;
@@ -339,7 +339,8 @@ class BotHandler {
         continue;
       }
 
-      // This is the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
+      // TODO: This is allegedly the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
+      // It worked once, but has been very sporadic since.
       console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
       mod.AIBattlefieldBehavior(aiPlayer.player);
       await mod.Wait(1);
@@ -847,7 +848,10 @@ const WAVES: Wave[] = [
   {
     waveNumber: 1,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
-    infantryCounts: [10],
+    infantryCounts: [4],
+    vehicleTypes: [mod.VehicleList.Vector],
+    vehicleCounts: [1],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 2,
@@ -969,7 +973,7 @@ async function Setup(uiManager: UIManager): Promise<void> {
   uiManager.ShowIntroWidget();
   await mod.Wait(10);
   uiManager.HideIntroWidget();
-  // uiManager.ShowWaveInfoWidget(); - Disable for cinematic screenshots DEMOVALUE
+  uiManager.ShowWaveInfoWidget();
 
   // TODO: This is not adding too much right now, let's work on a proper loot system later
   // const lootSpawner1 = mod.GetLootSpawner(700);

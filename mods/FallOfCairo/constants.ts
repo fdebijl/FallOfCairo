@@ -59,7 +59,10 @@ export const WAVES: Wave[] = [
   {
     waveNumber: 1,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
-    infantryCounts: [10],
+    infantryCounts: [4],
+    vehicleTypes: [mod.VehicleList.Vector],
+    vehicleCounts: [1],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 2,

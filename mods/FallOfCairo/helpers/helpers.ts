@@ -7,6 +7,11 @@ export function isAI(player: mod.Player): boolean {
     return true;
   }
 
+  // TODO: Might have to return true here instead, unsure
+  if (!mod.IsPlayerValid(player)) {
+    return false;
+  }
+
   return mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
 }
 

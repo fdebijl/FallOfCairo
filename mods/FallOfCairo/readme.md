@@ -20,14 +20,14 @@ This will run the [charmancer](./bin/charmancer.js) to detect illegal chars, [wi
 - UI?
 - Out of bounds area
 - SFX?
+- Change vehicle types to PAX
 
 Upstream blocked bugs:
 - Emplacements spawn TOWS instead of MG's
+  - Might be fixed, let's retry down the line
 
 Playtest notes:
-- Hide intro on death
 - Replace 'Wave N' with 'Next wave in' if all bots dead
 - Also hide wave desc in that case?
 - Remove bus ladder
-- Make widgets invisible by default to avoid flashing
 - Add flag capture UI from conquest
