@@ -858,10 +858,7 @@ const WAVES: Wave[] = [
   {
     waveNumber: 1,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
-    infantryCounts: [4],
-    vehicleTypes: [mod.VehicleList.CV90],
-    vehicleCounts: [1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
+    infantryCounts: [10]
   },
   {
     waveNumber: 2,
@@ -922,7 +919,7 @@ const WAVES: Wave[] = [
     ],
     infantryCounts: [16, 16, 16, 16],
     vehicleTypes: [mod.VehicleList.CV90],
-    vehicleCounts: [3],
+    vehicleCounts: [1],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
@@ -936,7 +933,7 @@ const WAVES: Wave[] = [
     ],
     infantryCounts: [18, 18, 18, 18],
     vehicleTypes: [mod.VehicleList.CV90],
-    vehicleCounts: [3],
+    vehicleCounts: [2],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
@@ -950,7 +947,7 @@ const WAVES: Wave[] = [
     ],
     infantryCounts: [20, 20, 20, 20],
     vehicleTypes: [mod.VehicleList.CV90],
-    vehicleCounts: [4],
+    vehicleCounts: [3],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
@@ -964,7 +961,7 @@ const WAVES: Wave[] = [
     ],
     infantryCounts: [24, 24, 24, 24],
     vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.Leopard],
-    vehicleCounts: [4],
+    vehicleCounts: [2, 2],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
 ]
