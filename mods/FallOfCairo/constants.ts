@@ -10,7 +10,7 @@
 
 import { Wave } from './interfaces/Wave';
 
-export const VERSION = '1.1.0';
+export const VERSION = '1.2.0';
 
 export const INTERMISSION_DURATION_SECONDS = 30;
 export const FIRST_WAVE_START_TIME = 60;

@@ -2,7 +2,6 @@ import { CAPTURE_POINTS, TEAMS } from '../constants';
 import { isObjectIDsEqual } from '../helpers/helpers';
 import { BotPlayer } from './BotPlayer';
 import { DifficultyManager } from './DifficultyManager';
-import { PlayerHandler } from './PlayerHandler';
 
 export class BotHandler {
   static maxAmountOfAi = 32;
@@ -112,7 +111,7 @@ export class BotHandler {
   static async OnAIPlayerSpawn(player: mod.Player) {
     const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
     const team = mod.GetTeam(player);
-    const newAIProfile = { player: player, team }
+    const newAIProfile = new BotPlayer(player, team);
 
     if (isObjectIDsEqual(team, mod.GetTeam(TEAMS.PAX_ARMATA))) {
       // PAX AI
@@ -149,7 +148,6 @@ export class BotHandler {
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => bot.id !== mod.GetObjId(player));
   }
 
-  // TODO: Might also want to use DirectAiToAttackPoint instead of AISetTarget
   static async VehicleSpawned(vehicle: mod.Vehicle) {
     // Ensure there's some AI around
     await mod.Wait(3);
@@ -161,66 +159,91 @@ export class BotHandler {
     const vehPos = mod.GetVehicleState(vehicle, mod.VehicleStateVector.VehiclePosition);
     const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
     const aiPlayers = BotHandler.botPlayers;
-    const humanPlayer = PlayerHandler.humanPlayers[0];
 
-    let entered = 0, occupants = [];
+    const occupants: BotPlayer[] = [];
 
-    for (let index = 0; index < aiPlayers.length; index++) {
-      const aiPlayer = aiPlayers[index];
-      const aiPlayerpos = mod.GetSoldierState(aiPlayer.player, mod.SoldierStateVector.GetPosition);
-      const aiTeam = mod.GetTeam(aiPlayer.player);
-
-      // Only PAX AI should enter PAX vehicles
-      if (!isObjectIDsEqual(aiTeam, mod.GetTeam(TEAMS.PAX_ARMATA))) {
-        continue;
-      }
-
-      if (mod.DistanceBetween(aiPlayerpos, vehPos) < MAX_DISTANCE_FOR_ENTRY && entered < DESIRED_OCCUPANT_COUNT) {
-        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
-        // mod.AISetTarget(aiPlayer.player, humanPlayer.player);
-        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, FIRST_AVAILABLE_SEAT)
-        // mod.AIBattlefieldBehavior(aiPlayer.player);
-
-        entered = modlib.ConvertArray(mod.GetAllPlayersInVehicle(vehicle)).length;
-        occupants.push(aiPlayer);
-      } else if (entered >= DESIRED_OCCUPANT_COUNT) {
+    for (const aiPlayer of aiPlayers) {
+      if (occupants.length >= DESIRED_OCCUPANT_COUNT) {
         break;
       }
 
+      // botPlayers only holds PAX AI, but guard anyway so only PAX crew PAX vehicles.
+      if (!isObjectIDsEqual(mod.GetTeam(aiPlayer.player), mod.GetTeam(TEAMS.PAX_ARMATA))) {
+        continue;
+      }
+
+      const aiPlayerPos = mod.GetSoldierState(aiPlayer.player, mod.SoldierStateVector.GetPosition);
+      if (mod.DistanceBetween(aiPlayerPos, vehPos) >= MAX_DISTANCE_FOR_ENTRY) {
+        continue;
+      }
+
+      console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
+      mod.ForcePlayerToSeat(aiPlayer.player, vehicle, FIRST_AVAILABLE_SEAT);
+
       await mod.Wait(1);
+
+      // GetVehicleFromPlayer now returns undefined when the bot isn't seated, so we
+      // can confirm the seat actually took before treating them as vehicle crew.
+      if (mod.IsPlayerValid(aiPlayer.player) && isObjectIDsEqual(mod.GetVehicleFromPlayer(aiPlayer.player), vehicle)) {
+        occupants.push(aiPlayer);
+      }
     }
 
-
-    await mod.Wait(1);
-    console.log(`Vehicle ${mod.GetObjId(vehicle)} has ${entered} occupants after entry attempts.`);
+    console.log(`Vehicle ${mod.GetObjId(vehicle)} has ${occupants.length} occupants after entry attempts.`);
     for (const occupant of occupants) {
-      this.DirectAiToAttackPoint(occupant, targetPos, false, 25)
+      this.DirectAiToAttackPoint(occupant, targetPos, false, 25);
+    }
+  }
+
+  static OnAIExitVehicle(player: mod.Player) {
+    const botPlayer = BotHandler.GetBotById(mod.GetObjId(player));
+    if (!botPlayer) {
+      return;
+    }
+
+    // Bot dismounted (vehicle destroyed/abandoned) but is still alive and not
+    // already being directed: resume the on-foot assault instead of idling.
+    if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAlive) && !botPlayer.isBeingDirected) {
+      const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
+      BotHandler.DirectAiToAttackPoint(botPlayer, targetPos);
     }
   }
 
   static async DirectAiToAttackPoint(botPlayer: BotPlayer, targetPosition: mod.Vector, defendOnArrival = false, maxStep = 25) {
     botPlayer.currentTargetPosition = targetPosition;
 
-    mod.AISetMoveSpeed(botPlayer.player, mod.MoveSpeed.InvestigateRun);
+    // Prevent stacking concurrent move loops on the same bot (spawn, force-seat and
+    // vehicle-exit can all target the same bot). All callers use the capture point,
+    // so updating currentTargetPosition above is enough for an already-running loop.
+    if (botPlayer.isBeingDirected) {
+      return;
+    }
+    botPlayer.isBeingDirected = true;
 
-    while (mod.GetSoldierState(botPlayer.player, mod.SoldierStateBool.IsAlive)) {
-      const playerPosition = mod.GetSoldierState(botPlayer.player, mod.SoldierStateVector.GetPosition);
-      const _targetPosition = BotHandler.AIHelpMoveTowardsPoint(playerPosition, targetPosition, maxStep);
+    try {
+      mod.AISetMoveSpeed(botPlayer.player, mod.MoveSpeed.InvestigateRun);
 
-      mod.AIMoveToBehavior(botPlayer.player, _targetPosition);
+      while (mod.GetSoldierState(botPlayer.player, mod.SoldierStateBool.IsAlive)) {
+        const playerPosition = mod.GetSoldierState(botPlayer.player, mod.SoldierStateVector.GetPosition);
+        const _targetPosition = BotHandler.AIHelpMoveTowardsPoint(playerPosition, targetPosition, maxStep);
 
-      if (mod.DistanceBetween(playerPosition, targetPosition) < BotHandler.SwitchRadius) {
-        if (defendOnArrival) {
-          mod.AIDefendPositionBehavior(botPlayer.player, targetPosition, BotHandler.MinRadius, BotHandler.MaxRadius);
-        } else {
-          mod.AIBattlefieldBehavior(botPlayer.player);
+        mod.AIMoveToBehavior(botPlayer.player, _targetPosition);
+
+        if (mod.DistanceBetween(playerPosition, targetPosition) < BotHandler.SwitchRadius) {
+          if (defendOnArrival) {
+            mod.AIDefendPositionBehavior(botPlayer.player, targetPosition, BotHandler.MinRadius, BotHandler.MaxRadius);
+          } else {
+            mod.AIBattlefieldBehavior(botPlayer.player);
+          }
+
+          // We no longer have to manage this AI
+          return;
         }
 
-        // We no longer have to manage this AI
-        return;
+        await mod.Wait(10);
       }
-
-      await mod.Wait(10);
+    } finally {
+      botPlayer.isBeingDirected = false;
     }
   }
 

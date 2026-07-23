@@ -20,9 +20,10 @@ export async function OnGameModeStarted(): Promise<void> {
 
   mod.EnableGameModeObjective(capturePoint, true);
 
-  // Almost all of these are currently broken, seemingly
-  mod.SetCapturePointCapturingTime(capturePoint, 5);
-  mod.SetCapturePointNeutralizationTime(capturePoint, 5);
+  // Make the capture point really slow to cap, so players have time to retake it when AI gets on the cap
+  const CAPTURE_POINT_CAPTIME_MULTIPLIER = 5;
+  mod.SetCapturePointCapturingTime(capturePoint, CAPTURE_POINT_CAPTIME_MULTIPLIER);
+  mod.SetCapturePointNeutralizationTime(capturePoint, CAPTURE_POINT_CAPTIME_MULTIPLIER);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
   mod.SetCapturePointOwner(capturePoint, teamNato);
 
@@ -74,6 +75,12 @@ export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehi
   if (isBot && !isAIAllowedToDriveThis) {
     await mod.Wait(0.5);
     mod.ForcePlayerExitVehicle(player);
+  }
+}
+
+export async function OnPlayerExitVehicle(player: mod.Player, _vehicle: mod.Vehicle) {
+  if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier)) {
+    BotHandler.OnAIExitVehicle(player);
   }
 }
 
