@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Gameplay Logic Scripting &#8212; Portal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=54252990" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/inter/stylesheet.css?v=5c3d5910" />
+    <script src="../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/portal-favicon.png"/>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example Experiences" href="example_experiences.html" />
+    <link rel="prev" title="Spatial Editor" href="spatial_editor.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/images/portal-logo-with-title.webp" alt="Logo" />
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spatial_editor.html">Spatial Editor</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Gameplay Logic Scripting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#script-debugging">Script Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-ui">Custom UI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ai-behavior">AI Behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#object-spawning">Object Spawning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vfx-spawning">VFX Spawning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#audio">Audio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sfx-triggering">SFX Triggering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-system-summary">Music System Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-packages">Music Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-events">Music Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#musicparams">MusicParams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#object-moving">Object Moving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#player-spawning">Player Spawning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#referencing-objects-in-script">Referencing Objects In Script</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_experiences.html">Example Experiences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tips_tricks.html">Tips &amp; Tricks</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="spatial_editor.html" title="previous chapter">Spatial Editor</a></li>
+      <li>Next: <a href="example_experiences.html" title="next chapter">Example Experiences</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="gameplay-logic-scripting">
+<h1>Gameplay Logic Scripting<a class="headerlink" href="#gameplay-logic-scripting" title="Link to this heading">¶</a></h1>
+<p>Battlefield 6 Portal now supports multiple ways to script custom gameplay logic for your Custom Experiences. For veterans of the previous Portal builder tool, and people looking to dip their toes into scripting, the Blockly logic editing tool is still available in the Portal Web Builder Tool. However for more advanced users, and creators looking to build large bespoke experiences, Portal now supports logic scripting via TypeScript.</p>
+<p>Gameplay scripting can be done either through the Portal Web Tool via Blockly, or in TypeScript.</p>
+<ul class="simple">
+<li><p>TypeScript can be written directly within the Portal Web Tool’s script page, or can be developed externally and uploaded via the script page.</p></li>
+<li><p>More information about TypeScript functions can be found in the <code class="docutils literal notranslate"><span class="pre">index.d.ts</span></code> file contained in the SDK.</p></li>
+</ul>
+<section id="script-debugging">
+<h2>Script Debugging<a class="headerlink" href="#script-debugging" title="Link to this heading">¶</a></h2>
+<p>Local hosting an experience will generate a PortalLog.txt file that can be used to help debug your scripts.</p>
+<ul class="simple">
+<li><p>The PortalLog.txt file can be found at: <code class="docutils literal notranslate"><span class="pre">C:\Users\username\AppData\Local\Temp\Battlefield™</span> <span class="pre">6\PortalLog.txt</span></code></p></li>
+<li><p>Note the specific folder location may differ depending on specifics of your system or install location.</p></li>
+</ul>
+</section>
+<section id="custom-ui">
+<h2>Custom UI<a class="headerlink" href="#custom-ui" title="Link to this heading">¶</a></h2>
+<p>A fully customizable UI system is now available in Portal. It supports interactive as well as non-interactive UI elements, making it possible to build things like menus and stores.</p>
+</section>
+<section id="ai-behavior">
+<h2>AI Behavior<a class="headerlink" href="#ai-behavior" title="Link to this heading">¶</a></h2>
+<p>Custom AI Bots, outside of the normal Backfill or Static bots, can be directly spawned into levels via script, using the <strong>AI_Spawner</strong> object.
+Unlike normal bots, the Custom AI Bots support direct scripting of things like their target, stance, speed, move to location, etc. This allows for a great deal of customization and flexibility.</p>
+</section>
+<section id="object-spawning">
+<h2>Object Spawning<a class="headerlink" href="#object-spawning" title="Link to this heading">¶</a></h2>
+<p>Environmental and Gameplay objects can be spawned at runtime via the <strong>SpawnObject</strong> function.
+Spawnable objects are restricted by map to objects that already exist in that map or are part of the Global object list.</p>
+</section>
+<section id="vfx-spawning">
+<h2>VFX Spawning<a class="headerlink" href="#vfx-spawning" title="Link to this heading">¶</a></h2>
+<p>Visual FX can be spawned using the runtime spawner, or placed in the map using the Spatial editor, and can be triggered at runtime via the <strong>EnableVFX</strong> function.</p>
+</section>
+<section id="audio">
+<h2>Audio<a class="headerlink" href="#audio" title="Link to this heading">¶</a></h2>
+<section id="sfx-triggering">
+<h3>SFX Triggering<a class="headerlink" href="#sfx-triggering" title="Link to this heading">¶</a></h3>
+<p>SFX can be spawned using the runtime spawner, or placed in the map using the Spatial editor, and can be triggered at runtime via the <strong>PlaySound</strong> function.</p>
+<p>Just like with other objects, SFX can be moved at runtime via the <strong>MoveObject</strong>, <strong>MoveObjectOverTime</strong>, <strong>SetObjectTransform</strong>, or other related functions.</p>
+</section>
+<section id="music-system-summary">
+<h3>Music System Summary<a class="headerlink" href="#music-system-summary" title="Link to this heading">¶</a></h3>
+<p>Music packages must first be loaded using the <strong>LoadMusic</strong> function, where you load in a whole music package, such as loading in all Battle Royale music:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="nx">mod</span><span class="p">.</span><span class="nx">LoadMusic</span><span class="p">(</span><span class="nx">mod</span><span class="p">.</span><span class="nx">MusicPackages</span><span class="p">.</span><span class="nx">BR</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is advised to do this as early as possible to allow a few seconds of time for the music to load in. Typically, you’d load it in during <strong>OnGameModeStarted</strong>. Next, you can trigger any music event that’s part of the loaded music packages, using <strong>PlayMusic</strong>. Stopping music is an event in and of itself, such as <code class="docutils literal notranslate"><span class="pre">mod.PlayMusic(mod.MusicEvents.BR_Stop)</span></code>. The way a music package is laid out, is that certain music events are designed to seamlessly transition into the next event. You do not need to stop an event before playing another event in the same package.</p>
+<p>Example:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">OnGameModeStarted</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">mod</span><span class="p">.</span><span class="nx">LoadMusic</span><span class="p">(</span><span class="nx">mod</span><span class="p">.</span><span class="nx">MusicPackages</span><span class="p">.</span><span class="nx">Core</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">mod</span><span class="p">.</span><span class="nx">SetMusicParam</span><span class="p">(</span><span class="nx">mod</span><span class="p">.</span><span class="nx">MusicParams</span><span class="p">.</span><span class="nx">Core_Amplitude</span><span class="p">,</span><span class="w"> </span><span class="mf">1.3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">SomeFunctionInYourExperience</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">mod</span><span class="p">.</span><span class="nx">SetMusicParam</span><span class="p">(</span><span class="nx">mod</span><span class="p">.</span><span class="nx">MusicParams</span><span class="p">.</span><span class="nx">Core_IsWinning</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">winningTeam</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">mod</span><span class="p">.</span><span class="nx">SetMusicParam</span><span class="p">(</span><span class="nx">mod</span><span class="p">.</span><span class="nx">MusicParams</span><span class="p">.</span><span class="nx">Core_IsWinning</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="nx">losingTeam</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">mod</span><span class="p">.</span><span class="nx">PlayMusic</span><span class="p">(</span><span class="nx">mod</span><span class="p">.</span><span class="nx">MusicEvents</span><span class="p">.</span><span class="nx">Core_EndOfRound_Loop</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// winningTeam and losingTeam are not readily available variables.</span>
+<span class="c1">// You will need your own way of passing in the correct teams.</span>
+</pre></div>
+</div>
+</section>
+<section id="music-packages">
+<h3>Music Packages<a class="headerlink" href="#music-packages" title="Link to this heading">¶</a></h3>
+<p>The <strong>MusicPackages</strong> enum is used as an argument for <strong>LoadMusic</strong> and <strong>UnloadMusic</strong>.</p>
+<p>The enum values are as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicPackages.Core</span></code>: Core multiplayer gamemodes, such as conquest and breakthrough.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicPackages.BR</span></code>: Battle Royale.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicPackages.Gauntlet</span></code>: Gauntlet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicPackages.Radio</span></code>: Music tracks that are typically found in the in-game radios.</p></li>
+</ul>
+</section>
+<section id="music-events">
+<h3>Music Events<a class="headerlink" href="#music-events" title="Link to this heading">¶</a></h3>
+<p>This enum is used as an argument for <code class="docutils literal notranslate"><span class="pre">mod.PlayMusic()</span></code>. The enum values are as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_Deploy_Loop</span></code>: Quiet and ambient looping track, played when being deployed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_PhaseBegin</span></code>: One-shot track. Controlled by the following states (via <code class="docutils literal notranslate"><span class="pre">mod.SetMusicParam()</span></code>):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_IsWinning</span></code>: Different track for winning 1 and losing 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_Sector</span></code>: Different track for non-sector gamemodes 0 and sector gamemodes 1, 2, and 3 (unique music for each sector).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_PhaseEnded</span></code>: One-shot music track. Controlled by the following states (via mod.SetMusicParam()):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_IsWinning</span></code>: Different track for winning 1 and losing 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_Sector</span></code>: Different track for non-sector gamemodes 0 and sector gamemodes 1, 2, and 3 (unique music for each sector).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_LastPhaseBegin</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_Overtime_Loop</span></code>: Quiet and suspenseful looping track used when in overtime (e.g. capturing a point on Breakthrough in overtime).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_EndOfRound_Loop</span></code>: Played at the end of a match. Controlled by the following states (via mod.SetMusicParam()):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_IsWinning</span></code>: Different track for winning 1 and losing 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_Sector</span></code>: Different track for non-sector gamemodes 0 and sector gamemodes 1, 2, and 3 (same music for all three sectors).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_Stinger_RankUp</span></code>: Stinger played at the end of a match when you rank up.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_Stinger_Positive</span></code>: A stinger that is played mid-match.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_Stinger_Negative</span></code>: A stinger that is played mid-match.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_PauseMenu_Loop</span></code>: Quiet and ambient looping track. In core gamemodes, this plays in the pause menu only when there isn’t some other higher-priority music track being played, such as <strong>Core_PhaseEnded</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Core_Stop</span></code>: Stops any events playing in the core music package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BRGauntlet_WaitingForPlayers_Loop</span></code>: Quiet looping track, played while waiting for players in the lobby. This is a shared event between BR and Gauntlet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BRGauntlet_LobbyFilled</span></code>: Played when lobby is filled. Prior to executing this, you may need to set the timer with mod.SetMusicParam(<code class="docutils literal notranslate"><span class="pre">mod.MusicParams.BRGauntlet_LobbyTimerRemaining</span></code>, 10), using any value from 10 down to 0. This parameter only needs to be set once, and does not need to be updated with an actual timer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_InsertionCinematic_Loop</span></code>: A one-shot that then automatically transitions into <strong>BR_InsertionCinematic_Dropzone_Loop</strong> after a few seconds, thus becoming a loop.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_InsertionCinematic_Dropzone_Loop</span></code>: A loop that is automatically transitioned into from <strong>BR_InsertionCinematic_Loop</strong>. However, this can be triggered to transition into the dropzone music earlier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_InsertionJump</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_InsertionLanding</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_RespawnTower</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_RespawnSecondChance</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_LastTwoSquads</span></code>: One-shot track. Played when you are in the last two squads remaining.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_Loss_Early_Loop</span></code>: Looping track. Played when you get eliminated before the end of the round.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_Loss_EndOfRound_Loop</span></code>: Looping track. Played when you lost at the end of the round while in third place or worse.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_Loss_SecondPlace_Loop</span></code>: Looping track. Played when you finish a round and come in second place.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_WonRound_Loop</span></code>: Looping track. Played when you win a round.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_Pause</span></code>: Pauses whatever BR music is currently playing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_Unpause</span></code>: Unpauses BR music.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.BR_Stop</span></code>: Stops any events playing in the BR music package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Deploy</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_MissionBriefing_One</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_MissionBriefing_Two</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_MissionBriefing_Three</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_MissionBriefing_Final</span></code>: One-shot track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Urgency</span></code>: Long one-shot track, 35s long.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Urgency_FinalMission</span></code>: Long one-shot track, 35s long.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Qualified_Loop</span></code>:  Looping track. Transitions smoothly to <strong>Gauntlet_Qualified_Outro</strong> if triggered subsequently.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Qualified_Outro</span></code>: One-shot track. Transitions smoothly from <strong>Gauntlet_Qualified_Loop</strong> if triggered subsequently, but can also be triggered as a standalone.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_WonOperation_Loop</span></code>: Looping track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Loss_Loop</span></code>: Looping track. Played when losing on any mission other than the final one.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Loss_FinalMission_Loop</span></code>: Looping track.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Pause</span></code>: Pauses whatever Gauntlet music is currently playing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Unpause</span></code>: Unpauses Gauntlet music.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Gauntlet_Stop</span></code>: Stops any events playing in the Gauntlet music package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Radio_Play</span></code>: Starts playing the queued tracks in the currently selected station. If the queue is empty, nothing will play. Controlled by the following states (via <code class="docutils literal notranslate"><span class="pre">mod.SetMusicParam()</span></code>):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_Channel</span></code>: You must select one channel and queue up tracks within it. Channels are listed in the MusicParams section.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_Biome</span></code>: If you choose the biome channel (<code class="docutils literal notranslate"><span class="pre">mod.SetMusicParam(mod.MusicParams.Radio_Channel,</span> <span class="pre">4)</span></code>), you have several biomes to choose from, detailed in the MusicParams section.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_QueueTrackNumber</span></code>: You must queue which songs you’d like to hear. Number of available tracks is detailed in the MusicParams section.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Radio_Stop</span></code>: Stops playing the queued track. Playing again will restart the same song from the beginning (i.e. this is not a pause function).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Radio_NextQueuedTrack</span></code>: Skips to the next track in the queue. What will happen at the end of your queue depends on the following two parameters:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_ContinueQueueOnTrackEnd</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_LoopQueuedTracks</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicEvents.Radio_ClearQueue</span></code>: Clears the queue of tracks. This is the only way to do so. Note, playing a track does not clear it out of the queue, as you may want to loop your queued tracks.</p></li>
+</ul>
+</section>
+<section id="musicparams">
+<h3>MusicParams<a class="headerlink" href="#musicparams" title="Link to this heading">¶</a></h3>
+<p>The <strong>MusicParams</strong> enum is used as an argument for <strong>SetMusicParam</strong>, which is then followed by a second argument of type Number, which represents the value of the parameter. For example: <code class="docutils literal notranslate"><span class="pre">mod.SetMusicParam(mod.MusicParams.Core_IsWinning,</span> <span class="pre">1)</span></code>. This ensures that all core music will play their “winning” variants, if they have one.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_Sector</span></code>: Some music events in the core music package have different variations based on what sector you are in, including a variant for game modes that do not use sectors at all. Set the value to 0 to imply a gamemode that does not use sectors (e.g. Conquest), or use values 1, 2, or 3 to play music for those respective sectors for a gamemode that does use sectors (e.g. Breakthrough). Numbers are clamped to a range between 0 and 3, and decimals are rounded to the nearest integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_Urgency</span></code>: This functions like a music event. It is a looping track played when nearing the end of a round. As soon as the value goes above zero, urgency music starts playing. Numbers are clamped to a range between 0 and 4. Each whole number represents one layer of music that plays on full volume, while the decimals between them act as a crossfade. For example, if you set the value to 2.5, it plays both layer 2 and layer 3 each at partial volume.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_PhaseUrgency</span></code>: This functions like a looping music event. Same as <strong>Core_Urgency</strong>, but it only goes from 0 to 3, and is used when nearing the end of a phase, rather than the end of a round.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_IsWinning</span></code>: Many core music events have a winning and losing variant, which is controlled by this parameter. This is effectively a boolean, but this value actually takes in a number 0 or 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Core_Amplitude</span></code>: Loudness of core music events, represented as a multiplier. 0 is silent, 1 is the full default volume. This parameter is clamped from 0 to 3, so if you wanted, you can play the music at triple volume. Please be mindful of not blasting people’s ears out.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.BRGauntlet_LobbyTimerRemaining</span></code>: Shared parameter for both the BR and Gauntlet music packages. When the lobby fills up in both BR and Gauntlet, it starts a timer from 10 to 0. You only need to set this timer once before executing <code class="docutils literal notranslate"><span class="pre">mod.PlayMusic(mod.MusicEvents.BRGauntlet_LobbyFilled)</span></code>, and you do not need to simulate an actual countdown timer for this parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.BR_Amplitude</span></code>: Loudness of BR music events, represented as a multiplier. 0 is silent, 1 is the full default volume. This parameter is clamped from 0 to 3, so if you wanted, you can play the music at triple volume. Please be mindful of not blasting people’s ears out.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Gauntlet_Amplitude</span></code>: Loudness of Gauntlet music events, represented as a multiplier. 0 is silent, 1 is the full default volume. This parameter is clamped from 0 to 3, so if you wanted, you can play the music at triple volume. Please be mindful of not blasting people’s ears out.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_Channel</span></code>: Sets the channel from which you will be queueing tracks. There may be tracks whose genres don’t fit the labels below. You have access to the following channels (the BF Pro channel is not available through the Portal music system):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Hip Hop</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: Rock</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: BF Themes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code>: Reggaeton</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code>: Biome-specific (selected via <strong>Radio_Biome</strong>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span></code>: Classical</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">6</span></code>: Pop</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_Biome</span></code>: If set to channel 4, this is used to select which biome’s radio station to queue tracks from. The tracks may not necessarily be from the country or region listed in the biome name, but rather are simply the tracks you hear in radios in maps set in these biomes. You have access to the following biomes:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Gibraltar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: Tajikistan</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: Egypt</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code>: US - West Coast</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code>: US - East Coast</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span></code>: Bulgaria</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">6</span></code>: Turkmenistan</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.QueueTrackNumber</span></code>: Select which track to add next in the queue. The queue is empty by default, and no track will play until you queue up tracks. Here are the track lengths of each station as of Season 3 (a station that has 17 tracks are indexed 0 through 16):</p>
+<ul>
+<li><p>Channel 0: 17 tracks</p></li>
+<li><p>Channel 1: 18 tracks</p></li>
+<li><p>Channel 2: 10 tracks</p></li>
+<li><p>Channel 3: 2 tracks</p></li>
+<li><p>Channel 4: Biome-specific:</p>
+<ul>
+<li><p>Biome 0: 18 tracks</p></li>
+<li><p>Biome 1: 16 tracks</p></li>
+<li><p>Biome 2: 16 tracks</p></li>
+<li><p>Biome 3: 19 tracks</p></li>
+<li><p>Biome 4: 18 tracks</p></li>
+<li><p>Biome 5: 2 tracks</p></li>
+<li><p>Biome 6: 18 tracks</p></li>
+</ul>
+</li>
+<li><p>Channel 5: 32 tracks</p></li>
+<li><p>Channel 6: 15 tracks</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_ContinueQueueOnTrackEnd</span></code>: If 1, when the current song is done, the next queued song will start. If 0, the radio will auto-stop. Playing the radio again after a song ends will play the next queued song.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_LoopQueuedTracks</span></code>: If 1, when the last queued song is done, the song at the start of the queue will start. If 0, the radio will auto-stop. Playing the radio again after a queued list ends will go back and play the first queued song.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod.MusicParams.Radio_Amplitude</span></code>: Loudness of Radio music events, represented as a multiplier. 0 is silent, 1 is the full default volume. This parameter is clamped from 0 to 3, so if you wanted, you can play the music at triple volume. Please be mindful of not blasting people’s ears out.</p></li>
+</ul>
+</section>
+</section>
+<section id="object-moving">
+<h2>Object Moving<a class="headerlink" href="#object-moving" title="Link to this heading">¶</a></h2>
+<p>Objects can be moved at runtime via the <strong>MoveObject</strong> function or the <strong>SetObjectTransform</strong>.</p>
+</section>
+<section id="player-spawning">
+<h2>Player Spawning<a class="headerlink" href="#player-spawning" title="Link to this heading">¶</a></h2>
+<p>Players can be deployed directly into the level using a PlayerSpawner object and the <strong>SpawnPlayerFromSpawnPoint</strong> function.</p>
+</section>
+<section id="referencing-objects-in-script">
+<h2>Referencing Objects In Script<a class="headerlink" href="#referencing-objects-in-script" title="Link to this heading">¶</a></h2>
+<p>Most objects placed in the Spatial Editor have an <strong>ObjId</strong> field which can be set to a unique number. These objects can be referenced in script by using a matching “Get” function like:</p>
+<ul class="simple">
+<li><p><strong>GetSpatialObject</strong></p></li>
+<li><p><strong>GetSpawner</strong></p></li>
+<li><p><strong>GetInteractPoint</strong></p></li>
+</ul>
+<p><strong>Using strings.json</strong></p>
+<ul class="simple">
+<li><p>String files can be manually crafted using key/value pairs in json format. Such strings can be used either via their keys or their values from script.</p></li>
+<li><p>String files can also be auto generated from the web editor after importing the script. It will scrub code for string literals (“Cool Scoreboard Title”) but will not pick up dynamically constructed strings (i.e. “player “ + i + “ kill count: “ + count)</p></li>
+<li><p>Example:</p></li>
+</ul>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="c1">// strings.json</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;scoreboard&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Custom Scoreboard&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1">// script.ts</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">msg1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mod</span><span class="p">.</span><span class="nx">Message</span><span class="p">(</span><span class="nx">mod</span><span class="p">.</span><span class="nx">stringkeys</span><span class="p">.</span><span class="nx">scoreboard</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">msg2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mod</span><span class="p">.</span><span class="nx">Message</span><span class="p">(</span><span class="s2">&quot;scoreboard&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">msg3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mod</span><span class="p">.</span><span class="nx">Message</span><span class="p">(</span><span class="s2">&quot;Custom Scoreboard&quot;</span><span class="p">);</span>
+
+<span class="c1">// String literals require generating strings json from web editor</span>
+<span class="c1">// if not defined in strings.json</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">playerRank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Player Rank&quot;</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rankMsg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mod</span><span class="p">.</span><span class="nx">Message</span><span class="p">(</span><span class="nx">playerRank</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="spatial_editor.html" title="Previous document">Spatial Editor</a>
+        </li>
+        <li>
+          <a href="example_experiences.html" title="Next document">Example Experiences</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169; 2026, Electronic Arts Inc.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

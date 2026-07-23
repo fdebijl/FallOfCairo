@@ -1,0 +1,31 @@
+{
+    "name": "Custom Breakthrough",
+    "description": "BREAKTHROUGH: Attackers vs. Defenders. Attackers win by capturing objectives. Sector by sector. Defenders win by eliminating all enemy reinforcements. Recommended for 64 players.\nListed below are levels that have been pre-configured to immediately work with this Breakthrough Template once imported into the Battlefield 6 Web Builder.\nTo use your custom levels, you will need to export them and upload them to the web-builder separately.",
+    "workspace": "custom_breakthrough_V2.0.blocks.json",
+    "strings": "CustomBT.strings.json",
+    "base_skel": "custom_breakthrough_skel.json",
+    "icon": "breakthrough.svg",
+    "game_mode": "ModBuilderCustom0",
+    "maps": [
+      { 
+        "map_name": "MP_Dumbo",
+        "file_stem": "MP_Dumbo_Breakthrough"
+      },
+      { 
+        "map_name": "MP_Granite_ClubHouse_Portal",
+        "file_stem": "MP_Granite_ClubHouse_Breakthrough"
+      },
+      { 
+        "map_name": "MP_Granite_MainStreet_Portal",
+        "file_stem": "MP_Granite_MainStreet_Portal_Breakthrough"
+      },
+      { 
+        "map_name": "MP_Granite_Marina_Portal",
+        "file_stem": "MP_Granite_Marina_Breakthrough"
+      },
+      { 
+        "map_name": "MP_Granite_TechCampus_Portal",
+        "file_stem": "MP_Granite_TechCampus_Portal_CustomBreakthrough"
+      }
+    ]
+}

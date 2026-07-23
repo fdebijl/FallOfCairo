@@ -5,6 +5,9 @@
     "moduleResolution": "nodenext",
     "strict": true,
     "outDir": "dist",
+    "typeRoots": [
+      "./code/types"
+    ],
     "paths": {
         "modlib": ["./code/modlib"]
     }

@@ -1,0 +1,142 @@
+[gd_scene load_steps=12 format=3 uid="uid://dmbacm2jqmlbf"]
+
+[ext_resource type="PackedScene" path="res://static/MP_Portal_Sand_Terrain.tscn" id="0"]
+[ext_resource type="PackedScene" path="res://static/MP_Portal_Sand_Assets.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://objects/entities/SpawnPoint.tscn" id="2_sh46h"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/HQ_PlayerSpawner.tscn" id="3_bxk0y"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/InteractPoint.tscn" id="5_1b4bw"]
+[ext_resource type="PackedScene" path="res://objects/props/TableWood_01.tscn" id="6_cpb1a"]
+[ext_resource type="PackedScene" path="res://objects/props/ComputerMonitor_01.tscn" id="7_mbw38"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/ai/AI_Spawner.tscn" id="8_cpb1a"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/WorldIcon.tscn" id="8_nfhce"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/Sector.tscn" id="10_nfhce"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/rush/MCOM.tscn" id="10_qeq7c"]
+
+[node name="MP_Portal_Sand" type="Node3D"]
+
+[node name="HQ_PlayerSpawner" parent="." node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("3_bxk0y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9573, 32.6921, 39.9507)
+InfantrySpawns = [NodePath("SpawnPoint")]
+
+[node name="SpawnPoint" parent="HQ_PlayerSpawner" instance=ExtResource("2_sh46h")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.0234966, 0.00957108, -4.25531)
+
+[node name="Portal_Dynamic" type="Node3D" parent="."]
+
+[node name="Static" type="Node3D" parent="."]
+
+[node name="MP_Portal_Sand_Terrain" parent="Static" instance=ExtResource("0")]
+
+[node name="MP_Portal_Sand_Assets" parent="Static" instance=ExtResource("1")]
+
+[node name="InteractStation_1_Spawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1386, 32.6326, 38.1327)
+
+[node name="InteractPoint" parent="InteractStation_1_Spawn" instance=ExtResource("5_1b4bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00599098, 1.15457, 0.0712433)
+ObjId = 1
+
+[node name="TableWood_01" parent="InteractStation_1_Spawn" instance=ExtResource("6_cpb1a")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="ComputerMonitor_01" parent="InteractStation_1_Spawn" instance=ExtResource("7_mbw38")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.109129, 0.772953, 0.0537338)
+
+[node name="WorldIcon" parent="InteractStation_1_Spawn" instance=ExtResource("8_nfhce")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1.9893, 0)
+ObjId = 41
+IconStringKey = "SPAWN BOMB"
+iconTextVisible = true
+iconImagePicker = 15
+
+[node name="InteractStation_2_GiveToPlayer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1386, 32.6326, 34.3569)
+
+[node name="InteractPoint" parent="InteractStation_2_GiveToPlayer" instance=ExtResource("5_1b4bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00599098, 1.15457, 0.0712433)
+ObjId = 2
+
+[node name="TableWood_01" parent="InteractStation_2_GiveToPlayer" instance=ExtResource("6_cpb1a")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="ComputerMonitor_01" parent="InteractStation_2_GiveToPlayer" instance=ExtResource("7_mbw38")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.109129, 0.772953, 0.0537338)
+
+[node name="WorldIcon" parent="InteractStation_2_GiveToPlayer" instance=ExtResource("8_nfhce")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1.9893, 0)
+ObjId = 42
+IconStringKey = "BOMBGIVEPLAYER"
+iconTextVisible = true
+iconImagePicker = 15
+
+[node name="InteractStation_3_ForceDrop" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1386, 32.6326, 30.7774)
+
+[node name="InteractPoint" parent="InteractStation_3_ForceDrop" instance=ExtResource("5_1b4bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00599098, 1.15457, 0.0712433)
+ObjId = 3
+
+[node name="TableWood_01" parent="InteractStation_3_ForceDrop" instance=ExtResource("6_cpb1a")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="ComputerMonitor_01" parent="InteractStation_3_ForceDrop" instance=ExtResource("7_mbw38")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.109129, 0.772953, 0.0537338)
+
+[node name="WorldIcon" parent="InteractStation_3_ForceDrop" instance=ExtResource("8_nfhce")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1.9893, 0)
+ObjId = 43
+IconStringKey = "BOMBDROP"
+iconTextVisible = true
+iconImagePicker = 15
+
+[node name="InteractStation_4_Reset" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1386, 32.6326, 27.1519)
+
+[node name="InteractPoint" parent="InteractStation_4_Reset" instance=ExtResource("5_1b4bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00599098, 1.15457, 0.0712433)
+ObjId = 4
+
+[node name="TableWood_01" parent="InteractStation_4_Reset" instance=ExtResource("6_cpb1a")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="ComputerMonitor_01" parent="InteractStation_4_Reset" instance=ExtResource("7_mbw38")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.109129, 0.772953, 0.0537338)
+
+[node name="WorldIcon" parent="InteractStation_4_Reset" instance=ExtResource("8_nfhce")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1.9893, 0)
+ObjId = 44
+IconStringKey = "BOMBRESET"
+iconTextVisible = true
+iconImagePicker = 15
+
+[node name="InteractStation_5_SetMCOMArm" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -15.3432, 32.6326, 32.3891)
+
+[node name="InteractPoint" parent="InteractStation_5_SetMCOMArm" instance=ExtResource("5_1b4bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00599098, 1.15457, 0.0712433)
+ObjId = 5
+
+[node name="TableWood_01" parent="InteractStation_5_SetMCOMArm" instance=ExtResource("6_cpb1a")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="ComputerMonitor_01" parent="InteractStation_5_SetMCOMArm" instance=ExtResource("7_mbw38")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.109129, 0.772953, 0.0537338)
+
+[node name="WorldIcon" parent="InteractStation_5_SetMCOMArm" instance=ExtResource("8_nfhce")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1.9893, 0)
+ObjId = 45
+IconStringKey = "MCOMARMTYPE"
+iconTextVisible = true
+iconImagePicker = 15
+
+[node name="AI_Spawner" parent="." instance=ExtResource("8_cpb1a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9676, 32.595, 20.8772)
+ObjId = 10
+
+[node name="MCOM" parent="." instance=ExtResource("10_qeq7c")]
+transform = Transform3D(-0.0165799, 0, -0.999862, 0, 1, 0, 0.999862, 0, -0.0165799, -15.3787, 32.6474, 27.6268)
+ObjId = 30
+
+[node name="Sector" parent="." node_paths=PackedStringArray("MCOMs") instance=ExtResource("10_nfhce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8929, 32.6949, 27.5833)
+MCOMs = [NodePath("../MCOM")]

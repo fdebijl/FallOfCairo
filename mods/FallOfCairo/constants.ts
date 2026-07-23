@@ -74,7 +74,7 @@ export const WAVES: Wave[] = [
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET, AI_SPAWN_POINTS.MOSQUE],
     infantryCounts: [10, 10],
   },
-    {
+  {
     waveNumber: 4,
     spawnPoints: [
       AI_SPAWN_POINTS.MAIN_STREET,
@@ -119,9 +119,9 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
     infantryCounts: [16, 16, 16, 16],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [3],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleCounts: [3],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 8,
@@ -133,9 +133,9 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [3],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleCounts: [3],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 9,
@@ -147,9 +147,9 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [20, 20, 20, 20],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [4],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleCounts: [4],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
     waveNumber: 10,
@@ -161,10 +161,11 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
-    // vehicleTypes: [mod.VehicleList.M2Bradley],
-    // vehicleCounts: [4],
-    // vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleCounts: [4],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
 ]
 
+// Delay between spawning individual infantry units in a wave, in seconds
 export const INTERSPAWN_DELAY = 1;

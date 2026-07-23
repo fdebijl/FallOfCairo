@@ -1,0 +1,488 @@
+[gd_scene load_steps=16 format=3 uid="uid://dopmh36d4g6l6"]
+
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/CombatArea.tscn" id="1_gvyk7"]
+[ext_resource type="PackedScene" uid="uid://jv31so3xcr7p" path="res://addons/bf_portal/portal_tools/types/PolygonVolume/PolygonVolume.tscn" id="2_cjtf1"]
+[ext_resource type="PackedScene" path="res://static/MP_Limestone_Terrain.tscn" id="3_a7qc2"]
+[ext_resource type="PackedScene" path="res://static/MP_Limestone_Assets.tscn" id="4_ny4r1"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/HQ_PlayerSpawner.tscn" id="5_ihguk"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/PlayerSpawner.tscn" id="6_phfcp"]
+[ext_resource type="PackedScene" path="res://objects/entities/SpawnPoint.tscn" id="7_7put7"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/ai/AI_Spawner.tscn" id="8_6ps3r"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/InteractPoint.tscn" id="9_bnnl6"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/WorldIcon.tscn" id="10_6ni6j"]
+[ext_resource type="PackedScene" path="res://objects/architecture/ConcreteFoundation_01_1536x384_B.tscn" id="11_6xk42"]
+[ext_resource type="PackedScene" path="res://objects/props/ServerRack_01.tscn" id="12_vw733"]
+[ext_resource type="PackedScene" path="res://objects/props/ContainerStandard_01_1280.tscn" id="13_f5hvq"]
+[ext_resource type="PackedScene" path="res://objects/props/FenceIron_01_512_B.tscn" id="14_mq420"]
+[ext_resource type="PackedScene" path="res://objects/props/BooksPile_01_A.tscn" id="14_siy78"]
+
+[node name="MP_Limestone" type="Node3D"]
+
+[node name="CombatArea" parent="." node_paths=PackedStringArray("CombatVolume") instance=ExtResource("1_gvyk7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 283.651, -38.3201, 133.42)
+CombatVolume = NodePath("CollisionPolygon3D")
+
+[node name="CollisionPolygon3D" parent="CombatArea" instance=ExtResource("2_cjtf1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 129.825, 84.381, -100.438)
+points = PackedVector2Array(-113.001, 13.632, -126.388, 16.5877, -125.693, 29.2813, -123.179, 30.0983, -130.316, 45.9834, -142.4, 48.3965, -143.182, 60.3065, -152.2, 56.5601, -159.265, 74.6505, -147.729, 79.2728, -142.999, 88.7345, -149.975, 92.1832, -146.409, 99.3151, -141.133, 112.983, -131.491, 118.107, -121.785, 111.566, -112.585, 108.938, -104.209, 111.889, -73.4219, 113.169, -73.2915, 109.51, -72.5511, 98.5136, -72.6102, 87.6497, -70.4123, 85.1475, -68.3404, 83.3459, -66.2428, 81.1152, -64.0285, 79.392, -62.5077, 77.7277, -64.7227, 65.2896, -71.2571, 54.3339, -63.3001, 46.7845, -63.7392, 41.865, -69.0579, 26.8463, -105.576, 25.8567, -105.318, 12.7738)
+height = 100.0
+
+[node name="Static" type="Node3D" parent="."]
+
+[node name="MP_Limestone_Terrain" parent="Static" instance=ExtResource("3_a7qc2")]
+
+[node name="MP_Limestone_Assets" parent="Static" instance=ExtResource("4_ny4r1")]
+
+[node name="DefendersHQ" parent="." node_paths=PackedStringArray("HQArea", "InfantrySpawns") instance=ExtResource("5_ihguk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 337.089, 69.3624, 134.109)
+Team = 2
+AltTeam = 0
+ObjId = 2
+HQArea = NodePath("HQ_Team1")
+InfantrySpawns = [NodePath("SpawnPoint_1_1"), NodePath("SpawnPoint_1_2"), NodePath("SpawnPoint_1_3"), NodePath("SpawnPoint_1_4")]
+
+[node name="ModBuilder_SpawnPoint" parent="DefendersHQ" node_paths=PackedStringArray("Area", "SpawnPoints") instance=ExtResource("6_phfcp")]
+ObjId = 1000
+Area = NodePath("../../CombatArea/CollisionPolygon3D")
+SpawnPoints = [NodePath("../SpawnPoint_1_1"), NodePath("../SpawnPoint_1_2"), NodePath("../SpawnPoint_1_3"), NodePath("../SpawnPoint_1_4")]
+
+[node name="HQ_Team1" parent="DefendersHQ" instance=ExtResource("2_cjtf1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+points = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+
+[node name="SpawnPoint_1_1" parent="DefendersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(0.999884, 0, -0.0152535, 0, 1, 0, 0.0152535, 0, 0.999884, -3.88272, 0, 1.483)
+ObjId = 1
+
+[node name="SpawnPoint_1_2" parent="DefendersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(-0.9995, 0, -0.0316198, 0, 1, 0, 0.0316198, 0, -0.9995, 3, 0, 0)
+ObjId = 2
+
+[node name="SpawnPoint_1_3" parent="DefendersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(-0.0428871, 0, 0.99908, 0, 1, 0, -0.99908, 0, -0.0428871, -3, 0, 0)
+ObjId = 3
+
+[node name="SpawnPoint_1_4" parent="DefendersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(0.0841819, 0, -0.99645, 0, 1, 0, 0.99645, 0, 0.0841819, 0, 0, 3)
+ObjId = 4
+
+[node name="Defenders_AI_Spawner" parent="DefendersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6703, 0, 3.53765)
+ObjId = 15
+
+[node name="Defenders_AI_Spawner2" parent="DefendersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80458, 0, -0.380145)
+ObjId = 16
+
+[node name="Defenders_AI_Spawner3" parent="DefendersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68089, 0, 2.02902)
+ObjId = 17
+
+[node name="Defenders_AI_Spawner4" parent="DefendersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35741, 0, 3.00248)
+ObjId = 18
+
+[node name="Defenders_AI_Spawner5" parent="DefendersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.74829, 0, 1.40841)
+ObjId = 19
+
+[node name="StoreInteractPoint2" parent="DefendersHQ" instance=ExtResource("9_bnnl6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18974, 0.690857, 4.25654)
+ObjId = 501
+
+[node name="StoreWI_Defenders" parent="DefendersHQ/StoreInteractPoint2" instance=ExtResource("10_6ni6j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.795456, 0)
+ObjId = 501
+iconColor = [0.0, 1.0, 1.0]
+iconImagePicker = 13
+
+[node name="AttackersHQ" parent="." node_paths=PackedStringArray("HQArea", "InfantrySpawns") instance=ExtResource("5_ihguk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298.442, 60.4845, 60.5151)
+AltTeam = 0
+ObjId = 1
+HQArea = NodePath("HQ_Team2")
+InfantrySpawns = [NodePath("SpawnPoint_2_1"), NodePath("SpawnPoint_2_2"), NodePath("SpawnPoint_2_3"), NodePath("SpawnPoint_2_4")]
+
+[node name="HQ_Team2" parent="AttackersHQ" instance=ExtResource("2_cjtf1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+points = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+
+[node name="SpawnPoint_2_1" parent="AttackersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+ObjId = 1
+
+[node name="SpawnPoint_2_2" parent="AttackersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+ObjId = 2
+
+[node name="SpawnPoint_2_3" parent="AttackersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+ObjId = 3
+
+[node name="SpawnPoint_2_4" parent="AttackersHQ" instance=ExtResource("7_7put7")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+ObjId = 4
+
+[node name="ModBuilder_SpawnPoint" parent="AttackersHQ" node_paths=PackedStringArray("Area", "SpawnPoints") instance=ExtResource("6_phfcp")]
+ObjId = 2000
+Area = NodePath("../../CombatArea/CollisionPolygon3D")
+SpawnPoints = [NodePath("../SpawnPoint_2_1"), NodePath("../SpawnPoint_2_2"), NodePath("../SpawnPoint_2_3"), NodePath("../SpawnPoint_2_4")]
+
+[node name="Attackers_AI_Spawner" parent="AttackersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.45673, -0.113594, 2.50331)
+ObjId = 10
+
+[node name="Attackers_AI_Spawner2" parent="AttackersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.55127, 0.624825, -3.05193)
+ObjId = 11
+
+[node name="Attackers_AI_Spawner3" parent="AttackersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.68481, 0.000198364, -1.24418)
+ObjId = 12
+
+[node name="Attackers_AI_Spawner4" parent="AttackersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.46664, 0.000183105, -2.72437)
+ObjId = 13
+
+[node name="Attackers_AI_Spawner5" parent="AttackersHQ" instance=ExtResource("8_6ps3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.46967, 0.000183105, 2.07428)
+ObjId = 14
+
+[node name="StoreInteractPoint" parent="AttackersHQ" instance=ExtResource("9_bnnl6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.84653, 0.500183, 2.29037)
+ObjId = 500
+
+[node name="StoreWI_Attackers" parent="AttackersHQ/StoreInteractPoint" instance=ExtResource("10_6ni6j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.795456, 0)
+ObjId = 500
+iconColor = [0.0, 1.0, 1.0]
+iconImagePicker = 13
+
+[node name="MCOMA_Position" type="Node3D" parent="."]
+transform = Transform3D(0.388513, 0, 0.921443, 0, 1, 0, -0.921443, 0, 0.388513, 300, 70, 129.5)
+
+[node name="Bomb_A_InteractPoint" parent="MCOMA_Position" instance=ExtResource("9_bnnl6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+ObjId = 1
+
+[node name="SiteAWorldIcon" parent="MCOMA_Position" instance=ExtResource("10_6ni6j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+ObjId = 20
+iconColor = [1.0, 0.0, 0.0]
+iconImagePicker = 4
+
+[node name="ServerRack_01" parent="MCOMA_Position" instance=ExtResource("12_vw733")]
+ObjId = 20
+
+[node name="MCOMB_Position" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 332, 65.8, 104)
+
+[node name="Bomb_B_InteractPoint" parent="MCOMB_Position" instance=ExtResource("9_bnnl6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+ObjId = 2
+
+[node name="SiteBWorldIcon2" parent="MCOMB_Position" instance=ExtResource("10_6ni6j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+ObjId = 21
+iconColor = [1.0, 0.0, 0.0]
+iconImagePicker = 4
+
+[node name="ServerRack_01" parent="MCOMB_Position" instance=ExtResource("12_vw733")]
+transform = Transform3D(-0.49376, 0, 0.869598, 0, 1, 0, -0.869598, 0, -0.49376, 0, 0, 0)
+ObjId = 21
+
+[node name="LoserZone-Team1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 303.19, 150.926, 63.0276)
+
+[node name="Lobby" parent="LoserZone-Team1" instance=ExtResource("13_f5hvq")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.88808, -2.63971, 1.38942)
+
+[node name="Lobby2" parent="LoserZone-Team1" instance=ExtResource("13_f5hvq")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.88808, -2.63971, -1.10708)
+
+[node name="Lobby3" parent="LoserZone-Team1" instance=ExtResource("13_f5hvq")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.88808, -2.63971, -3.61068)
+
+[node name="FenceIron_01_512_B" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.91589, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B4" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.79538, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B5" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.81781, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B17" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B19" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 0.0802917, 1.52565)
+
+[node name="FenceIron_01_512_B20" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 1.49258, 1.52565)
+
+[node name="FenceIron_01_512_B18" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 1.49307, 3.92223)
+
+[node name="FenceIron_01_512_B6" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.81781, 1.51547, 3.92223)
+
+[node name="FenceIron_01_512_B2" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.91589, 1.51347, 3.92223)
+
+[node name="FenceIron_01_512_B7" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 1.50534, 3.92223)
+
+[node name="FenceIron_01_512_B9" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 1.50841, 1.51743)
+
+[node name="FenceIron_01_512_B21" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -6.28201, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B22" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -4.77896, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B23" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -3.29422, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B24" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -1.79791, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B25" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -0.314301, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B26" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.14673, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B27" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 2.63297, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B28" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 4.1138, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B29" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 5.5726, 2.97775, 0.882083)
+
+[node name="FenceIron_01_512_B30" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -6.28201, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B31" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -4.77896, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B32" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -3.29422, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B33" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -1.79791, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B34" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -0.314301, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B35" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.14673, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B36" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 2.63297, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B37" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 4.1138, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B38" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 5.5726, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B11" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.7998, 1.45972, -3.52115)
+
+[node name="FenceIron_01_512_B12" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.7998, 0.0479279, -3.52115)
+
+[node name="FenceIron_01_512_B13" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.69366, 0.0555115, -3.52115)
+
+[node name="FenceIron_01_512_B15" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.69366, 1.45908, -3.52115)
+
+[node name="FenceIron_01_512_B14" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.818329, 0.0485535, -3.52115)
+
+[node name="FenceIron_01_512_B16" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.818329, 1.46132, -3.52115)
+
+[node name="FenceIron_01_512_B10" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 0.0720825, 1.51743)
+
+[node name="FenceIron_01_512_B8" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 0.0992584, 3.92223)
+
+[node name="FenceIron_01_512_B3" parent="LoserZone-Team1" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.794464, 1.51505, 3.92223)
+
+[node name="AttackersJailPos" parent="LoserZone-Team1" instance=ExtResource("14_siy78")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.311462, 0.0836639, -0.177555)
+ObjId = 2501
+
+[node name="LoserZone-Team2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 308.053, 150.926, 138.708)
+
+[node name="Lobby" parent="LoserZone-Team2" instance=ExtResource("13_f5hvq")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.88808, -2.63971, 1.38942)
+
+[node name="Lobby2" parent="LoserZone-Team2" instance=ExtResource("13_f5hvq")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.88808, -2.63971, -1.10708)
+
+[node name="Lobby3" parent="LoserZone-Team2" instance=ExtResource("13_f5hvq")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.88808, -2.63971, -3.61068)
+
+[node name="FenceIron_01_512_B" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.91589, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B4" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.79538, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B5" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.81781, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B17" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 0.0802917, 3.92223)
+
+[node name="FenceIron_01_512_B19" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 0.0802917, 1.52565)
+
+[node name="FenceIron_01_512_B20" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 1.49258, 1.52565)
+
+[node name="FenceIron_01_512_B18" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.79251, 1.49307, 3.92223)
+
+[node name="FenceIron_01_512_B6" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.81781, 1.51547, 3.92223)
+
+[node name="FenceIron_01_512_B2" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.91589, 1.51347, 3.92223)
+
+[node name="FenceIron_01_512_B7" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 1.50534, 3.92223)
+
+[node name="FenceIron_01_512_B9" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 1.50841, 1.51743)
+
+[node name="FenceIron_01_512_B21" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -6.28201, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B22" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -4.77896, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B23" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -3.29422, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B24" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -1.79791, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B25" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -0.314301, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B26" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.14673, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B27" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 2.63297, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B28" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 4.1138, 2.97775, 0.882085)
+
+[node name="FenceIron_01_512_B29" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 5.5726, 2.97775, 0.882083)
+
+[node name="FenceIron_01_512_B30" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -6.28201, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B31" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -4.77896, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B32" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -3.29422, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B33" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -1.79791, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B34" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -0.314301, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B35" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.14673, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B36" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 2.63297, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B37" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 4.1138, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B38" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 5.5726, 2.97775, 5.57254)
+
+[node name="FenceIron_01_512_B11" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.7998, 1.45972, -3.52115)
+
+[node name="FenceIron_01_512_B12" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.7998, 0.0479279, -3.52115)
+
+[node name="FenceIron_01_512_B13" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.69366, 0.0555115, -3.52115)
+
+[node name="FenceIron_01_512_B15" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.69366, 1.45908, -3.52115)
+
+[node name="FenceIron_01_512_B14" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.818329, 0.0485535, -3.52115)
+
+[node name="FenceIron_01_512_B16" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.818329, 1.46132, -3.52115)
+
+[node name="FenceIron_01_512_B10" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 0.0720825, 1.51743)
+
+[node name="FenceIron_01_512_B8" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.82413, 0.0992584, 3.92223)
+
+[node name="FenceIron_01_512_B3" parent="LoserZone-Team2" instance=ExtResource("14_mq420")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.794464, 1.51505, 3.92223)
+
+[node name="DefendersJailPos" parent="LoserZone-Team2" instance=ExtResource("14_siy78")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0608826, 0.0836639, 0.381882)
+ObjId = 2502
+
+[node name="AttackersSpawnWalls" type="Node3D" parent="."]
+
+[node name="ConcreteFoundation_01_1536x384_B" parent="AttackersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 294, 64, 53)
+ObjId = 101
+
+[node name="ConcreteFoundation_01_1536x384_B2" parent="AttackersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 294, 64, 65)
+ObjId = 102
+
+[node name="ConcreteFoundation_01_1536x384_B3" parent="AttackersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 294, 64, 53)
+ObjId = 103
+
+[node name="ConcreteFoundation_01_1536x384_B4" parent="AttackersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 309, 64, 53)
+ObjId = 104
+
+[node name="DefendersSpawnWalls" type="Node3D" parent="."]
+
+[node name="ConcreteFoundation_01_1536x384_B" parent="DefendersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 329, 73, 132)
+ObjId = 201
+
+[node name="ConcreteFoundation_01_1536x384_B3" parent="DefendersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 329, 73, 132)
+ObjId = 202
+
+[node name="ConcreteFoundation_01_1536x384_B4" parent="DefendersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 344, 73, 132)
+ObjId = 203
+
+[node name="ConcreteFoundation_01_1536x384_B2" parent="DefendersSpawnWalls" instance=ExtResource("11_6xk42")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 329, 73, 144)
+ObjId = 204

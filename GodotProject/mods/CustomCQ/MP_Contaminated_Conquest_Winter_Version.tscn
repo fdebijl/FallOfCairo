@@ -1,0 +1,1698 @@
+[gd_scene load_steps=17 format=3 uid="uid://vxs0igeubk5n"]
+
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/CombatArea.tscn" id="2_xvww2"]
+[ext_resource type="PackedScene" uid="uid://jv31so3xcr7p" path="res://addons/bf_portal/portal_tools/types/PolygonVolume/PolygonVolume.tscn" id="3_ge0ty"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/DeployCam.tscn" id="4_l303k"]
+[ext_resource type="PackedScene" path="res://static/MP_Contaminated_Terrain.tscn" id="5_nnu3x"]
+[ext_resource type="PackedScene" path="res://static/MP_Contaminated_Assets.tscn" id="6_6mamj"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/HQ_PlayerSpawner.tscn" id="7_vch0p"]
+[ext_resource type="PackedScene" path="res://objects/entities/SpawnPoint.tscn" id="8_6bh0x"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/Sector.tscn" id="10_tdicw"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Conquest/CapturePoint.tscn" id="11_3u1r8"]
+[ext_resource type="Script" uid="uid://ck5uniw0pl6u8" path="res://addons/bf_portal/portal_tools/types/PolygonVolume/PolygonVolume.gd" id="12_6yx75"]
+[ext_resource type="PackedScene" path="res://objects/props/MannequinRotation_01.tscn" id="13_6au45"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/InteractPoint.tscn" id="14_3hjn4"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/AI/AI_Spawner.tscn" id="15_t2nnn"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/VehicleSpawner.tscn" id="16_1f27e"]
+[ext_resource type="PackedScene" path="res://objects/uncategorized/EnvironmentDecalVolume_Winter_Event.tscn" id="17_xvww2"]
+[ext_resource type="PackedScene" path="res://objects/fx/FX_Snow_BlowingSnow_L_01_TerrainSnap.tscn" id="20_tdicw"]
+
+[node name="MP_Contaminated" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.101056, 0.994881, 0, -0.994881, 0.101056, 22.219, 921.564, 86.9254)
+
+[node name="DeployCam" parent="Camera3D" instance=ExtResource("4_l303k")]
+transform = Transform3D(-0.924546, -0.38107, 0, 0.38107, -0.924546, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Static" type="Node3D" parent="."]
+
+[node name="MP_Contaminated_Terrain" parent="Static" instance=ExtResource("5_nnu3x")]
+metadata/_edit_lock_ = true
+
+[node name="MP_Contaminated_Assets" parent="Static" instance=ExtResource("6_6mamj")]
+metadata/_edit_lock_ = true
+
+[node name="Play Area" type="Node3D" parent="."]
+
+[node name="CombatArea" parent="Play Area" node_paths=PackedStringArray("CombatVolume", "SurroundingVolume") instance=ExtResource("2_xvww2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1458.32, 33.5003, 0)
+CombatVolume = NodePath("Infantry Area")
+SurroundingVolume = NodePath("AirCombatArea")
+
+[node name="Infantry Area" parent="Play Area/CombatArea" instance=ExtResource("3_ge0ty")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1414.1, 250.414, 148.273)
+points = PackedVector2Array(-168.234, -166.659, -186.775, -178.201, -220.688, -189.697, -241.024, -155.925, -248.244, -134.625, -250.739, -98.0328, -232.483, -51.1414, -193.706, 10.4539, -143.402, 62.647, -66.0657, 118.728, 15.8796, 153.555, 87.8379, 161.494, 184.867, 155.076, 247.06, 142.449, 259.964, 71.7932, 305.357, 28.9342, 321.217, -4.35284, 320.958, -41.888, 351.176, -108.788, 308.305, -147.375, 240.264, -202.385, 153.523, -244.103, 70.2674, -272.99, 2.10004, -274.665, -27.3432, -233.287, -75.8962, -164.58, -118.916, -179.725, -153.104, -162.808)
+height = 300.0
+
+[node name="AirCombatArea" parent="Play Area/CombatArea" instance=ExtResource("3_ge0ty")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1401.1, 319.233, 246.557)
+points = PackedVector2Array(-320.892, -422.595, -363.776, -357.28, -401.879, -270.083, -404.971, -138.25, -374.623, -51.1639, -336.358, 37.9014, -209.028, 166.551, -29.5089, 229.796, 176.991, 241.012, 342.29, 195.66, 465.03, 143.623, 520.32, 82.9461, 537.222, -53.8733, 450.116, -225.823, 305.894, -393.977, 118.869, -510.722, -72.8773, -569.547, -169.924, -551.52, -265.322, -485.77)
+height = 200.0
+
+[node name="Sector - Combat area and Objectives" parent="Play Area" node_paths=PackedStringArray("SectorArea", "CapturePoints") instance=ExtResource("10_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.577, 442.058, 73.5485)
+SectorArea = NodePath("../CombatArea/Infantry Area")
+CapturePoints = [NodePath("../../Objectives/CapturePointA"), NodePath("../../Objectives/CapturePointB"), NodePath("../../Objectives/CapturePointC"), NodePath("../../Objectives/CapturePointD"), NodePath("../../Objectives/CapturePointE"), NodePath("../../Objectives/CapturePointF")]
+
+[node name="HQs" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.903, 0)
+
+[node name="TEAM_1_HQ" parent="HQs" node_paths=PackedStringArray("HQArea", "InfantrySpawns") instance=ExtResource("7_vch0p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 446.695, 58.093, 195.62)
+AltTeam = 0
+ObjId = 1
+HQArea = NodePath("HQ_Team1")
+InfantrySpawns = [NodePath("SpawnPoint_1_1"), NodePath("SpawnPoint_1_2"), NodePath("SpawnPoint_1_3"), NodePath("SpawnPoint_1_4")]
+
+[node name="HQ_Team1" parent="HQs/TEAM_1_HQ" instance=ExtResource("3_ge0ty")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.629486, -26.3764, 26.7164)
+points = PackedVector2Array(54.8341, -74.5919, -50.7497, -183.066, -81.0003, -116.005, -80.8051, -78.4714, -96.5739, -45.1686, -141.931, -2.29134, -154.929, 68.4758, -72.8849, 30.2737, -13.1861, 50.248, 95.2143, 1.9953)
+height = 300.0
+color = Color(0, 0.530803, 0.988189, 0.42)
+
+[node name="SpawnPoint_1_1" parent="HQs/TEAM_1_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.565428, 0, 0.824798, 0, 1, 0, -0.824798, 0, 0.565428, -25.1018, -0.443878, -29.1126)
+
+[node name="SpawnPoint_1_2" parent="HQs/TEAM_1_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.22068, 0, -0.975346, 0, 1, 0, 0.975346, 0, 0.22068, -12.0769, 0.110474, -4.34439)
+
+[node name="SpawnPoint_1_3" parent="HQs/TEAM_1_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.999468, 0, 0.0326145, 0, 1, 0, -0.0326145, 0, -0.999468, 8.45117, -0.269104, 27.4537)
+
+[node name="SpawnPoint_1_4" parent="HQs/TEAM_1_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.336815, 0, -0.94157, 0, 1, 0, 0.94157, 0, 0.336815, 17.8327, -0.126953, -2.11516)
+
+[node name="TEAM_2_HQ" parent="HQs" node_paths=PackedStringArray("HQArea", "InfantrySpawns") instance=ExtResource("7_vch0p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.1254, 83.6848, -124.142)
+Team = 2
+AltTeam = 0
+ObjId = 2
+HQArea = NodePath("HQ_Team2")
+InfantrySpawns = [NodePath("SpawnPoint_2_1"), NodePath("SpawnPoint_2_2"), NodePath("SpawnPoint_2_3"), NodePath("SpawnPoint_2_4")]
+
+[node name="HQ_Team2" parent="HQs/TEAM_2_HQ" instance=ExtResource("3_ge0ty")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.5367, -21.5568, 31.348)
+points = PackedVector2Array(-39.8663, 51.4648, -6.11963, 62.9043, 12.6126, 74.4868, 27.7701, 78.3477, 61.9457, 61.4744, 104.987, 76.6318, 131.12, 39.4097, 183.087, -33.5866, 50.2387, -139.716, -24.8096, -81.8055, -33.362, 2.32922)
+height = 270.0
+color = Color(0.948772, 0.227811, 0, 0.42)
+
+[node name="SpawnPoint_2_1" parent="HQs/TEAM_2_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.999989, 0, -0.00483561, 0, 1, 0, 0.00483561, 0, 0.999989, 34.7356, -4.79504, -40.5236)
+
+[node name="SpawnPoint_2_2" parent="HQs/TEAM_2_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.722098, 0, 0.69179, 0, 1, 0, -0.69179, 0, 0.722098, -28.6594, -4.87592, -14.6177)
+
+[node name="SpawnPoint_2_3" parent="HQs/TEAM_2_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.762171, 0, 0.647375, 0, 1, 0, -0.647375, 0, -0.762171, -12.7142, -4.80463, 39.773)
+
+[node name="SpawnPoint_2_4" parent="HQs/TEAM_2_HQ" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.985211, 0, 0.171344, 0, 1, 0, -0.171344, 0, 0.985211, 22.1567, -5.10269, 22.9074)
+
+[node name="Objectives" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.903, 0)
+
+[node name="CapturePointA" parent="Objectives" node_paths=PackedStringArray("CaptureArea", "InfantrySpawnPoints_Team1", "InfantrySpawnPoints_Team2") instance=ExtResource("11_3u1r8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 268.085, 43.9165, 215.21)
+ObjId = 200
+CaptureArea = NodePath("PolygonVolumeA")
+InfantrySpawnPoints_Team1 = [NodePath("Spawners/Team1/SpawnPoint"), NodePath("Spawners/Team1/SpawnPoint2"), NodePath("Spawners/Team1/SpawnPoint3"), NodePath("Spawners/Team1/SpawnPoint4")]
+InfantrySpawnPoints_Team2 = [NodePath("Spawners/Team2/SpawnPoint4"), NodePath("Spawners/Team2/SpawnPoint5"), NodePath("Spawners/Team2/SpawnPoint6"), NodePath("Spawners/Team2/SpawnPoint7")]
+
+[node name="PolygonVolumeA" type="Node3D" parent="Objectives/CapturePointA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4965, -2.12299, 2.36029)
+script = ExtResource("12_6yx75")
+points = PackedVector2Array(23.9332, -14.228, 26.3195, -14.2411, 26.1675, -23.7101, -0.457321, -22.6221, -8.95474, -22.6774, -10.6398, -21.1436, -9.5078, 8.54099, -0.216873, 8.25029, -0.197327, 11.2423, 24.2834, 10.0855)
+height = 15.0
+color = Color(0, 0.6, 0.7, 0.42)
+metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
+
+[node name="Spawners" type="Node3D" parent="Objectives/CapturePointA"]
+
+[node name="Team1" type="Node3D" parent="Objectives/CapturePointA/Spawners"]
+
+[node name="SpawnPoint" parent="Objectives/CapturePointA/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.252525, 0, -0.96759, 0, 1, 0, 0.96759, 0, -0.252525, 62.6905, 0.261871, 19.2748)
+
+[node name="SpawnPoint2" parent="Objectives/CapturePointA/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.190569, 0, -0.981674, 0, 1, 0, 0.981674, 0, -0.190569, 57.3508, -0.843475, -7.9547)
+
+[node name="SpawnPoint3" parent="Objectives/CapturePointA/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.771935, 0, -0.635701, 0, 1, 0, 0.635701, 0, 0.771935, 46.6817, 15.186, -80.9338)
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointA/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.83789, 0, -0.545839, 0, 1, 0, 0.545839, 0, -0.83789, 12.5099, 0.111084, 57.4882)
+
+[node name="Team2" type="Node3D" parent="Objectives/CapturePointA/Spawners"]
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointA/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.422982, 0, 0.906138, 0, 1, 0, -0.906138, 0, 0.422982, -72.1935, 6.29379, -33.237)
+
+[node name="SpawnPoint5" parent="Objectives/CapturePointA/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.512373, 0, 0.858763, 0, 1, 0, -0.858763, 0, -0.512373, -56.8315, 1.53967, 76.0819)
+
+[node name="SpawnPoint6" parent="Objectives/CapturePointA/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.444307, 0, 0.895875, 0, 1, 0, -0.895875, 0, -0.444307, -86.4243, 3.66547, 25.2534)
+
+[node name="SpawnPoint7" parent="Objectives/CapturePointA/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.129107, 0, 0.99163, 0, 1, 0, -0.99163, 0, -0.129107, -78.8096, 2.022, 52.2534)
+
+[node name="CapturePointB" parent="Objectives" node_paths=PackedStringArray("CaptureArea", "InfantrySpawnPoints_Team1", "InfantrySpawnPoints_Team2") instance=ExtResource("11_3u1r8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 264.866, 81.0944, 46.2916)
+ObjId = 201
+CaptureArea = NodePath("PolygonVolumeB")
+InfantrySpawnPoints_Team1 = [NodePath("Spawners/Team1/SpawnPoint"), NodePath("Spawners/Team1/SpawnPoint2"), NodePath("Spawners/Team1/SpawnPoint3"), NodePath("Spawners/Team1/SpawnPoint4")]
+InfantrySpawnPoints_Team2 = [NodePath("Spawners/Team2/SpawnPoint4"), NodePath("Spawners/Team2/SpawnPoint5"), NodePath("Spawners/Team2/SpawnPoint6"), NodePath("Spawners/Team2/SpawnPoint7")]
+
+[node name="PolygonVolumeB" type="Node3D" parent="Objectives/CapturePointB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.849117, -1.58395, 2.09654)
+script = ExtResource("12_6yx75")
+points = PackedVector2Array(-28.8338, -2.83277, -18.862, -1.41222, -19.1186, 5.31954, -15.2866, 8.3058, -13.9685, 9.1936, 10.4709, 12.8202, 14.9834, -10.2911, -13.8429, -14.6114, -27.1298, -15.2274)
+height = 10.0
+color = Color(0, 0.6, 0.7, 0.42)
+metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
+
+[node name="Spawners" type="Node3D" parent="Objectives/CapturePointB"]
+
+[node name="Team1" type="Node3D" parent="Objectives/CapturePointB/Spawners"]
+
+[node name="SpawnPoint" parent="Objectives/CapturePointB/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.681193, 0, -0.732103, 0, 1, 0, 0.732103, 0, -0.681193, 43.3786, 1.47885, -6.43332)
+
+[node name="SpawnPoint2" parent="Objectives/CapturePointB/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.741543, 0, -0.670905, 0, 1, 0, 0.670905, 0, 0.741543, 33.9378, 11.2776, -54.2912)
+
+[node name="SpawnPoint3" parent="Objectives/CapturePointB/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.144288, 0, -0.989536, 0, 1, 0, 0.989536, 0, 0.144288, 49.1568, 0.859497, 9.93716)
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointB/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.475839, 0, -0.879532, 0, 1, 0, 0.879532, 0, 0.475839, 36.4094, -5.49948, 44.1371)
+
+[node name="Team2" type="Node3D" parent="Objectives/CapturePointB/Spawners"]
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointB/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.979081, 0, -0.203471, 0, 1, 0, 0.203471, 0, 0.979081, -19.5459, 15.4376, -60.2716)
+
+[node name="SpawnPoint5" parent="Objectives/CapturePointB/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.465507, 0, 0.885044, 0, 1, 0, -0.885044, 0, 0.465507, -59.1538, 10.6883, -16.1189)
+
+[node name="SpawnPoint6" parent="Objectives/CapturePointB/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.124779, 0, 0.992185, 0, 1, 0, -0.992185, 0, 0.124779, -62.1783, 8.12753, 1.25899)
+
+[node name="SpawnPoint7" parent="Objectives/CapturePointB/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.202992, 0, 0.97918, 0, 1, 0, -0.97918, 0, -0.202992, -86.0432, 7.16397, 15.825)
+
+[node name="CapturePointC" parent="Objectives" node_paths=PackedStringArray("CaptureArea", "InfantrySpawnPoints_Team1", "InfantrySpawnPoints_Team2") instance=ExtResource("11_3u1r8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 149.991, 57.1313, 94.0458)
+ObjId = 202
+CaptureArea = NodePath("PolygonVolumeC")
+InfantrySpawnPoints_Team1 = [NodePath("Spawners/Team1/SpawnPoint"), NodePath("Spawners/Team1/SpawnPoint2"), NodePath("Spawners/Team1/SpawnPoint3"), NodePath("Spawners/Team1/SpawnPoint4")]
+InfantrySpawnPoints_Team2 = [NodePath("Spawners/Team2/SpawnPoint4"), NodePath("Spawners/Team2/SpawnPoint5"), NodePath("Spawners/Team2/SpawnPoint6"), NodePath("Spawners/Team2/SpawnPoint7")]
+
+[node name="PolygonVolumeC" type="Node3D" parent="Objectives/CapturePointC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.23068, 0)
+script = ExtResource("12_6yx75")
+points = PackedVector2Array(-20.8707, 11.1621, -8.86459, 20.6721, -4.78902, 23.1141, -1.61078, 18.3223, 6.87758, 23.6705, 20.3297, 2.19722, -6.5471, -15.3149, -12.2654, -6.47916, -22.7352, 4.63906, -25.0732, 8.35991)
+height = 15.0
+color = Color(0, 0.6, 0.7, 0.42)
+metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
+
+[node name="Spawners" type="Node3D" parent="Objectives/CapturePointC"]
+
+[node name="Team1" type="Node3D" parent="Objectives/CapturePointC/Spawners"]
+
+[node name="SpawnPoint" parent="Objectives/CapturePointC/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.54803, 0, -0.836458, 0, 1, 0, 0.836458, 0, -0.54803, 23.955, -2.66251, 78.7412)
+
+[node name="SpawnPoint2" parent="Objectives/CapturePointC/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.701395, 0, -0.712773, 0, 1, 0, 0.712773, 0, 0.701395, 69.0293, 4.19269, 20.5516)
+
+[node name="SpawnPoint3" parent="Objectives/CapturePointC/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.919965, 0, -0.392, 0, 1, 0, 0.392, 0, -0.919965, -27.983, 3.04056, 45.2077)
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointC/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.605502, 0, -0.795844, 0, 1, 0, 0.795844, 0, -0.605502, 73.8221, -0.193817, 41.5525)
+
+[node name="Team2" type="Node3D" parent="Objectives/CapturePointC/Spawners"]
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointC/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.129522, 0, 0.991576, 0, 1, 0, -0.991576, 0, -0.129522, -53.5158, 4.87204, 32.8702)
+
+[node name="SpawnPoint5" parent="Objectives/CapturePointC/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.998636, 0, -0.0522138, 0, 1, 0, 0.0522138, 0, 0.998636, -53.6674, 11.383, -43.5444)
+
+[node name="SpawnPoint6" parent="Objectives/CapturePointC/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.132585, 0, 0.991172, 0, 1, 0, -0.991172, 0, -0.132585, -91.9493, 10.9764, -15.7334)
+
+[node name="SpawnPoint7" parent="Objectives/CapturePointC/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.382973, 0, 0.923759, 0, 1, 0, -0.923759, 0, -0.382973, -89.3074, 9.52322, 8.79174)
+
+[node name="CapturePointD" parent="Objectives" node_paths=PackedStringArray("CaptureArea", "InfantrySpawnPoints_Team1", "InfantrySpawnPoints_Team2") instance=ExtResource("11_3u1r8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.925, 54.0502, 185.908)
+ObjId = 203
+CaptureArea = NodePath("PolygonVolumeD")
+InfantrySpawnPoints_Team1 = [NodePath("Spawners/Team1/SpawnPoint"), NodePath("Spawners/Team1/SpawnPoint2"), NodePath("Spawners/Team1/SpawnPoint3"), NodePath("Spawners/Team1/SpawnPoint4")]
+InfantrySpawnPoints_Team2 = [NodePath("Spawners/Team2/SpawnPoint4"), NodePath("Spawners/Team2/SpawnPoint5"), NodePath("Spawners/Team2/SpawnPoint6"), NodePath("Spawners/Team2/SpawnPoint7")]
+
+[node name="PolygonVolumeD" type="Node3D" parent="Objectives/CapturePointD"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.23068, 0)
+script = ExtResource("12_6yx75")
+points = PackedVector2Array(-18.341, 10.6909, -13.724, 8.84698, 6.10908, 13.4029, 6.79803, 15.8187, 17.9871, 14.8865, 18.5258, -10.4439, 16.5302, -14.9399, 2.99558, -20.5175, -7.19331, -22.1535, -20.7157, -12.6011, -25.7798, -10.7167, -22.2015, -1.49797, -17.5782, -3.36691, -16.759, -0.415314, -21.9191, 1.07002)
+height = 20.0
+color = Color(0, 0.6, 0.7, 0.42)
+metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
+
+[node name="Spawners" type="Node3D" parent="Objectives/CapturePointD"]
+
+[node name="Team1" type="Node3D" parent="Objectives/CapturePointD/Spawners"]
+
+[node name="SpawnPoint" parent="Objectives/CapturePointD/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.608512, 0, 0.793545, 0, 1, 0, -0.793545, 0, -0.608512, -35.5026, 1.0376, 57.4926)
+
+[node name="SpawnPoint2" parent="Objectives/CapturePointD/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.741847, 0, -0.670569, 0, 1, 0, 0.670569, 0, -0.741847, 3.91003, -6.67917, 64.2006)
+
+[node name="SpawnPoint3" parent="Objectives/CapturePointD/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.916147, 0, -0.400845, 0, 1, 0, 0.400845, 0, -0.916147, 42.9921, -7.65344, 45.9794)
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointD/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.0749782, 0, -0.997185, 0, 1, 0, 0.997185, 0, -0.0749782, 47.9727, 4.99338, -30.4262)
+
+[node name="Team2" type="Node3D" parent="Objectives/CapturePointD/Spawners"]
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointD/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.964276, 0, 0.2649, 0, 1, 0, -0.2649, 0, -0.964276, -39.9114, 2.37943, 51.6609)
+
+[node name="SpawnPoint5" parent="Objectives/CapturePointD/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.481952, 0, 0.876197, 0, 1, 0, -0.876197, 0, 0.481952, -38.2094, 7.40582, -49.0389)
+
+[node name="SpawnPoint6" parent="Objectives/CapturePointD/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.763267, 0, 0.646084, 0, 1, 0, -0.646084, 0, -0.763267, -89.4987, 12.575, 18.2058)
+
+[node name="SpawnPoint7" parent="Objectives/CapturePointD/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.553086, 0, 0.833124, 0, 1, 0, -0.833124, 0, 0.553086, -64.8962, 9.62595, -31.8498)
+
+[node name="CapturePointE" parent="Objectives" node_paths=PackedStringArray("CaptureArea", "InfantrySpawnPoints_Team1", "InfantrySpawnPoints_Team2") instance=ExtResource("11_3u1r8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 117.367, 86.6629, -26.4238)
+ObjId = 204
+CaptureArea = NodePath("PolygonVolumeE")
+InfantrySpawnPoints_Team1 = [NodePath("Spawners/Team1/SpawnPoint1"), NodePath("Spawners/Team1/SpawnPoint2"), NodePath("Spawners/Team1/SpawnPoint3"), NodePath("Spawners/Team1/SpawnPoint4")]
+InfantrySpawnPoints_Team2 = [NodePath("Spawners/Team2/SpawnPoint5"), NodePath("Spawners/Team2/SpawnPoint6"), NodePath("Spawners/Team2/SpawnPoint7"), NodePath("Spawners/Team2/SpawnPoint8")]
+
+[node name="PolygonVolumeE" type="Node3D" parent="Objectives/CapturePointE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.48865, -0.460846, -0.242634)
+script = ExtResource("12_6yx75")
+points = PackedVector2Array(-4.19122, 17.1687, 0.439247, 20.3572, 5.83413, 13.4605, -2.54096, 7.14578, 3.43208, -1.3073, -16.2756, -16.3561, -28.2956, 0.031744, -12.4362, 11.7982, -18.6519, 20.137, -10.4315, 26.3994)
+height = 10.0
+color = Color(0, 0.6, 0.7, 0.42)
+metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
+
+[node name="Spawners" type="Node3D" parent="Objectives/CapturePointE"]
+
+[node name="Team1" type="Node3D" parent="Objectives/CapturePointE/Spawners"]
+
+[node name="SpawnPoint1" parent="Objectives/CapturePointE/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.350698, 0, -0.936488, 0, 1, 0, 0.936488, 0, -0.350698, 105.66, 18.0759, -15.7484)
+
+[node name="SpawnPoint2" parent="Objectives/CapturePointE/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.886115, 0, -0.463466, 0, 1, 0, 0.463466, 0, -0.886115, 78.0753, 6.60205, 45.3617)
+
+[node name="SpawnPoint3" parent="Objectives/CapturePointE/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.987281, 0, -0.158985, 0, 1, 0, 0.158985, 0, -0.987281, 54.1314, 5.00323, 59.2771)
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointE/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.375739, 0, -0.926725, 0, 1, 0, 0.926725, 0, -0.375739, 38.8099, 2.49176, 76.5689)
+
+[node name="Team2" type="Node3D" parent="Objectives/CapturePointE/Spawners"]
+
+[node name="SpawnPoint5" parent="Objectives/CapturePointE/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.905124, 0, 0.425147, 0, 1, 0, -0.425147, 0, 0.905124, -67.3392, 6.22687, -32.9087)
+
+[node name="SpawnPoint6" parent="Objectives/CapturePointE/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.487829, 0, 0.872939, 0, 1, 0, -0.872939, 0, 0.487829, -69.4539, -3.29761, 5.5337)
+
+[node name="SpawnPoint7" parent="Objectives/CapturePointE/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.987485, 0, 0.15771, 0, 1, 0, -0.15771, 0, 0.987485, 10.0603, 19.9286, -90.8337)
+
+[node name="SpawnPoint8" parent="Objectives/CapturePointE/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.956274, 0, 0.292472, 0, 1, 0, -0.292472, 0, 0.956274, -46.5901, 10.648, -35.0154)
+
+[node name="CapturePointF" parent="Objectives" node_paths=PackedStringArray("CaptureArea", "InfantrySpawnPoints_Team1", "InfantrySpawnPoints_Team2") instance=ExtResource("11_3u1r8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.8539, 70.3567, 39.137)
+ObjId = 205
+CaptureArea = NodePath("PolygonVolumeF")
+InfantrySpawnPoints_Team1 = [NodePath("Spawners/Team1/SpawnPoint"), NodePath("Spawners/Team1/SpawnPoint2"), NodePath("Spawners/Team1/SpawnPoint3"), NodePath("Spawners/Team1/SpawnPoint4")]
+InfantrySpawnPoints_Team2 = [NodePath("Spawners/Team2/SpawnPoint4"), NodePath("Spawners/Team2/SpawnPoint5"), NodePath("Spawners/Team2/SpawnPoint6"), NodePath("Spawners/Team2/SpawnPoint7")]
+
+[node name="PolygonVolumeF" type="Node3D" parent="Objectives/CapturePointF"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.60434, -3.23068, 14.1192)
+script = ExtResource("12_6yx75")
+points = PackedVector2Array(10.9452, -18.4689, -15.3464, -32.4329, -26.9574, -10.6936, -0.669161, 3.40456)
+height = 9.0
+color = Color(0, 0.6, 0.7, 0.42)
+metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
+
+[node name="Spawners" type="Node3D" parent="Objectives/CapturePointF"]
+
+[node name="Team1" type="Node3D" parent="Objectives/CapturePointF/Spawners"]
+
+[node name="SpawnPoint" parent="Objectives/CapturePointF/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.838042, 0, -0.545605, 0, 1, 0, 0.545605, 0, -0.838042, 58.4145, -2.15921, 43.0876)
+
+[node name="SpawnPoint2" parent="Objectives/CapturePointF/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.988727, 0, -0.149725, 0, 1, 0, 0.149725, 0, -0.988727, 40.4173, -4.18948, 70.8479)
+
+[node name="SpawnPoint3" parent="Objectives/CapturePointF/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.26128, 0, -0.965263, 0, 1, 0, 0.965263, 0, 0.26128, 79.8031, 1.83624, -2.70095)
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointF/Spawners/Team1" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.99965, 0, 0.0264558, 0, 1, 0, -0.0264558, 0, -0.99965, 3.97352, -6.63211, 87.1971)
+
+[node name="Team2" type="Node3D" parent="Objectives/CapturePointF/Spawners"]
+
+[node name="SpawnPoint4" parent="Objectives/CapturePointF/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.725062, 0, 0.688683, 0, 1, 0, -0.688683, 0, 0.725062, -41.614, 9.49509, -62.27)
+
+[node name="SpawnPoint5" parent="Objectives/CapturePointF/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.116844, 0, 0.99315, 0, 1, 0, -0.99315, 0, 0.116844, -85.979, 5.05029, 9.73725)
+
+[node name="SpawnPoint6" parent="Objectives/CapturePointF/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(-0.499698, 0, 0.8662, 0, 1, 0, -0.8662, 0, -0.499698, -44.2465, -4.18146, 57.9781)
+
+[node name="SpawnPoint7" parent="Objectives/CapturePointF/Spawners/Team2" instance=ExtResource("8_6bh0x")]
+transform = Transform3D(0.708426, 0, -0.705785, 0, 1, 0, 0.705785, 0, 0.708426, 24.3555, 5.05618, -56.5243)
+
+[node name="TeamSwitcher" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.903, 0)
+
+[node name="Switch1" type="Node3D" parent="TeamSwitcher"]
+transform = Transform3D(-0.492302, 0, 0.870425, 0, 1, 0, -0.870425, 0, -0.492302, 411.212, 57.6727, 206.384)
+
+[node name="MannequinRotation_01" parent="TeamSwitcher/Switch1" instance=ExtResource("13_6au45")]
+
+[node name="InteractPoint" parent="TeamSwitcher/Switch1" instance=ExtResource("14_3hjn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.464253, 1.00183, 0.640311)
+ObjId = 998
+
+[node name="Switch2" type="Node3D" parent="TeamSwitcher"]
+transform = Transform3D(-0.888225, 0, -0.459409, 0, 1, 0, 0.459409, 0, -0.888225, -67.6891, 78.6021, -74.7437)
+
+[node name="MannequinRotation_01" parent="TeamSwitcher/Switch2" instance=ExtResource("13_6au45")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+
+[node name="InteractPoint" parent="TeamSwitcher/Switch2" instance=ExtResource("14_3hjn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.468886, 1.00392, 0.634739)
+ObjId = 999
+
+[node name="AI Spawns" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.903, 0)
+
+[node name="AI_Spawner - Team1" parent="AI Spawns" node_paths=PackedStringArray("AlternateSpawns") instance=ExtResource("15_t2nnn")]
+transform = Transform3D(0.211734, 0, -0.977328, 0, 1, 0, 0.977328, 0, 0.211734, 438.093, 58.0648, 199.473)
+ObjId = 901
+AlternateSpawns = [null, null, null, null]
+
+[node name="AI_Spawner - Team2" parent="AI Spawns" node_paths=PackedStringArray("AlternateSpawns") instance=ExtResource("15_t2nnn")]
+transform = Transform3D(-0.641731, 0, 0.76693, 0, 1, 0, -0.76693, 0, -0.641731, -79.6601, 78.9617, -74.6037)
+ObjId = 902
+AlternateSpawns = [null, null, null, null]
+
+[node name="Vehicles" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.903, 0)
+
+[node name="Team1" type="Node3D" parent="Vehicles"]
+
+[node name="VehicleSpawner-Apache" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(-0.576233, 0, -0.817285, 0, 1, 0, 0.817285, 0, -0.576233, 494.291, 59.4603, 198.893)
+VehicleType = 8
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-UH60" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(-0.576233, 0, -0.817285, 0, 1, 0, 0.817285, 0, -0.576233, 467.387, 59.4603, 218.17)
+VehicleType = 7
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Abrams" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.47132, 0, -0.881962, 0, 1, 0, 0.881962, 0, 0.47132, 441.434, 59.5327, 178.11)
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Abrams2" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.47132, 0, -0.881962, 0, 1, 0, 0.881962, 0, 0.47132, 454.657, 59.5327, 202.627)
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Bradly" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(-0.768428, 0, -0.639935, 0, 1, 0, 0.639935, 0, -0.768428, 431.174, 59.3291, 213.549)
+VehicleType = 17
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer60" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(-0.444885, 0, -0.895588, 0, 1, 0, 0.895588, 0, -0.444885, 449.327, 59.3291, 214.578)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer61" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.331454, 0, -0.943472, 0, 1, 0, 0.943472, 0, 0.331454, 451.812, 59.3291, 185.832)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer62" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.891078, 0, 0.453851, 0, 1, 0, -0.453851, 0, 0.891078, 418.105, 59.3291, 187.193)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer63" parent="Vehicles/Team1" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.891078, 0, 0.453851, 0, 1, 0, -0.453851, 0, 0.891078, 423.616, 59.3291, 182.214)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="Team2" type="Node3D" parent="Vehicles"]
+
+[node name="VehicleSpawner-Eurocopter" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.847187, 0, -0.531295, 0, 1, 0, 0.531295, 0, 0.847187, -32.1332, 79.3995, -138.974)
+VehicleType = 6
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-UH-60" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.868674, 0, -0.495383, 0, 1, 0, 0.495383, 0, 0.868674, -50.3453, 79.3995, -148.955)
+VehicleType = 7
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Leopard" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.47232, 0, 0.881426, 0, 1, 0, -0.881426, 0, 0.47232, -79.1885, 80.4127, -86.5313)
+VehicleType = 1
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Leopard2" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.942122, 0, 0.335271, 0, 1, 0, -0.335271, 0, 0.942122, -114.422, 79.7429, -106.188)
+VehicleType = 1
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-CV90" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.971875, 0, -0.235498, 0, 1, 0, 0.235498, 0, 0.971875, -62.5181, 79.8023, -105.051)
+VehicleType = 3
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer62" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.997131, 0, -0.0756922, 0, 1, 0, 0.0756922, 0, 0.997131, -113.092, 80.1737, -125.726)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer63" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.999931, 0, -0.0116933, 0, 1, 0, 0.0116933, 0, 0.999931, -110.167, 80.1218, -136.383)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer64" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.999931, 0, -0.0116933, 0, 1, 0, 0.0116933, 0, 0.999931, -53.4749, 80.1218, -130.321)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="VehicleSpawner-Flyer65" parent="Vehicles/Team2" instance=ExtResource("16_1f27e")]
+transform = Transform3D(0.999931, 0, -0.0116933, 0, 1, 0, 0.0116933, 0, 0.999931, -60.9956, 80.1218, -133.718)
+VehicleType = 13
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 25
+
+[node name="Snow FX" type="Node3D" parent="."]
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 432.019, 311.597, 263.361)
+ObjId = 2000
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap2" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 388.977, 309.275, 220.156)
+ObjId = 2001
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap116" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 366.456, 304.828, 192.75)
+ObjId = 2002
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap117" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 317.718, 297.155, 174.624)
+ObjId = 2003
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap118" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 281.368, 301.331, 163.624)
+ObjId = 2004
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap119" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 238.639, 301.333, 170.051)
+ObjId = 2005
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap120" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 189.71, 299.374, 245.928)
+ObjId = 2006
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap121" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 172.25, 299.673, 280.264)
+ObjId = 2007
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap122" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 117.526, 306.169, 297.697)
+ObjId = 2008
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap123" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 354.3, 348.409, 17.8547)
+ObjId = 2009
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap124" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 367.605, 343.847, 51.1339)
+ObjId = 2010
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap125" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 310.284, 337.901, 16.712)
+ObjId = 2011
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap126" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 219.367, 344.603, 21.1061)
+ObjId = 2012
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap127" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205.894, 340.475, 62.0763)
+ObjId = 2013
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap128" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 181.886, 343.224, 40.6203)
+ObjId = 2014
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap129" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.27, 349.247, -14.079)
+ObjId = 2015
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap130" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 194.294, 357.32, -62.6373)
+ObjId = 2016
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap131" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 145.335, 354.603, -79.2232)
+ObjId = 2017
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap132" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105.808, 351.366, -75.9637)
+ObjId = 2018
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap203" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.96708, 317.459, 137.911)
+ObjId = 2019
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap204" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.3518, 317.582, 144.673)
+ObjId = 2020
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap205" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92.1227, 321.884, 49.0937)
+ObjId = 2021
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap206" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179.198, 310.76, 147.932)
+ObjId = 2022
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap207" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 224.479, 311.693, 129.181)
+ObjId = 2023
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap208" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 327.68, 313.185, 143.038)
+ObjId = 2024
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap209" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 346.192, 306.727, 145.249)
+ObjId = 2025
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap210" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 352.13, 318.286, 114.769)
+ObjId = 2026
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap211" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 245.115, 295.835, 264.061)
+ObjId = 2027
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap212" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 262.841, 297.197, 277.743)
+ObjId = 2028
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap213" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 206.437, 299.33, 305.564)
+ObjId = 2029
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap214" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170.037, 305.839, 214.546)
+ObjId = 2030
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap215" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101.171, 308.489, 176.225)
+ObjId = 2031
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap216" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.5, 313.513, 236.27)
+ObjId = 2032
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap217" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.1723, 318.55, 265.751)
+ObjId = 2033
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap218" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.9217, 314.314, 178.418)
+ObjId = 2034
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap219" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2058, 327.776, 5.35891)
+ObjId = 2035
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap220" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.2219, 323.694, 39.2616)
+ObjId = 2036
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap221" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100.67, 329.169, 43.0486)
+ObjId = 2037
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap222" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 222.485, 354.482, -18.3798)
+ObjId = 2038
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap223" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 244.913, 354.555, -28.4725)
+ObjId = 2039
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap224" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 247.486, 341.62, 11.1825)
+ObjId = 2040
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap225" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 280.166, 338.26, 22.4195)
+ObjId = 2041
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap226" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 285.206, 342.282, 4.78955)
+ObjId = 2042
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap227" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 452.295, 320.99, 119.504)
+ObjId = 2043
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap228" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 478.524, 317.104, 143.34)
+ObjId = 2044
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap229" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 390.966, 300.641, 254.714)
+ObjId = 2045
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap230" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 352.921, 292.655, 255.868)
+ObjId = 2046
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap231" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 361.823, 300.406, 231.52)
+ObjId = 2047
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap232" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 262.413, 298.86, 178.914)
+ObjId = 2048
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap133" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5565, 343.827, -92.7598)
+ObjId = 2049
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap134" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.9153, 316.907, 61.9983)
+ObjId = 2050
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap135" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.6587, 315.627, 86.0901)
+ObjId = 2051
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap136" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.7164, 314.182, 121.485)
+ObjId = 2052
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap137" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.506, 314.643, 137.447)
+ObjId = 2053
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap138" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 99.6754, 311.203, 151.09)
+ObjId = 2054
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap139" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108.203, 306.245, 207.321)
+ObjId = 2055
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap140" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106.382, 306.006, 278.028)
+ObjId = 2056
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap141" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 83.7739, 307.114, 253.644)
+ObjId = 2057
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap142" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.2949, 315.122, 166.303)
+ObjId = 2058
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap143" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.77, 320.178, 161.363)
+ObjId = 2059
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap144" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.4623, 319.152, 117.928)
+ObjId = 2060
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap145" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6998, 318.235, 109.366)
+ObjId = 2061
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap146" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.2318, 323.812, 144.074)
+ObjId = 2062
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap147" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -136.006, 327.542, 167.138)
+ObjId = 2063
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap148" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -149.375, 328.988, -58.0376)
+ObjId = 2064
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap149" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.1235, 331.546, -44.7395)
+ObjId = 2065
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap150" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.6972, 329.275, -133.738)
+ObjId = 2066
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap151" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.3577, 338.138, -95.3254)
+ObjId = 2067
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap152" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2963, 332.44, -27.854)
+ObjId = 2068
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap153" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.00698, 328.319, -10.0024)
+ObjId = 2069
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap154" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.6972, 326.755, 25.4831)
+ObjId = 2070
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap155" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.107, 324.326, 38.8273)
+ObjId = 2071
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap156" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.0216, 329.675, -50.9711)
+ObjId = 2072
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap157" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6831, 335.078, -120.216)
+ObjId = 2073
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap158" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -107.398, 331.788, -181.731)
+ObjId = 2074
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap159" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -133.055, 332.766, -216.008)
+ObjId = 2075
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap160" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -144.143, 337.445, -201.953)
+ObjId = 2076
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap161" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -149.027, 333.296, -233.975)
+ObjId = 2077
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap162" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.3515, 331.97, -194.586)
+ObjId = 2078
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap163" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 93.2144, 353.882, -116.658)
+ObjId = 2079
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap164" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 157.47, 352.798, -61.3293)
+ObjId = 2080
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap165" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 295.169, 297.031, 196.819)
+ObjId = 2081
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap166" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 289.398, 297.443, 223.257)
+ObjId = 2082
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap167" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 321.04, 292.506, 269.51)
+ObjId = 2083
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap168" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.2843, 317.234, 283.697)
+ObjId = 2084
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap169" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.60569, 320.366, 266.048)
+ObjId = 2085
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap170" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.6593, 318.566, 232.197)
+ObjId = 2086
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap171" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.9374, 322.692, 233.117)
+ObjId = 2087
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap172" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.7261, 326.006, 183.917)
+ObjId = 2088
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap173" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -168.12, 322.114, 95.7264)
+ObjId = 2089
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap174" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -136.685, 331.758, -136.689)
+ObjId = 2090
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap175" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 342.098, 325.334, 96.2121)
+ObjId = 2091
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap176" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 362.582, 307.025, 148.189)
+ObjId = 2092
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap177" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 343.505, 298.777, 176.979)
+ObjId = 2093
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap178" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 430.404, 311.003, 182.224)
+ObjId = 2094
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap179" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 490.714, 311.093, 206.726)
+ObjId = 2095
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap180" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 396.497, 315.969, 180.414)
+ObjId = 2096
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap181" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 400.694, 318.043, 141.84)
+ObjId = 2097
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap3" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 392.066, 278.484, 324.838)
+ObjId = 2098
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap4" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 330.051, 285.959, 288.032)
+ObjId = 2099
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap5" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 208.395, 253.93, 402.747)
+ObjId = 2100
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap6" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 313.89, 299.977, 220.451)
+ObjId = 2101
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap7" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 387.423, 321.792, 164.7)
+ObjId = 2102
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap8" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 383.851, 325.19, 105.032)
+ObjId = 2103
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap9" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 468.107, 304.561, 286.55)
+ObjId = 2104
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap10" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 521.152, 296.075, 262.299)
+ObjId = 2105
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap11" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 275.632, 294.56, 289.174)
+ObjId = 2106
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap12" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 229.488, 298.252, 299.221)
+ObjId = 2107
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap13" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 173.47, 302.843, 327.634)
+ObjId = 2108
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap14" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98.1956, 315.524, 326.384)
+ObjId = 2109
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap15" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.4703, 323.473, 311.054)
+ObjId = 2110
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap16" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.2549, 334.85, 326.413)
+ObjId = 2111
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap17" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.5806, 339.583, 295.246)
+ObjId = 2112
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap18" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -129.785, 333.606, 260.568)
+ObjId = 2113
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap19" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -141.414, 338.093, 219.338)
+ObjId = 2114
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap20" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -173.894, 334.234, 172.42)
+ObjId = 2115
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap21" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -188.883, 328.697, 119.176)
+ObjId = 2116
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap22" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200.35, 323.279, 86.8644)
+ObjId = 2117
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap23" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -217.827, 333.024, 43.1317)
+ObjId = 2118
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap24" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -139.517, 325.878, 70.958)
+ObjId = 2119
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap25" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.2862, 325.384, 64.2747)
+ObjId = 2120
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap26" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.3176, 321.513, 206.95)
+ObjId = 2121
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap27" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.7347, 323.861, 193.11)
+ObjId = 2122
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap28" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -76.0684, 326.259, 166.889)
+ObjId = 2123
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap29" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -112.535, 326.471, 129.115)
+ObjId = 2124
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap30" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -180.896, 325.487, 57.3692)
+ObjId = 2125
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap31" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 260.548, 308.598, 155.262)
+ObjId = 2126
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap32" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 172.195, 308.422, 177.838)
+ObjId = 2127
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap33" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 158.069, 312.19, 158.397)
+ObjId = 2128
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap34" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.6318, 313.139, 158.245)
+ObjId = 2129
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap35" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.9236, 316.384, 167.357)
+ObjId = 2130
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap36" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 292.631, 324.661, 96.3535)
+ObjId = 2131
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap37" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 241.712, 328.023, 90.5833)
+ObjId = 2132
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap38" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 411.779, 327.311, 84.4854)
+ObjId = 2133
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap39" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 364.264, 335.404, 73.8849)
+ObjId = 2134
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap40" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 335.731, 337.993, 53.6178)
+ObjId = 2135
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap41" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 310.288, 335.148, 69.5914)
+ObjId = 2136
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap42" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 243.286, 332.991, 76.3849)
+ObjId = 2137
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap43" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200.123, 345.738, 84.3836)
+ObjId = 2138
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap44" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 177.708, 347.386, 91.4865)
+ObjId = 2139
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap45" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 143.662, 339.281, 106.175)
+ObjId = 2140
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap46" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 119.092, 330.56, 90.4844)
+ObjId = 2141
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap47" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 172.073, 353.112, 79.6466)
+ObjId = 2142
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap48" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 147.82, 350.788, 86.6825)
+ObjId = 2143
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap49" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 139.203, 348.037, 61.7713)
+ObjId = 2144
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap50" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 144.541, 345.567, 19.1816)
+ObjId = 2145
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap51" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125.272, 294.102, 9.41578)
+ObjId = 2146
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap52" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108.205, 343.537, 12.7551)
+ObjId = 2147
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap53" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.2394, 342.838, -1.40078)
+ObjId = 2148
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap54" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.2663, 346.957, -30.0429)
+ObjId = 2149
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap55" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.0296, 341.101, -45.6116)
+ObjId = 2150
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap56" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9385, 334.555, -50.2802)
+ObjId = 2151
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap57" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8091, 329.097, -18.9475)
+ObjId = 2152
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap58" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.8431, 328.343, 12.231)
+ObjId = 2153
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap59" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.6569, 324.797, 41.8397)
+ObjId = 2154
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap60" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.4251, 321.154, 59.1242)
+ObjId = 2155
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap61" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.1427, 329.059, 26.2136)
+ObjId = 2156
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap62" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.91589, 328.034, -5.17919)
+ObjId = 2157
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap63" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.5291, 331.56, -20.1014)
+ObjId = 2158
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap64" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -81.2202, 333.842, -23.6757)
+ObjId = 2159
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap65" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -108.97, 331.405, -29.2124)
+ObjId = 2160
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap66" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -175.143, 334.303, -49.7477)
+ObjId = 2161
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap67" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -113.964, 327.179, 5.72038)
+ObjId = 2162
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap68" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.9214, 327.426, 25.1614)
+ObjId = 2163
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap69" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -185.744, 326.516, -7.17849)
+ObjId = 2164
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap70" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.4494, 323.55, 115.692)
+ObjId = 2165
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap71" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.137, 323.786, 79.166)
+ObjId = 2166
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap72" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.889, 321.525, 95.8035)
+ObjId = 2167
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap73" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 442.687, 323.284, 108.503)
+ObjId = 2168
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap74" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 492.897, 315.418, 163.772)
+ObjId = 2169
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap75" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 384.589, 327.939, 117.61)
+ObjId = 2170
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap76" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 313.342, 323.094, 120.937)
+ObjId = 2171
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap77" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 251.423, 313.761, 126.203)
+ObjId = 2172
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap78" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5695, 343.161, -69.9125)
+ObjId = 2173
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap79" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.47009, 348.768, -91.8668)
+ObjId = 2174
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap80" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.151, 342.177, -116.151)
+ObjId = 2175
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap81" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -174.056, 337.596, -67.3296)
+ObjId = 2176
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap82" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -159.584, 343.737, -122.236)
+ObjId = 2177
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap83" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -153.34, 341.893, -157.197)
+ObjId = 2178
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap84" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 420.765, 311.176, 211.481)
+ObjId = 2179
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap85" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 466.314, 311.156, 227.701)
+ObjId = 2180
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap86" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 416.795, 311.084, 144.188)
+ObjId = 2181
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap87" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 477.074, 312.65, 175.3)
+ObjId = 2182
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap88" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 202.884, 345.403, 26.8161)
+ObjId = 2183
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap89" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 152.74, 341.198, 42.0781)
+ObjId = 2184
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap90" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 198.359, 347.045, 7.1463)
+ObjId = 2185
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap91" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.116, 346.867, -99.0953)
+ObjId = 2186
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap92" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -76.4991, 332.029, -63.6175)
+ObjId = 2187
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap93" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -144.984, 335.295, -87.0111)
+ObjId = 2188
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap94" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -67.4807, 331.781, -97.6954)
+ObjId = 2189
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap95" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -120.152, 331.615, -115.7)
+ObjId = 2190
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap96" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.0726, 331.775, -123.904)
+ObjId = 2191
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap97" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -116.333, 332.032, -141.32)
+ObjId = 2192
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap98" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.4634, 331.775, -142.386)
+ObjId = 2193
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap99" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -99.5628, 331.623, -163.248)
+ObjId = 2194
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap100" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.6056, 331.849, -168.408)
+ObjId = 2195
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap101" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.8276, 332.04, -103.001)
+ObjId = 2196
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap102" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -121.719, 326.907, 32.1851)
+ObjId = 2197
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap103" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -171.186, 323.35, 16.9194)
+ObjId = 2198
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap104" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -140.736, 323.487, 20.1621)
+ObjId = 2199
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap105" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -158.682, 322.7, 56.8469)
+ObjId = 2200
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap106" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -139.479, 323.769, -6.0601)
+ObjId = 2201
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap107" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.9493, 329.25, 68.7048)
+ObjId = 2202
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap108" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90.6002, 307.9, 223.572)
+ObjId = 2203
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap109" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.759, 310.048, 292.525)
+ObjId = 2204
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap110" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 217.442, 297.498, 252.488)
+ObjId = 2205
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap111" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 319.652, 296.131, 197.979)
+ObjId = 2206
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap112" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 332.25, 296.637, 240.934)
+ObjId = 2207
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap113" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.9773, 315.848, 145.451)
+ObjId = 2208
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap114" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8697, 323.57, 258.055)
+ObjId = 2209
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap115" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.046, 325.31, 123.574)
+ObjId = 2210
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap182" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 134.116, 301.736, 276.778)
+ObjId = 2211
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap183" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 137.01, 301.953, 217.305)
+ObjId = 2212
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap184" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 194.837, 301.619, 202.496)
+ObjId = 2213
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap185" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 136.973, 309.245, 168.957)
+ObjId = 2214
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap187" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92.0772, 334.288, 23.3504)
+ObjId = 2215
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap188" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66.433, 335.666, 8.36934)
+ObjId = 2216
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap189" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.7798, 334.117, -24.2468)
+ObjId = 2217
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap190" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.4944, 324.875, -3.40393)
+ObjId = 2218
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap191" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.4944, 324.875, -3.40393)
+ObjId = 2219
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap192" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -117.484, 322.131, 100.141)
+ObjId = 2220
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap193" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -146.379, 325.478, 123.122)
+ObjId = 2221
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap194" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.3478, 320.984, 81.0683)
+ObjId = 2222
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap195" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.72076, 323.422, 78.0591)
+ObjId = 2223
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap196" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.668, 323.075, 44.7543)
+ObjId = 2224
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap197" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.89274, 325.379, 12.614)
+ObjId = 2225
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap198" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 246.158, 317.925, 104.546)
+ObjId = 2226
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap199" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 276.994, 330.382, 87.1765)
+ObjId = 2227
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap200" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75.4253, 345.906, -28.1255)
+ObjId = 2228
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap201" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 124.682, 353.08, -99.2682)
+ObjId = 2229
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap202" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.2413, 332.882, 3.49608)
+ObjId = 2230
+metadata/_edit_group_ = true
+
+[node name="FX_Snow_BlowingSnow_L_01_TerrainSnap186" parent="Snow FX" instance=ExtResource("20_tdicw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.1036, 314.153, 190.036)
+ObjId = 2231
+metadata/_edit_group_ = true
+
+[node name="EnvironmentDecalVolume_Winter_Event" parent="." instance=ExtResource("17_xvww2")]
+transform = Transform3D(10000, 0, 0, 0, 10000, 0, 0, 0, 10000, 175.038, 482.345, 311.46)
+
+[editable path="Static/MP_Contaminated_Terrain"]
+[editable path="Static/MP_Contaminated_Terrain/Mesh"]

@@ -1,0 +1,153 @@
+[gd_scene load_steps=11 format=3 uid="uid://bejiledeqd4wn"]
+
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/HQ_PlayerSpawner.tscn" id="1_ef7vp"]
+[ext_resource type="PackedScene" uid="uid://jv31so3xcr7p" path="res://addons/bf_portal/portal_tools/types/PolygonVolume/PolygonVolume.tscn" id="2_wm3it"]
+[ext_resource type="PackedScene" path="res://objects/entities/SpawnPoint.tscn" id="3_ifoeh"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/CombatArea.tscn" id="5_bccq3"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/WorldIcon.tscn" id="5_ifoeh"]
+[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/DeployCam.tscn" id="6_5gigp"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/InteractPoint.tscn" id="6_vyiha"]
+[ext_resource type="PackedScene" path="res://static/MP_Portal_Sand_Terrain.tscn" id="7_nxwix"]
+[ext_resource type="PackedScene" path="res://static/MP_Portal_Sand_Assets.tscn" id="8_4vtks"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/VL7Cloud.tscn" id="10_ifoeh"]
+
+[node name="MP_Portal_Sand" type="Node3D"]
+
+[node name="TEAM_1_HQ" parent="." node_paths=PackedStringArray("HQArea", "InfantrySpawns") instance=ExtResource("1_ef7vp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.0207, 32.4003, -0.012538)
+AltTeam = 0
+ObjId = 1
+HQArea = NodePath("HQ_Team1")
+InfantrySpawns = [NodePath("SpawnPoint_1_1"), NodePath("SpawnPoint_1_2"), NodePath("SpawnPoint_1_3"), NodePath("SpawnPoint_1_4")]
+
+[node name="HQ_Team1" parent="TEAM_1_HQ" instance=ExtResource("2_wm3it")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+points = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+
+[node name="SpawnPoint_1_1" parent="TEAM_1_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(0.999884, 0, -0.0152535, 0, 1, 0, 0.0152535, 0, 0.999884, 0, 0, -3)
+
+[node name="SpawnPoint_1_2" parent="TEAM_1_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(-0.9995, 0, -0.0316198, 0, 1, 0, 0.0316198, 0, -0.9995, 3, 0, 0)
+
+[node name="SpawnPoint_1_3" parent="TEAM_1_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(-0.0428871, 0, 0.99908, 0, 1, 0, -0.99908, 0, -0.0428871, -3, 0, 0)
+
+[node name="SpawnPoint_1_4" parent="TEAM_1_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(0.0841819, 0, -0.99645, 0, 1, 0, 0.99645, 0, 0.0841819, 0, 0, 3)
+
+[node name="TEAM_2_HQ" parent="." node_paths=PackedStringArray("HQArea", "InfantrySpawns") instance=ExtResource("1_ef7vp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.194, 32.9783, -0.0373716)
+Team = 2
+AltTeam = 0
+ObjId = 2
+HQArea = NodePath("HQ_Team2")
+InfantrySpawns = [NodePath("SpawnPoint_2_1"), NodePath("SpawnPoint_2_2"), NodePath("SpawnPoint_2_3"), NodePath("SpawnPoint_2_4")]
+
+[node name="HQ_Team2" parent="TEAM_2_HQ" instance=ExtResource("2_wm3it")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+points = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+
+[node name="SpawnPoint_2_1" parent="TEAM_2_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint_2_2" parent="TEAM_2_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_2_3" parent="TEAM_2_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_2_4" parent="TEAM_2_HQ" instance=ExtResource("3_ifoeh")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="VL7Cloud" parent="." instance=ExtResource("10_ifoeh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -59.3272, 32.4844, -0.236099)
+ObjId = 1
+ScreenEffectEnabled = true
+SoldierEffectEnabled = true
+VFXEnabled = true
+
+[node name="VL7Cloud2" parent="." instance=ExtResource("10_ifoeh")]
+transform = Transform3D(0.884019, 0, 0.467452, 0, 1, 0, -0.467452, 0, 0.884019, -63.4802, 32.4844, -14.8006)
+ObjId = 2
+ScreenEffectEnabled = true
+SoldierEffectEnabled = true
+VFXEnabled = true
+
+[node name="WorldIcon_VL7Cloud_VFX" parent="." instance=ExtResource("5_ifoeh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.7461, 34.1892, -10.485)
+ObjId = 1
+iconTextVisible = true
+iconColor = [0.0, 1.0, 0.0]
+iconImagePicker = 4
+iconImageVisible = true
+
+[node name="InteractPoint" parent="WorldIcon_VL7Cloud_VFX" instance=ExtResource("6_vyiha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.590454, 0)
+ObjId = 1
+
+[node name="WorldIcon2_VL7Cloud_ScreenFX" parent="." instance=ExtResource("5_ifoeh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.7461, 34.1892, -8.48895)
+ObjId = 2
+iconTextVisible = true
+iconColor = [0.0, 1.0, 0.0]
+iconImagePicker = 15
+iconImageVisible = true
+
+[node name="InteractPoint" parent="WorldIcon2_VL7Cloud_ScreenFX" instance=ExtResource("6_vyiha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.590454, 0)
+ObjId = 2
+
+[node name="WorldIcon3_VL7Cloud_SoldierFX" parent="." instance=ExtResource("5_ifoeh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.7461, 34.1892, -6.46523)
+ObjId = 3
+iconTextVisible = true
+iconColor = [0.0, 1.0, 0.0]
+iconImagePicker = 6
+iconImageVisible = true
+
+[node name="InteractPoint" parent="WorldIcon3_VL7Cloud_SoldierFX" instance=ExtResource("6_vyiha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.590454, 0)
+ObjId = 3
+
+[node name="WorldIcon4_ScreenFX" parent="." instance=ExtResource("5_ifoeh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.7461, 34.1892, 0.454122)
+ObjId = 4
+iconTextVisible = true
+iconColor = [1.0, 0.0, 0.0]
+iconImagePicker = 15
+iconImageVisible = true
+
+[node name="InteractPoint" parent="WorldIcon4_ScreenFX" instance=ExtResource("6_vyiha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.590454, 0)
+ObjId = 4
+
+[node name="WorldIcon5_SoldierFX" parent="." instance=ExtResource("5_ifoeh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.7461, 34.1892, 2.45016)
+ObjId = 5
+iconTextVisible = true
+iconColor = [1.0, 0.0, 0.0]
+iconImagePicker = 6
+iconImageVisible = true
+
+[node name="InteractPoint" parent="WorldIcon5_SoldierFX" instance=ExtResource("6_vyiha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.590454, 0)
+ObjId = 5
+
+[node name="CombatArea" parent="." node_paths=PackedStringArray("CombatVolume") instance=ExtResource("5_bccq3")]
+CombatVolume = NodePath("CombatVolume")
+
+[node name="CombatVolume" parent="CombatArea" instance=ExtResource("2_wm3it")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 43.0489, 0)
+points = PackedVector2Array(-450, -450, -450, 450, 450, 450, 450, -450)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.101056, 0.994881, 0, -0.994881, 0.101056, 0, 383.15, 0)
+
+[node name="DeployCam" parent="Camera3D" instance=ExtResource("6_5gigp")]
+
+[node name="Static" type="Node3D" parent="."]
+
+[node name="MP_Portal_Sand_Terrain" parent="Static" instance=ExtResource("7_nxwix")]
+
+[node name="MP_Portal_Sand_Assets" parent="Static" instance=ExtResource("8_4vtks")]

@@ -1,6 +1,14 @@
-TODO:
+# Developing
+To build the script for Portal distribution, run
+```sh
+npm run build
+```
+
+This will run the [charmancer](./bin/charmancer.js) to detect illegal chars, [widgetter](./bin/widgetter.js) to validate strings.json inclusion and finally the script [combiner](./bin/combine.js) to output a single TS file to upload to the Portal website you can find this at [combined.ts](./combined.ts).
+
+# To-do
 - Fix vehicle pathing
-  - Might have to resort to waypoints for each spawn :()
+  - Might have to resort to waypoints for each spawn :(
 - Flesh out waves
 - Player scoring
 - Upgrades for players?
@@ -15,7 +23,6 @@ TODO:
 
 Upstream blocked bugs:
 - Emplacements spawn TOWS instead of MG's
-- Setting capture point owner doesn't work
 
 Playtest notes:
 - Hide intro on death

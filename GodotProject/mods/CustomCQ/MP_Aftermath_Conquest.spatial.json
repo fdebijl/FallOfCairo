@@ -1,0 +1,2566 @@
+{
+    "Portal_Dynamic": [
+        {
+            "name": "DeployCam",
+            "type": "DeployCam",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 0.101056,
+                "z": -0.994881
+            },
+            "front": {
+                "x": 0,
+                "y": 0.994881,
+                "z": 0.101056
+            },
+            "position": {
+                "x": -600.903,
+                "y": 264.669,
+                "z": 16.8177
+            },
+            "id": "Camera3D/DeployCam"
+        },
+        {
+            "name": "CombatArea",
+            "CombatVolume": "Play Area/CombatArea/CombatVolume",
+            "type": "CombatArea",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -616.801,
+                "y": 150.283,
+                "z": -55.6144
+            },
+            "id": "Play Area/CombatArea",
+            "linked": [
+                "CombatVolume"
+            ]
+        },
+        {
+            "name": "CombatVolume",
+            "type": "PolygonVolume",
+            "id": "Play Area/CombatArea/CombatVolume",
+            "height": 100,
+            "points": [
+                {
+                    "x": -641.1642,
+                    "y": 10.886,
+                    "z": -127.7737
+                },
+                {
+                    "x": -667.293,
+                    "y": 10.886,
+                    "z": -103.0387
+                },
+                {
+                    "x": -694.6691,
+                    "y": 10.886,
+                    "z": -98.0817
+                },
+                {
+                    "x": -709.2154,
+                    "y": 10.886,
+                    "z": -50.9809
+                },
+                {
+                    "x": -708.2584,
+                    "y": 10.886,
+                    "z": 28.7791
+                },
+                {
+                    "x": -690.9223,
+                    "y": 10.886,
+                    "z": 140.8803
+                },
+                {
+                    "x": -628.0984,
+                    "y": 10.886,
+                    "z": 144.3163
+                },
+                {
+                    "x": -568.7765,
+                    "y": 10.886,
+                    "z": 93.878
+                },
+                {
+                    "x": -589.6448,
+                    "y": 10.886,
+                    "z": 80.1947
+                },
+                {
+                    "x": -560.2219,
+                    "y": 10.886,
+                    "z": 29.9099
+                },
+                {
+                    "x": -536.461,
+                    "y": 10.886,
+                    "z": 9.425879
+                },
+                {
+                    "x": -512.8641,
+                    "y": 10.886,
+                    "z": -10.7382
+                },
+                {
+                    "x": -512.999,
+                    "y": 10.886,
+                    "z": -52.1449
+                },
+                {
+                    "x": -512.5325,
+                    "y": 10.886,
+                    "z": -143.4437
+                },
+                {
+                    "x": -570.6113,
+                    "y": 10.886,
+                    "z": -177.6657
+                },
+                {
+                    "x": -624.0884,
+                    "y": 10.886,
+                    "z": -195.3617
+                }
+            ]
+        },
+        {
+            "name": "Sector - This manages the CapturePoint Names",
+            "CapturePoints": [
+                "Objectives/CapturePointA",
+                "Objectives/CapturePointB",
+                "Objectives/CapturePointC",
+                "Objectives/CapturePointD",
+                "Objectives/CapturePointE"
+            ],
+            "type": "Sector",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -775.875,
+                "y": 312.298,
+                "z": -653.785
+            },
+            "id": "Play Area/Sector - This manages the CapturePoint Names",
+            "linked": [
+                "CapturePoints"
+            ]
+        },
+        {
+            "name": "TEAM_1_HQ",
+            "AltTeam": "TeamNeutral",
+            "ObjId": 1,
+            "InfantrySpawns": [
+                "TEAM_1_HQ/SpawnPoint_1_1",
+                "TEAM_1_HQ/SpawnPoint_1_2",
+                "TEAM_1_HQ/SpawnPoint_1_3",
+                "TEAM_1_HQ/SpawnPoint_1_4"
+            ],
+            "HQArea": "TEAM_1_HQ/HQ_Team1",
+            "type": "HQ_PlayerSpawner",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -695.234,
+                "y": 55.4956,
+                "z": -174.185
+            },
+            "id": "TEAM_1_HQ",
+            "linked": [
+                "HQArea",
+                "InfantrySpawns"
+            ]
+        },
+        {
+            "name": "HQ_Team1",
+            "color": [
+                0,
+                0.53562,
+                0.972885,
+                0.42
+            ],
+            "type": "PolygonVolume",
+            "id": "TEAM_1_HQ/HQ_Team1",
+            "height": 50,
+            "points": [
+                {
+                    "x": -703.67473,
+                    "y": 35.7369,
+                    "z": -109.8137
+                },
+                {
+                    "x": -703.48974,
+                    "y": 35.7369,
+                    "z": -107.0531
+                },
+                {
+                    "x": -694.523856,
+                    "y": 35.7369,
+                    "z": -107.3378
+                },
+                {
+                    "x": -694.647086,
+                    "y": 35.7369,
+                    "z": -97.9951
+                },
+                {
+                    "x": -667.2269,
+                    "y": 35.7369,
+                    "z": -103.0275
+                },
+                {
+                    "x": -641.136,
+                    "y": 35.7369,
+                    "z": -127.7744
+                },
+                {
+                    "x": -624.0646,
+                    "y": 35.7369,
+                    "z": -195.3404
+                },
+                {
+                    "x": -630.2685,
+                    "y": 35.7369,
+                    "z": -201.4186
+                },
+                {
+                    "x": -676.9247,
+                    "y": 35.7369,
+                    "z": -215.2108
+                },
+                {
+                    "x": -675.872,
+                    "y": 35.7369,
+                    "z": -217.4738
+                },
+                {
+                    "x": -686.19103,
+                    "y": 35.7369,
+                    "z": -222.4502
+                },
+                {
+                    "x": -694.381644,
+                    "y": 35.7369,
+                    "z": -204.7102
+                },
+                {
+                    "x": -732.0242,
+                    "y": 35.7369,
+                    "z": -220.2315
+                },
+                {
+                    "x": -735.4803,
+                    "y": 35.7369,
+                    "z": -218.7608
+                },
+                {
+                    "x": -747.246,
+                    "y": 35.7369,
+                    "z": -189.9351
+                },
+                {
+                    "x": -745.7017,
+                    "y": 35.7369,
+                    "z": -186.8467
+                },
+                {
+                    "x": -707.9048,
+                    "y": 35.7369,
+                    "z": -171.69846
+                },
+                {
+                    "x": -708.004,
+                    "y": 35.7369,
+                    "z": -145.5632
+                },
+                {
+                    "x": -718.0048,
+                    "y": 35.7369,
+                    "z": -145.6367
+                },
+                {
+                    "x": -719.7696,
+                    "y": 35.7369,
+                    "z": -143.6513
+                },
+                {
+                    "x": -719.7696,
+                    "y": 35.7369,
+                    "z": -112.1783
+                },
+                {
+                    "x": -718.0048,
+                    "y": 35.7369,
+                    "z": -109.8987
+                }
+            ]
+        },
+        {
+            "name": "SpawnPoint_1_1",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.637612,
+                "y": 0,
+                "z": -0.770358
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.770358,
+                "y": 0,
+                "z": 0.637612
+            },
+            "position": {
+                "x": -666.8836,
+                "y": 55.4956,
+                "z": -156.2331
+            },
+            "id": "TEAM_1_HQ/SpawnPoint_1_1"
+        },
+        {
+            "name": "SpawnPoint_1_2",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.770191,
+                "y": 0,
+                "z": -0.637814
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.637814,
+                "y": 0,
+                "z": 0.770191
+            },
+            "position": {
+                "x": -692.234,
+                "y": 55.4956,
+                "z": -174.185
+            },
+            "id": "TEAM_1_HQ/SpawnPoint_1_2"
+        },
+        {
+            "name": "SpawnPoint_1_3",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.90473,
+                "y": 0,
+                "z": -0.425985
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.425985,
+                "y": 0,
+                "z": 0.90473
+            },
+            "position": {
+                "x": -689.08306,
+                "y": 55.4956,
+                "z": -149.5117
+            },
+            "id": "TEAM_1_HQ/SpawnPoint_1_3"
+        },
+        {
+            "name": "SpawnPoint_1_4",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.362877,
+                "y": 0,
+                "z": -0.931837
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.931837,
+                "y": 0,
+                "z": 0.362877
+            },
+            "position": {
+                "x": -669.7111,
+                "y": 55.5660651,
+                "z": -195.6207
+            },
+            "id": "TEAM_1_HQ/SpawnPoint_1_4"
+        },
+        {
+            "name": "TEAM_2_HQ",
+            "Team": "Team2",
+            "AltTeam": "TeamNeutral",
+            "ObjId": 2,
+            "InfantrySpawns": [
+                "TEAM_2_HQ/SpawnPoint_2_1",
+                "TEAM_2_HQ/SpawnPoint_2_2",
+                "TEAM_2_HQ/SpawnPoint_2_3",
+                "TEAM_2_HQ/SpawnPoint_2_4"
+            ],
+            "HQArea": "TEAM_2_HQ/HQ_Team2",
+            "type": "HQ_PlayerSpawner",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -525.18,
+                "y": 66.642,
+                "z": 60.9551
+            },
+            "id": "TEAM_2_HQ",
+            "linked": [
+                "HQArea",
+                "InfantrySpawns"
+            ]
+        },
+        {
+            "name": "HQ_Team2",
+            "color": [
+                0.997255,
+                0.0438671,
+                7.70092e-07,
+                0.42
+            ],
+            "type": "PolygonVolume",
+            "id": "TEAM_2_HQ/HQ_Team2",
+            "height": 50,
+            "points": [
+                {
+                    "x": -506.7517,
+                    "y": 59.3745,
+                    "z": -0.0429
+                },
+                {
+                    "x": -512.8771,
+                    "y": 59.3745,
+                    "z": -10.7474
+                },
+                {
+                    "x": -560.2503,
+                    "y": 59.3745,
+                    "z": 29.8792
+                },
+                {
+                    "x": -589.6587,
+                    "y": 59.3745,
+                    "z": 80.1962
+                },
+                {
+                    "x": -568.7827,
+                    "y": 59.3745,
+                    "z": 93.8841
+                },
+                {
+                    "x": -542.9736,
+                    "y": 59.3745,
+                    "z": 71.3153
+                },
+                {
+                    "x": -520.74049,
+                    "y": 59.3745,
+                    "z": 72.4001
+                },
+                {
+                    "x": -502.4685,
+                    "y": 59.3745,
+                    "z": 48.7056
+                },
+                {
+                    "x": -514.6843,
+                    "y": 59.3745,
+                    "z": 30.4909
+                }
+            ]
+        },
+        {
+            "name": "SpawnPoint_2_1",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.680415,
+                "y": 0,
+                "z": 0.732828
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.732828,
+                "y": 0,
+                "z": -0.680415
+            },
+            "position": {
+                "x": -523.2757,
+                "y": 65.39286,
+                "z": 63.99191
+            },
+            "id": "TEAM_2_HQ/SpawnPoint_2_1"
+        },
+        {
+            "name": "SpawnPoint_2_2",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.997604,
+                "y": 0,
+                "z": -0.0691822
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.0691822,
+                "y": 0,
+                "z": -0.997604
+            },
+            "position": {
+                "x": -546.848,
+                "y": 65.43218,
+                "z": 67.03783
+            },
+            "id": "TEAM_2_HQ/SpawnPoint_2_2"
+        },
+        {
+            "name": "SpawnPoint_2_3",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.5454,
+                "y": 0,
+                "z": 0.838176
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.838176,
+                "y": 0,
+                "z": -0.5454
+            },
+            "position": {
+                "x": -564.9806,
+                "y": 60.11688,
+                "z": 69.33707
+            },
+            "id": "TEAM_2_HQ/SpawnPoint_2_3"
+        },
+        {
+            "name": "SpawnPoint_2_4",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.165771,
+                "y": 0,
+                "z": 0.986164
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.986164,
+                "y": 0,
+                "z": -0.165771
+            },
+            "position": {
+                "x": -534.7284,
+                "y": 60.64345,
+                "z": 34.029
+            },
+            "id": "TEAM_2_HQ/SpawnPoint_2_4"
+        },
+        {
+            "name": "CapturePointA",
+            "ObjId": 200,
+            "OutlineAbove16Points": true,
+            "TacticalAdviceAirVehicleFriendly": true,
+            "InfantrySpawnPoints_Team1": [
+                "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_1",
+                "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_2",
+                "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_3",
+                "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_4",
+                "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_5"
+            ],
+            "InfantrySpawnPoints_Team2": [
+                "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_6",
+                "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_7",
+                "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_8",
+                "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_9",
+                "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_10"
+            ],
+            "CaptureArea": "Objectives/CapturePointA/CapturePointArea",
+            "type": "CapturePoint",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -570.7238,
+                "y": 53.9695,
+                "z": -143.9811
+            },
+            "id": "Objectives/CapturePointA",
+            "linked": [
+                "CaptureArea",
+                "InfantrySpawnPoints_Team1",
+                "InfantrySpawnPoints_Team2"
+            ]
+        },
+        {
+            "name": "CapturePointArea",
+            "type": "PolygonVolume",
+            "id": "Objectives/CapturePointA/CapturePointArea",
+            "height": 30,
+            "points": [
+                {
+                    "x": -574.59724,
+                    "y": 48.62918,
+                    "z": -158.020793
+                },
+                {
+                    "x": -582.36866,
+                    "y": 48.62918,
+                    "z": -127.381893
+                },
+                {
+                    "x": -565.93568,
+                    "y": 48.62918,
+                    "z": -123.309493
+                },
+                {
+                    "x": -557.81766,
+                    "y": 48.62918,
+                    "z": -153.975573
+                }
+            ]
+        },
+        {
+            "name": "SpawnPoint_1",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.761459,
+                "y": 0,
+                "z": 0.648213
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.648213,
+                "y": 0,
+                "z": 0.761459
+            },
+            "position": {
+                "x": -570.882613,
+                "y": 54.684855,
+                "z": -179.3247
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_1"
+        },
+        {
+            "name": "SpawnPoint_2",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.923351,
+                "y": 0,
+                "z": -0.383957
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.383957,
+                "y": 0,
+                "z": 0.923351
+            },
+            "position": {
+                "x": -596.3722,
+                "y": 53.80852,
+                "z": -173.2137
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_2"
+        },
+        {
+            "name": "SpawnPoint_3",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.374914,
+                "y": 0,
+                "z": 0.927059
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.927059,
+                "y": 0,
+                "z": -0.374914
+            },
+            "position": {
+                "x": -537.7195,
+                "y": 54.222292,
+                "z": -137.34237
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_3"
+        },
+        {
+            "name": "SpawnPoint_4",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.992506,
+                "y": 0,
+                "z": -0.1222
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.1222,
+                "y": 0,
+                "z": 0.992506
+            },
+            "position": {
+                "x": -592.2294,
+                "y": 54.0283188,
+                "z": -154.2641
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_4"
+        },
+        {
+            "name": "SpawnPoint_5",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.71064,
+                "y": 0,
+                "z": -0.703556
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.703556,
+                "y": 0,
+                "z": 0.71064
+            },
+            "position": {
+                "x": -595.4093,
+                "y": 53.8851189,
+                "z": -162.816
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team1/SpawnPoint_5"
+        },
+        {
+            "name": "SpawnPoint_6",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.842152,
+                "y": 0,
+                "z": 0.539242
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.539242,
+                "y": 0,
+                "z": -0.842152
+            },
+            "position": {
+                "x": -526.2624,
+                "y": 54.245066,
+                "z": -109.3722
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_6"
+        },
+        {
+            "name": "SpawnPoint_7",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.904589,
+                "y": 0,
+                "z": 0.426285
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.426285,
+                "y": 0,
+                "z": -0.904589
+            },
+            "position": {
+                "x": -540.3862,
+                "y": 54.0257859,
+                "z": -99.5052
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_7"
+        },
+        {
+            "name": "SpawnPoint_8",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.179866,
+                "y": 0,
+                "z": -0.983692
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.983692,
+                "y": 0,
+                "z": -0.179866
+            },
+            "position": {
+                "x": -614.651,
+                "y": 54.184725,
+                "z": -97.6818
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_8"
+        },
+        {
+            "name": "SpawnPoint_9",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.815552,
+                "y": 0,
+                "z": -0.578683
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.578683,
+                "y": 0,
+                "z": -0.815552
+            },
+            "position": {
+                "x": -569.969344,
+                "y": 54.331637,
+                "z": -91.7265
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_9"
+        },
+        {
+            "name": "SpawnPoint_10",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.468733,
+                "y": 0,
+                "z": 0.88334
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.88334,
+                "y": 0,
+                "z": -0.468733
+            },
+            "position": {
+                "x": -527.0197,
+                "y": 54.224993,
+                "z": -96.8211
+            },
+            "id": "Objectives/CapturePointA/Spawns/Team2/SpawnPoint_10"
+        },
+        {
+            "name": "CapturePointB",
+            "ObjId": 201,
+            "OutlineAbove16Points": true,
+            "TacticalAdviceAirVehicleFriendly": true,
+            "InfantrySpawnPoints_Team1": [
+                "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_1",
+                "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_2",
+                "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_3",
+                "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_4",
+                "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_5"
+            ],
+            "InfantrySpawnPoints_Team2": [
+                "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_6",
+                "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_7",
+                "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_8",
+                "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_9",
+                "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_10"
+            ],
+            "CaptureArea": "Objectives/CapturePointB/CapturePointArea",
+            "type": "CapturePoint",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -550.8291,
+                "y": 58.7115,
+                "z": -31.645
+            },
+            "id": "Objectives/CapturePointB",
+            "linked": [
+                "CaptureArea",
+                "InfantrySpawnPoints_Team1",
+                "InfantrySpawnPoints_Team2"
+            ]
+        },
+        {
+            "name": "CapturePointArea",
+            "type": "PolygonVolume",
+            "id": "Objectives/CapturePointB/CapturePointArea",
+            "height": 30,
+            "points": [
+                {
+                    "x": -545.33911,
+                    "y": 53.60971,
+                    "z": -40.9152071
+                },
+                {
+                    "x": -564.15725,
+                    "y": 53.60971,
+                    "z": -40.9545371
+                },
+                {
+                    "x": -564.15615,
+                    "y": 53.60971,
+                    "z": -39.6784671
+                },
+                {
+                    "x": -565.15805,
+                    "y": 53.60971,
+                    "z": -39.6788971
+                },
+                {
+                    "x": -565.27415,
+                    "y": 53.60971,
+                    "z": -23.3636971
+                },
+                {
+                    "x": -564.14175,
+                    "y": 53.60971,
+                    "z": -23.3960771
+                },
+                {
+                    "x": -564.14915,
+                    "y": 53.60971,
+                    "z": -22.1108271
+                },
+                {
+                    "x": -545.32763,
+                    "y": 53.60971,
+                    "z": -22.0875171
+                },
+                {
+                    "x": -545.97033,
+                    "y": 53.60971,
+                    "z": -27.9664471
+                },
+                {
+                    "x": -545.5628,
+                    "y": 53.60971,
+                    "z": -28.0169071
+                },
+                {
+                    "x": -545.6112,
+                    "y": 53.60971,
+                    "z": -35.0183371
+                }
+            ]
+        },
+        {
+            "name": "SpawnPoint_1",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.816591,
+                "y": 0,
+                "z": -0.577216
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.577216,
+                "y": 0,
+                "z": 0.816591
+            },
+            "position": {
+                "x": -529.3857,
+                "y": 54.56978,
+                "z": -77.1726
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_1"
+        },
+        {
+            "name": "SpawnPoint_2",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.754446,
+                "y": 0,
+                "z": -0.656362
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.656362,
+                "y": 0,
+                "z": 0.754446
+            },
+            "position": {
+                "x": -541.52881,
+                "y": 54.13842,
+                "z": -76.7089
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_2"
+        },
+        {
+            "name": "SpawnPoint_3",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.0857118,
+                "y": 0,
+                "z": -0.996319
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.996319,
+                "y": 0,
+                "z": -0.0857118
+            },
+            "position": {
+                "x": -548.83465,
+                "y": 54.32559,
+                "z": -56.6702
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_3"
+        },
+        {
+            "name": "SpawnPoint_4",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.0673546,
+                "y": 0,
+                "z": 0.99773
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.99773,
+                "y": 0,
+                "z": 0.0673546
+            },
+            "position": {
+                "x": -520.9412,
+                "y": 55.05806,
+                "z": -57.0277
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_4"
+        },
+        {
+            "name": "SpawnPoint_5",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.148173,
+                "y": 0,
+                "z": -0.988962
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.988962,
+                "y": 0,
+                "z": 0.148173
+            },
+            "position": {
+                "x": -560.8551,
+                "y": 54.38773,
+                "z": -70.9193
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team1/SpawnPoint_5"
+        },
+        {
+            "name": "SpawnPoint_6",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.886673,
+                "y": 0,
+                "z": 0.462399
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.462399,
+                "y": 0,
+                "z": -0.886673
+            },
+            "position": {
+                "x": -517.3405,
+                "y": 59.96911,
+                "z": 6.9581
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_6"
+        },
+        {
+            "name": "SpawnPoint_7",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.159313,
+                "y": 0,
+                "z": -0.987228
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.987228,
+                "y": 0,
+                "z": -0.159313
+            },
+            "position": {
+                "x": -568.8806,
+                "y": 58.207132,
+                "z": 0.3146
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_7"
+        },
+        {
+            "name": "SpawnPoint_8",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.300339,
+                "y": 0,
+                "z": -0.953833
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.953833,
+                "y": 0,
+                "z": -0.300339
+            },
+            "position": {
+                "x": -546.38409,
+                "y": 58.558695,
+                "z": -0.027
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_8"
+        },
+        {
+            "name": "SpawnPoint_9",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.995345,
+                "y": 0,
+                "z": 0.0963669
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.0963669,
+                "y": 0,
+                "z": -0.995345
+            },
+            "position": {
+                "x": -531.9058,
+                "y": 59.74122,
+                "z": 17.3136
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_9"
+        },
+        {
+            "name": "SpawnPoint_10",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.806166,
+                "y": 0,
+                "z": 0.591689
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.591689,
+                "y": 0,
+                "z": -0.806166
+            },
+            "position": {
+                "x": -550.429015,
+                "y": 61.69684,
+                "z": 18.3215
+            },
+            "id": "Objectives/CapturePointB/Spawns/Team2/SpawnPoint_10"
+        },
+        {
+            "name": "CapturePointC",
+            "ObjId": 202,
+            "OutlineAbove16Points": true,
+            "TacticalAdviceAirVehicleFriendly": true,
+            "InfantrySpawnPoints_Team1": [
+                "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_1",
+                "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_2",
+                "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_3",
+                "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_4",
+                "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_5"
+            ],
+            "InfantrySpawnPoints_Team2": [
+                "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_6",
+                "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_7",
+                "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_8",
+                "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_9",
+                "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_10"
+            ],
+            "CaptureArea": "Objectives/CapturePointC/CapturePointArea",
+            "type": "CapturePoint",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -601.3182,
+                "y": 55.5127,
+                "z": -29.2277
+            },
+            "id": "Objectives/CapturePointC",
+            "linked": [
+                "CaptureArea",
+                "InfantrySpawnPoints_Team1",
+                "InfantrySpawnPoints_Team2"
+            ]
+        },
+        {
+            "name": "CapturePointArea",
+            "type": "PolygonVolume",
+            "id": "Objectives/CapturePointC/CapturePointArea",
+            "height": 30,
+            "points": [
+                {
+                    "x": -611.94706,
+                    "y": 50.17238,
+                    "z": -16.018693
+                },
+                {
+                    "x": -591.12548,
+                    "y": 50.17238,
+                    "z": -14.942193
+                },
+                {
+                    "x": -591.05694,
+                    "y": 50.17238,
+                    "z": -47.728793
+                },
+                {
+                    "x": -611.97726,
+                    "y": 50.17238,
+                    "z": -47.469693
+                }
+            ]
+        },
+        {
+            "name": "SpawnPoint_1",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.813528,
+                "y": 0,
+                "z": 0.581527
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.581527,
+                "y": 0,
+                "z": 0.813528
+            },
+            "position": {
+                "x": -578.3977,
+                "y": 54.781072,
+                "z": -66.7166
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_1"
+        },
+        {
+            "name": "SpawnPoint_2",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.594009,
+                "y": 0,
+                "z": 0.804458
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.804458,
+                "y": 0,
+                "z": 0.594009
+            },
+            "position": {
+                "x": -594.70803,
+                "y": 54.30102,
+                "z": -75.2373
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_2"
+        },
+        {
+            "name": "SpawnPoint_3",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.926475,
+                "y": 0,
+                "z": 0.376354
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.376354,
+                "y": 0,
+                "z": 0.926475
+            },
+            "position": {
+                "x": -629.7795,
+                "y": 54.29769,
+                "z": -72.3329
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_3"
+        },
+        {
+            "name": "SpawnPoint_4",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.62194,
+                "y": 0,
+                "z": -0.783065
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.783065,
+                "y": 0,
+                "z": 0.62194
+            },
+            "position": {
+                "x": -640.1433,
+                "y": 54.064,
+                "z": -75.4696
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_4"
+        },
+        {
+            "name": "SpawnPoint_5",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.956381,
+                "y": 0,
+                "z": 0.292122
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.292122,
+                "y": 0,
+                "z": 0.956381
+            },
+            "position": {
+                "x": -602.191918,
+                "y": 53.91108,
+                "z": -86.9645
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team1/SpawnPoint_5"
+        },
+        {
+            "name": "SpawnPoint_6",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.93286,
+                "y": 0,
+                "z": -0.360242
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.360242,
+                "y": 0,
+                "z": -0.93286
+            },
+            "position": {
+                "x": -603.81027,
+                "y": 58.55187,
+                "z": 26.0851
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_6"
+        },
+        {
+            "name": "SpawnPoint_7",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.726839,
+                "y": 0,
+                "z": 0.686808
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.686808,
+                "y": 0,
+                "z": -0.726839
+            },
+            "position": {
+                "x": -588.6931,
+                "y": 61.71845,
+                "z": 12.9875
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_7"
+        },
+        {
+            "name": "SpawnPoint_8",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.579707,
+                "y": 0,
+                "z": -0.814826
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.814826,
+                "y": 0,
+                "z": -0.579707
+            },
+            "position": {
+                "x": -611.5443,
+                "y": 59.37436,
+                "z": 31.5987
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_8"
+        },
+        {
+            "name": "SpawnPoint_9",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.478508,
+                "y": 0,
+                "z": 0.878083
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.878083,
+                "y": 0,
+                "z": -0.478508
+            },
+            "position": {
+                "x": -570.6462,
+                "y": 58.51045,
+                "z": -0.435
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_9"
+        },
+        {
+            "name": "SpawnPoint_10",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.943824,
+                "y": 0,
+                "z": 0.330448
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.330448,
+                "y": 0,
+                "z": -0.943824
+            },
+            "position": {
+                "x": -586.3498,
+                "y": 62.98882,
+                "z": 38.4148
+            },
+            "id": "Objectives/CapturePointC/Spawns/Team2/SpawnPoint_10"
+        },
+        {
+            "name": "CapturePointD",
+            "ObjId": 203,
+            "OutlineAbove16Points": true,
+            "TacticalAdviceAirVehicleFriendly": true,
+            "InfantrySpawnPoints_Team1": [
+                "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_1",
+                "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_2",
+                "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_3",
+                "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_4",
+                "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_5"
+            ],
+            "InfantrySpawnPoints_Team2": [
+                "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_6",
+                "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_7",
+                "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_8",
+                "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_9",
+                "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_10"
+            ],
+            "CaptureArea": "Objectives/CapturePointD/CapturePointArea",
+            "type": "CapturePoint",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -656.4345,
+                "y": 63.2606,
+                "z": -11.6979
+            },
+            "id": "Objectives/CapturePointD",
+            "linked": [
+                "CaptureArea",
+                "InfantrySpawnPoints_Team1",
+                "InfantrySpawnPoints_Team2"
+            ]
+        },
+        {
+            "name": "CapturePointArea",
+            "type": "PolygonVolume",
+            "id": "Objectives/CapturePointD/CapturePointArea",
+            "height": 10,
+            "points": [
+                {
+                    "x": -662.8098,
+                    "y": 63.2930059,
+                    "z": -6.531023
+                },
+                {
+                    "x": -662.92479,
+                    "y": 63.2930059,
+                    "z": -5.964233
+                },
+                {
+                    "x": -647.5407,
+                    "y": 63.2930059,
+                    "z": -5.770053
+                },
+                {
+                    "x": -647.78356,
+                    "y": 63.2930059,
+                    "z": -33.953493
+                },
+                {
+                    "x": -658.49022,
+                    "y": 63.2930059,
+                    "z": -33.990493
+                },
+                {
+                    "x": -656.88402,
+                    "y": 63.2930059,
+                    "z": -24.870893
+                },
+                {
+                    "x": -663.53069,
+                    "y": 63.2930059,
+                    "z": -24.956493
+                },
+                {
+                    "x": -663.48961,
+                    "y": 63.2930059,
+                    "z": -13.356946
+                },
+                {
+                    "x": -668.71753,
+                    "y": 63.2930059,
+                    "z": -13.412204
+                },
+                {
+                    "x": -668.75053,
+                    "y": 63.2930059,
+                    "z": -6.662163
+                }
+            ]
+        },
+        {
+            "name": "SpawnPoint_1",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.399022,
+                "y": 0,
+                "z": 0.916942
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.916942,
+                "y": 0,
+                "z": 0.399022
+            },
+            "position": {
+                "x": -651.32073,
+                "y": 54.03202,
+                "z": -70.0487
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_1"
+        },
+        {
+            "name": "SpawnPoint_2",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.858029,
+                "y": 0,
+                "z": 0.513601
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.513601,
+                "y": 0,
+                "z": 0.858029
+            },
+            "position": {
+                "x": -668.4954,
+                "y": 53.87315,
+                "z": -86.463
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_2"
+        },
+        {
+            "name": "SpawnPoint_3",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.854893,
+                "y": 0,
+                "z": 0.518803
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.518803,
+                "y": 0,
+                "z": 0.854893
+            },
+            "position": {
+                "x": -642.5149,
+                "y": 54.05723,
+                "z": -75.33
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_3"
+        },
+        {
+            "name": "SpawnPoint_4",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.820381,
+                "y": 0,
+                "z": -0.571818
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.571818,
+                "y": 0,
+                "z": 0.820381
+            },
+            "position": {
+                "x": -689.5369,
+                "y": 53.89869,
+                "z": -76.8316
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_4"
+        },
+        {
+            "name": "SpawnPoint_5",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.748087,
+                "y": 0,
+                "z": 0.6636
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.6636,
+                "y": 0,
+                "z": 0.748087
+            },
+            "position": {
+                "x": -652.47643,
+                "y": 53.93545,
+                "z": -78.0831
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team1/SpawnPoint_5"
+        },
+        {
+            "name": "SpawnPoint_6",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.576304,
+                "y": 0,
+                "z": -0.817237
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.817237,
+                "y": 0,
+                "z": -0.576304
+            },
+            "position": {
+                "x": -674.7512,
+                "y": 53.98272,
+                "z": 23.6836
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_6"
+        },
+        {
+            "name": "SpawnPoint_7",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.840586,
+                "y": 0,
+                "z": -0.541679
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.541679,
+                "y": 0,
+                "z": -0.840586
+            },
+            "position": {
+                "x": -695.073,
+                "y": 52.9883,
+                "z": 22.4266
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_7"
+        },
+        {
+            "name": "SpawnPoint_8",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.994236,
+                "y": 0,
+                "z": -0.107219
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.107219,
+                "y": 0,
+                "z": -0.994236
+            },
+            "position": {
+                "x": -660.24779,
+                "y": 54.51315,
+                "z": 18.28
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_8"
+        },
+        {
+            "name": "SpawnPoint_9",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.619327,
+                "y": 0,
+                "z": -0.785133
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.785133,
+                "y": 0,
+                "z": -0.619327
+            },
+            "position": {
+                "x": -685.3589,
+                "y": 54.04172,
+                "z": 39.6262
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_9"
+        },
+        {
+            "name": "SpawnPoint_10",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.999498,
+                "y": 0,
+                "z": 0.03169
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.03169,
+                "y": 0,
+                "z": -0.999498
+            },
+            "position": {
+                "x": -696.0616,
+                "y": 53.113,
+                "z": 42.0414
+            },
+            "id": "Objectives/CapturePointD/Spawns/Team2/SpawnPoint_10"
+        },
+        {
+            "name": "CapturePointE",
+            "ObjId": 204,
+            "OutlineAbove16Points": true,
+            "TacticalAdviceAirVehicleFriendly": true,
+            "TacticalAdvicePriorityLevel_Team1": "AICommanderWorldPriority_1",
+            "TacticalAdvicePriorityLevel_Team2": "AICommanderWorldPriority_1",
+            "InfantrySpawnPoints_Team1": [
+                "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_1",
+                "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_2",
+                "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_3",
+                "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_4",
+                "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_5"
+            ],
+            "InfantrySpawnPoints_Team2": [
+                "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_6",
+                "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_7",
+                "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_8",
+                "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_9",
+                "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_10"
+            ],
+            "CaptureArea": "Objectives/CapturePointE/CapturePointArea",
+            "type": "CapturePoint",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": -649.7674,
+                "y": 53.743,
+                "z": 72.7168
+            },
+            "id": "Objectives/CapturePointE",
+            "linked": [
+                "CaptureArea",
+                "InfantrySpawnPoints_Team1",
+                "InfantrySpawnPoints_Team2"
+            ]
+        },
+        {
+            "name": "CapturePointArea",
+            "type": "PolygonVolume",
+            "id": "Objectives/CapturePointE/CapturePointArea",
+            "height": 30,
+            "points": [
+                {
+                    "x": -661.34786,
+                    "y": 43.90714,
+                    "z": 60.723151
+                },
+                {
+                    "x": -661.13526,
+                    "y": 43.90714,
+                    "z": 67.335461
+                },
+                {
+                    "x": -665.41506,
+                    "y": 43.90714,
+                    "z": 67.219041
+                },
+                {
+                    "x": -665.51396,
+                    "y": 43.90714,
+                    "z": 82.582951
+                },
+                {
+                    "x": -631.98576,
+                    "y": 43.90714,
+                    "z": 82.636751
+                },
+                {
+                    "x": -632.22226,
+                    "y": 43.90714,
+                    "z": 67.189621
+                },
+                {
+                    "x": -642.08884,
+                    "y": 43.90714,
+                    "z": 66.786391
+                },
+                {
+                    "x": -642.14078,
+                    "y": 43.90714,
+                    "z": 60.838251
+                }
+            ]
+        },
+        {
+            "name": "SpawnPoint_1",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.987927,
+                "y": 0,
+                "z": 0.154917
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.154917,
+                "y": 0,
+                "z": 0.987927
+            },
+            "position": {
+                "x": -660.2114,
+                "y": 54.551002,
+                "z": 37.8839
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_1"
+        },
+        {
+            "name": "SpawnPoint_2",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.977779,
+                "y": 0,
+                "z": 0.209635
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.209635,
+                "y": 0,
+                "z": 0.977779
+            },
+            "position": {
+                "x": -626.0222,
+                "y": 58.86181,
+                "z": 32.5229
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_2"
+        },
+        {
+            "name": "SpawnPoint_3",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.805979,
+                "y": 0,
+                "z": -0.591943
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.591943,
+                "y": 0,
+                "z": 0.805979
+            },
+            "position": {
+                "x": -697.0455,
+                "y": 52.806225,
+                "z": 53.3801
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_3"
+        },
+        {
+            "name": "SpawnPoint_4",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.954521,
+                "y": 0,
+                "z": -0.298143
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.298143,
+                "y": 0,
+                "z": 0.954521
+            },
+            "position": {
+                "x": -661.3273,
+                "y": 58.80847,
+                "z": 14.4019
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_4"
+        },
+        {
+            "name": "SpawnPoint_5",
+            "type": "SpawnPoint",
+            "right": {
+                "x": 0.783997,
+                "y": 0,
+                "z": -0.620765
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.620765,
+                "y": 0,
+                "z": 0.783997
+            },
+            "position": {
+                "x": -649.917241,
+                "y": 58.79488,
+                "z": 30.3354
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team1/SpawnPoint_5"
+        },
+        {
+            "name": "SpawnPoint_6",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.40704,
+                "y": 0,
+                "z": -0.913412
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.913412,
+                "y": 0,
+                "z": -0.40704
+            },
+            "position": {
+                "x": -657.362,
+                "y": 53.8091659,
+                "z": 118.1049
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_6"
+        },
+        {
+            "name": "SpawnPoint_7",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.247911,
+                "y": 0,
+                "z": 0.968783
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.968783,
+                "y": 0,
+                "z": -0.247911
+            },
+            "position": {
+                "x": -632.7788,
+                "y": 53.818016,
+                "z": 117.4251
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_7"
+        },
+        {
+            "name": "SpawnPoint_8",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.962667,
+                "y": 0,
+                "z": -0.270685
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.270685,
+                "y": 0,
+                "z": -0.962667
+            },
+            "position": {
+                "x": -672.847,
+                "y": 53.8008766,
+                "z": 124.5437
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_8"
+        },
+        {
+            "name": "SpawnPoint_9",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.580618,
+                "y": 0,
+                "z": 0.814176
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.814176,
+                "y": 0,
+                "z": -0.580618
+            },
+            "position": {
+                "x": -605.869,
+                "y": 63.29292,
+                "z": 84.8813
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_9"
+        },
+        {
+            "name": "SpawnPoint_10",
+            "type": "SpawnPoint",
+            "right": {
+                "x": -0.837605,
+                "y": 0,
+                "z": 0.546278
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.546278,
+                "y": 0,
+                "z": -0.837605
+            },
+            "position": {
+                "x": -614.8398,
+                "y": 62.58702,
+                "z": 74.20809
+            },
+            "id": "Objectives/CapturePointE/Spawns/Team2/SpawnPoint_10"
+        },
+        {
+            "name": "AI_Spawner_Team1",
+            "ObjId": 901,
+            "type": "AI_Spawner",
+            "right": {
+                "x": 0.792267,
+                "y": 0,
+                "z": -0.610172
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.610172,
+                "y": 0,
+                "z": 0.792267
+            },
+            "position": {
+                "x": -693.9524,
+                "y": 55.4882,
+                "z": -169.37048
+            },
+            "id": "AI_Spawners (Temporary workaround for AI to play objective)/AI_Spawner_Team1"
+        },
+        {
+            "name": "AI_Spawner_Team2",
+            "ObjId": 902,
+            "type": "AI_Spawner",
+            "right": {
+                "x": -0.876045,
+                "y": 0,
+                "z": 0.482228
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.482228,
+                "y": 0,
+                "z": -0.876045
+            },
+            "position": {
+                "x": -543.2831,
+                "y": 65.3998,
+                "z": 62.86202
+            },
+            "id": "AI_Spawners (Temporary workaround for AI to play objective)/AI_Spawner_Team2"
+        },
+        {
+            "name": "MannequinRotation_01",
+            "type": "MannequinRotation_01",
+            "right": {
+                "x": -0.9739485760340494,
+                "y": 0,
+                "z": 0.2267704178206562
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.2267704178206562,
+                "y": 0,
+                "z": -0.9739485760340494
+            },
+            "position": {
+                "x": -667.3768848708014,
+                "y": 55.614904,
+                "z": -149.43272438597498
+            },
+            "id": "TeamSwitcher/TeamSwitchTrigger1/MannequinRotation_01"
+        },
+        {
+            "name": "InteractPoint",
+            "ObjId": 998,
+            "type": "InteractPoint",
+            "right": {
+                "x": -0.226770375248,
+                "y": 0,
+                "z": -0.9739485859465
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.9739485859465,
+                "y": 0,
+                "z": -0.226770375248
+            },
+            "position": {
+                "x": -667.0585375876553,
+                "y": 56.80713,
+                "z": -149.85759892378286
+            },
+            "id": "TeamSwitcher/TeamSwitchTrigger1/InteractPoint"
+        },
+        {
+            "name": "MannequinRotation_01",
+            "type": "MannequinRotation_01",
+            "right": {
+                "x": 0.19168251011216156,
+                "y": 0,
+                "z": -0.9814565262432128
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0.9814565262432128,
+                "y": 0,
+                "z": 0.19168251011216156
+            },
+            "position": {
+                "x": -542.7491064236614,
+                "y": 60.628704,
+                "z": 37.68698464860515
+            },
+            "id": "TeamSwitcher/TeamSwitchTrigger2/MannequinRotation_01"
+        },
+        {
+            "name": "InteractPoint",
+            "ObjId": 998,
+            "type": "InteractPoint",
+            "right": {
+                "x": 0.9814565178645,
+                "y": 0,
+                "z": 0.191682553013
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": -0.191682553013,
+                "y": 0,
+                "z": 0.9814565178645
+            },
+            "position": {
+                "x": -542.4917274208531,
+                "y": 61.82093,
+                "z": 38.15133255328808
+            },
+            "id": "TeamSwitcher/TeamSwitchTrigger2/InteractPoint"
+        }
+    ],
+    "Static": [
+        {
+            "name": "MP_Aftermath_Terrain",
+            "metadata/_edit_lock_": true,
+            "type": "MP_Aftermath_Terrain",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "id": "Static/MP_Aftermath_Terrain"
+        },
+        {
+            "name": "MP_Aftermath_Assets",
+            "metadata/_edit_lock_": true,
+            "type": "MP_Aftermath_Assets",
+            "right": {
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "up": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "front": {
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "id": "Static/MP_Aftermath_Assets"
+        }
+    ]
+}

@@ -1,0 +1,2064 @@
+[gd_scene load_steps=23 format=3 uid="uid://qj8qy078oncc"]
+
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/HQ_PlayerSpawner.tscn" id="1_hjvsx"]
+[ext_resource type="PackedScene" path="res://objects/entities/SpawnPoint.tscn" id="3_le20g"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/CombatArea.tscn" id="4_m0rlr"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/DeployCam.tscn" id="5_kl2j8"]
+[ext_resource type="PackedScene" path="res://static/MP_Battery_Terrain.tscn" id="6_4i28k"]
+[ext_resource type="Script" uid="uid://ck5uniw0pl6u8" path="res://addons/bf_portal/portal_tools/types/PolygonVolume/PolygonVolume.gd" id="7_lk4jv"]
+[ext_resource type="PackedScene" path="res://static/MP_Battery_Assets.tscn" id="7_tdkpy"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/AreaTrigger.tscn" id="9_ixrb5"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/ai/AI_Spawner.tscn" id="10_robpt"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/WorldIcon.tscn" id="11_qprlo"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/AreaTrigger.tscn" id="12_aioem"]
+[ext_resource type="PackedScene" path="res://objects/architecture/FiringRange_Floor_02.tscn" id="13_lk4jv"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/VehicleSpawner.tscn" id="13_wvte2"]
+[ext_resource type="PackedScene" path="res://objects/props/BarrierStoneBlock_01_G.tscn" id="14_ixrb5"]
+[ext_resource type="PackedScene" path="res://objects/architecture/HighwayOverpass_Bridge_04.tscn" id="17_aioem"]
+[ext_resource type="PackedScene" path="res://objects/props/HighwaySignage_04.tscn" id="19_qce52"]
+[ext_resource type="PackedScene" path="res://objects/props/PlanterConcrete_01_256.tscn" id="22_rebqq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n180x"]
+transparency = 1
+no_depth_test = true
+albedo_color = Color(0.0588235, 0.341176, 1, 0.447059)
+metallic_specular = 1.0
+emission_enabled = true
+emission = Color(0, 0.393591, 0.831216, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_v302a"]
+material = SubResource("StandardMaterial3D_n180x")
+radius = 30.0
+height = 60.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1pjol"]
+albedo_color = Color(3.46541e-06, 0.782368, 0.299319, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_aobhe"]
+material = SubResource("StandardMaterial3D_1pjol")
+radius = 10.0
+height = 20.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_xd4l2"]
+
+[node name="MP_Battery" type="Node3D"]
+
+[node name="Static" type="Node3D" parent="."]
+
+[node name="MP_Battery_Terrain" parent="Static" instance=ExtResource("6_4i28k")]
+metadata/_edit_lock_ = true
+
+[node name="MP_Battery_Assets" parent="Static" instance=ExtResource("7_tdkpy")]
+metadata/_edit_lock_ = true
+
+[node name="CombatArea" parent="." node_paths=PackedStringArray("CombatVolume") instance=ExtResource("4_m0rlr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1458.32, -9.88263, 0)
+CombatVolume = NodePath("CombatVolume")
+
+[node name="CombatVolume" type="Node3D" parent="CombatArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0534668, 0.307533, -0.0622864)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-1042.66, 545.304, -1048.34, -180.334, -296.331, -187.097, -311.12, 521.194)
+height = 300.0
+color = Color(0, 0.6, 0.7, 0.42)
+metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.101056, 0.994881, 0, -0.994881, 0.101056, 747.458, 373.711, 132.759)
+
+[node name="DeployCam" parent="Camera3D" instance=ExtResource("5_kl2j8")]
+
+[node name="Team_Stuff" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 737.003, 19.9963, 330.154)
+
+[node name="TEAM_1_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -68.5002, 50.8006, -205.918)
+AltTeam = 0
+ObjId = 1
+InfantrySpawns = [NodePath("SpawnPoint_1_1"), NodePath("SpawnPoint_1_2"), NodePath("SpawnPoint_1_3"), NodePath("SpawnPoint_1_4")]
+
+[node name="HQ_Team1" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_1_HQ"]
+transform = Transform3D(1, 0, 1.78814e-07, 0, 1, 0, -1.78814e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_1_1" parent="Team_Stuff/TEAM_1_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.999884, 0, -0.0152535, 0, 1, 0, 0.0152535, 0, 0.999884, 0, 0, -3)
+
+[node name="SpawnPoint_1_2" parent="Team_Stuff/TEAM_1_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.9995, 0, -0.0316198, 0, 1, 0, 0.0316198, 0, -0.9995, 3, 0, 0)
+
+[node name="SpawnPoint_1_3" parent="Team_Stuff/TEAM_1_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.0428871, 0, 0.99908, 0, 1, 0, -0.99908, 0, -0.0428871, -3, 0, 0)
+
+[node name="SpawnPoint_1_4" parent="Team_Stuff/TEAM_1_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.0841819, 0, -0.99645, 0, 1, 0, 0.99645, 0, 0.0841819, 0, 0, 3)
+
+[node name="TEAM_2_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -277.026, 59.3087, -95.131)
+Team = 2
+AltTeam = 0
+ObjId = 2
+InfantrySpawns = [NodePath("SpawnPoint_2_1"), NodePath("SpawnPoint_2_2"), NodePath("SpawnPoint_2_3"), NodePath("SpawnPoint_2_4")]
+
+[node name="HQ_Team2" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_2_HQ"]
+transform = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_2_1" parent="Team_Stuff/TEAM_2_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint_2_2" parent="Team_Stuff/TEAM_2_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_2_3" parent="Team_Stuff/TEAM_2_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_2_4" parent="Team_Stuff/TEAM_2_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="TEAM_3_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.316, 91.6712, -229.988)
+Team = 3
+AltTeam = 0
+ObjId = 3
+InfantrySpawns = [NodePath("SpawnPoint_3_1"), NodePath("SpawnPoint_3_2"), NodePath("SpawnPoint_3_3"), NodePath("SpawnPoint_3_4")]
+
+[node name="HQ_Team3" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_3_HQ"]
+transform = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_3_1" parent="Team_Stuff/TEAM_3_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint_3_2" parent="Team_Stuff/TEAM_3_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_3_3" parent="Team_Stuff/TEAM_3_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_3_4" parent="Team_Stuff/TEAM_3_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="TEAM_4_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.316, 91.6712, -229.988)
+Team = 4
+AltTeam = 0
+ObjId = 4
+InfantrySpawns = [NodePath("SpawnPoint_4_1"), NodePath("SpawnPoint_4_2"), NodePath("SpawnPoint_4_3"), NodePath("SpawnPoint_4_4")]
+
+[node name="HQ_Team4" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_4_HQ"]
+transform = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_4_1" parent="Team_Stuff/TEAM_4_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint_4_2" parent="Team_Stuff/TEAM_4_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_4_3" parent="Team_Stuff/TEAM_4_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_4_4" parent="Team_Stuff/TEAM_4_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="TEAM_5_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.316, 91.6712, -229.988)
+Team = 5
+AltTeam = 0
+ObjId = 5
+InfantrySpawns = [NodePath("SpawnPoint_5_1"), NodePath("SpawnPoint_5_2"), NodePath("SpawnPoint_5_3"), NodePath("SpawnPoint_5_4")]
+
+[node name="HQ_Team5" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_5_HQ"]
+transform = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_5_1" parent="Team_Stuff/TEAM_5_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint_5_2" parent="Team_Stuff/TEAM_5_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_5_3" parent="Team_Stuff/TEAM_5_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_5_4" parent="Team_Stuff/TEAM_5_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="TEAM_6_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.316, 91.6712, -229.988)
+Team = 6
+AltTeam = 0
+ObjId = 6
+InfantrySpawns = [NodePath("SpawnPoint_6_1"), NodePath("SpawnPoint6_2"), NodePath("SpawnPoint_6_3"), NodePath("SpawnPoint_6_4")]
+
+[node name="HQ_Team6" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_6_HQ"]
+transform = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_6_1" parent="Team_Stuff/TEAM_6_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint6_2" parent="Team_Stuff/TEAM_6_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_6_3" parent="Team_Stuff/TEAM_6_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_6_4" parent="Team_Stuff/TEAM_6_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="TEAM_7_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.316, 91.6712, -229.988)
+Team = 7
+AltTeam = 0
+ObjId = 3
+InfantrySpawns = [NodePath("SpawnPoint_7_1"), NodePath("SpawnPoint_7_2"), NodePath("SpawnPoint_7_3"), NodePath("SpawnPoint_7_4")]
+
+[node name="HQ_Team7" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_7_HQ"]
+transform = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_7_1" parent="Team_Stuff/TEAM_7_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint_7_2" parent="Team_Stuff/TEAM_7_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_7_3" parent="Team_Stuff/TEAM_7_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_7_4" parent="Team_Stuff/TEAM_7_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="TEAM_8_HQ" parent="Team_Stuff" node_paths=PackedStringArray("InfantrySpawns") instance=ExtResource("1_hjvsx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.316, 91.6712, -229.988)
+Team = 8
+AltTeam = 0
+ObjId = 8
+InfantrySpawns = [NodePath("SpawnPoint_8_1"), NodePath("SpawnPoint_8_2"), NodePath("SpawnPoint_8_3"), NodePath("SpawnPoint_8_4")]
+
+[node name="HQ_Team8" type="CollisionPolygon3D" parent="Team_Stuff/TEAM_8_HQ"]
+transform = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 5, 0)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+margin = 0.001
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="SpawnPoint_8_1" parent="Team_Stuff/TEAM_8_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.87795, 0, -0.478754, 0, 1, 0, 0.478754, 0, 0.87795, 0, 0, -3)
+
+[node name="SpawnPoint_8_2" parent="Team_Stuff/TEAM_8_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.997604, 0, 0.0691822, 0, 1, 0, -0.0691822, 0, -0.997604, 3, 0, 0)
+
+[node name="SpawnPoint_8_3" parent="Team_Stuff/TEAM_8_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(0.162758, 0, 0.986666, 0, 1, 0, -0.986666, 0, 0.162758, -3, 0, 0)
+
+[node name="SpawnPoint_8_4" parent="Team_Stuff/TEAM_8_HQ" instance=ExtResource("3_le20g")]
+transform = Transform3D(-0.165771, 0, -0.986164, 0, 1, 0, 0.986164, 0, -0.165771, 0, 0, 3)
+
+[node name="ModBuilder_AreaTrigger" parent="Team_Stuff" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.922747, 0, -0.385407, 0, 1, 0, 0.385407, 0, 0.922747, 295.202, 92.7022, -322.69)
+ObjId = 100
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Team_Stuff/ModBuilder_AreaTrigger"]
+depth = 10.0
+polygon = PackedVector2Array(5, 5, -5, 5, -5, -5, 5, -5)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="ModBuilder_AreaTrigger2" parent="Team_Stuff" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.922747, 0, -0.385407, 0, 1, 0, 0.385407, 0, 0.922747, 330.809, 92.7022, -310.938)
+ObjId = 101
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Team_Stuff/ModBuilder_AreaTrigger2"]
+depth = 10.0
+polygon = PackedVector2Array(5, 5, -5, 5, -5, -5, 5, -5)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="ModBuilder_AreaTrigger3" parent="Team_Stuff" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.922747, 0, -0.385407, 0, 1, 0, 0.385407, 0, 0.922747, 346.262, 92.7022, -291.867)
+ObjId = 102
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Team_Stuff/ModBuilder_AreaTrigger3"]
+depth = 10.0
+polygon = PackedVector2Array(5, 5, -5, 5, -5, -5, 5, -5)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="ModBuilder_AreaTrigger4" parent="Team_Stuff" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.922747, 0, -0.385407, 0, 1, 0, 0.385407, 0, 0.922747, 318.097, 97.5462, -244.834)
+ObjId = 103
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Team_Stuff/ModBuilder_AreaTrigger4"]
+depth = 10.0
+polygon = PackedVector2Array(5, 5, -5, 5, -5, -5, 5, -5)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="ModBuilder_AreaTrigger5" parent="Team_Stuff" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.922747, 0, -0.385407, 0, 1, 0, 0.385407, 0, 0.922747, 273.754, 101.418, -266.111)
+ObjId = 104
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Team_Stuff/ModBuilder_AreaTrigger5"]
+depth = 10.0
+polygon = PackedVector2Array(5, 5, -5, 5, -5, -5, 5, -5)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="ModBuilder_AreaTrigger6" parent="Team_Stuff" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.922747, 0, -0.385407, 0, 1, 0, 0.385407, 0, 0.922747, 243.476, 98.7922, -293.404)
+ObjId = 105
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Team_Stuff/ModBuilder_AreaTrigger6"]
+depth = 10.0
+polygon = PackedVector2Array(5, 5, -10.8208, 6.99614, -10.1349, -6.71477, 2.55143, -13.0281)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="ModBuilder_GruntSpawner" parent="Team_Stuff" instance=ExtResource("10_robpt")]
+transform = Transform3D(0.779885, 0, -0.625923, 0, 1, 0, 0.625923, 0, 0.779885, 276.245, 87.1962, -299.985)
+ObjId = 2205
+
+[node name="WorldIcon_Team0" parent="Team_Stuff" instance=ExtResource("11_qprlo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.624, 118.444, -390.509)
+iconColor = [1.0, 1.0, 1.0]
+iconImagePicker = 7
+
+[node name="WorldIcon_Team1" parent="Team_Stuff" instance=ExtResource("11_qprlo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.624, 118.444, -388.9)
+ObjId = 1
+iconColor = [1.0, 1.0, 1.0]
+iconImagePicker = 7
+iconTeamOwnerId = 1
+
+[node name="WorldIcon_Team2" parent="Team_Stuff" instance=ExtResource("11_qprlo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.624, 118.444, -387.108)
+ObjId = 2
+iconColor = [1.0, 1.0, 1.0]
+iconImagePicker = 7
+iconTeamOwnerId = 2
+
+[node name="WorldIcon_Team3" parent="Team_Stuff" instance=ExtResource("11_qprlo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.624, 118.444, -385.488)
+ObjId = 3
+iconColor = [1.0, 1.0, 1.0]
+iconImagePicker = 7
+iconTeamOwnerId = 3
+
+[node name="WorldIcon_Team4" parent="Team_Stuff" instance=ExtResource("11_qprlo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.624, 118.444, -383.921)
+ObjId = 4
+iconColor = [1.0, 1.0, 1.0]
+iconImagePicker = 7
+iconTeamOwnerId = 4
+
+[node name="WorldIcon_Team5" parent="Team_Stuff" instance=ExtResource("11_qprlo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.624, 118.444, -382.291)
+ObjId = 5
+iconColor = [1.0, 1.0, 1.0]
+iconImagePicker = 7
+iconTeamOwnerId = 5
+
+[node name="Checkpoint" type="Node3D" parent="Team_Stuff"]
+transform = Transform3D(0.997949, 0, -0.0640098, 0, 1, 0, 0.0640098, 0, 0.997949, -228.501, 49.4725, -426.385)
+
+[node name="Portal_AreaTrigger" parent="Team_Stuff" instance=ExtResource("12_aioem")]
+transform = Transform3D(0.721519, 0, 0.692395, 0, 1, 0, -0.692395, 0, 0.721519, -155.608, 111.728, -221.249)
+ObjId = 99
+
+[node name="GMPF_DeployCam2#Camera3D" type="Camera3D" parent="Team_Stuff"]
+transform = Transform3D(-0.973311, 0, 0.229489, 0, 1, 0, -0.229489, 0, -0.973311, 0, 97.7007, -446.316)
+
+[node name="Track_01" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 786.209, 3.80638, 176.445)
+
+[node name="Section 01" type="Node3D" parent="Track_01"]
+
+[node name="Track_1_1" type="MeshInstance3D" parent="Track_01/Section 01"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -195.39, 69.415, -6.14159)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 01/Track_1_1" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 101
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 01/Track_1_1/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_1_2" type="MeshInstance3D" parent="Track_01/Section 01"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -126.886, 69.4163, -8.44977)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 01/Track_1_2" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 102
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 01/Track_1_2/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_1_3" type="MeshInstance3D" parent="Track_01/Section 01"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -116.753, 67.0292, -68.0208)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 01/Track_1_3" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 103
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 01/Track_1_3/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_1_4" type="MeshInstance3D" parent="Track_01/Section 01"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -77.8092, 67.7171, -106.66)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 01/Track_1_4" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 104
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 01/Track_1_4/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_1_5" type="MeshInstance3D" parent="Track_01/Section 01"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -52.7444, 68.7479, -105.9)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 01/Track_1_5" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 106
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 01/Track_1_5/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_1_6" type="MeshInstance3D" parent="Track_01/Section 01"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.811096, 70.0842, -137.734)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 01/Track_1_6" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 106
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 01/Track_1_6/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Respawn" type="Node3D" parent="Track_01/Section 01"]
+transform = Transform3D(-0.998998, 0, -0.0447351, 0, 1, 0, 0.0447351, 0, -0.998998, -197.38, 67.6775, -49.66)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 01/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 01/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn2" type="Node3D" parent="Track_01/Section 01"]
+transform = Transform3D(0.738031, 0, -0.674766, 0, 1, 0, 0.674766, 0, 0.738031, -113.527, 67.6775, -80.3053)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 01/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 01/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Section 02" type="Node3D" parent="Track_01"]
+
+[node name="Track_2_1" type="MeshInstance3D" parent="Track_01/Section 02"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 19.3838, 70.0842, -127.794)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 02/Track_2_1" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 02/Track_2_1/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_2_2" type="MeshInstance3D" parent="Track_01/Section 02"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 58.0847, 70.0842, -132.769)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 02/Track_2_2" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -28.2925, 0.0170593, 7.22314)
+ObjId = 202
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 02/Track_2_2/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_2_3" type="MeshInstance3D" parent="Track_01/Section 02"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 47.1062, 70.0842, -98.1258)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 02/Track_2_3" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 203
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 02/Track_2_3/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Respawn" type="Node3D" parent="Track_01/Section 02"]
+transform = Transform3D(0.666037, 0, -0.745917, 0, 1, 0, 0.745917, 0, 0.666037, 10.071, 72.3368, -124.932)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 02/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 02/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Section 03" type="Node3D" parent="Track_01"]
+
+[node name="Track_3_1" type="MeshInstance3D" parent="Track_01/Section 03"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 65.6896, 74.3797, -59.9248)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 03/Track_3_1" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 03/Track_3_1/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_3_2" type="MeshInstance3D" parent="Track_01/Section 03"]
+transform = Transform3D(0.157632, 0, 0.123093, 0, 0.2, 0, -0.123093, 0, 0.157632, 100.804, 75.3439, -47.573)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 03/Track_3_2" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 202
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 03/Track_3_2/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_3_3" type="MeshInstance3D" parent="Track_01/Section 03"]
+transform = Transform3D(0.141421, 0, -0.141421, 0, 0.2, 0, 0.141421, 0, 0.141421, 142.787, 70.56, -49.8579)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 03/Track_3_3" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 203
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 03/Track_3_3/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_3_4" type="MeshInstance3D" parent="Track_01/Section 03"]
+transform = Transform3D(0.189887, 0, 0.0627919, 0, 0.2, 0, -0.0627919, 0, 0.189887, 123.974, 72.7286, -12.8122)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 03/Track_3_4" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 203
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 03/Track_3_4/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_3_5" type="MeshInstance3D" parent="Track_01/Section 03"]
+transform = Transform3D(0.133322, 0, -0.149081, 0, 0.2, 0, 0.149081, 0, 0.133322, 117.9, 81.4993, 39.9766)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 03/Track_3_5" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 203
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 03/Track_3_5/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_3_6" type="MeshInstance3D" parent="Track_01/Section 03"]
+transform = Transform3D(0.133322, 0, -0.149081, 0, 0.2, 0, 0.149081, 0, 0.133322, 100.439, 81.6908, 21.5034)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 03/Track_3_6" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 203
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 03/Track_3_6/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Respawn" type="Node3D" parent="Track_01/Section 03"]
+transform = Transform3D(-0.548118, 0, -0.8364, 0, 1, 0, 0.8364, 0, -0.548118, 35.7384, 72.3368, -104.4)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 03/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 03/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn2" type="Node3D" parent="Track_01/Section 03"]
+transform = Transform3D(-0.862054, 0, -0.506815, 0, 1, 0, 0.506815, 0, -0.862054, 115.348, 72.3368, -41.6489)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 03/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 03/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Section 04" type="Node3D" parent="Track_01"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5002, 0, 65.334)
+
+[node name="Track_4_1" type="MeshInstance3D" parent="Track_01/Section 04"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 58.6477, 80.1417, -70.3293)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 04/Track_4_1" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 04/Track_4_1/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_4_2" type="MeshInstance3D" parent="Track_01/Section 04"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 35.7435, 81.712, -45.4947)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 04/Track_4_2" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 04/Track_4_2/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_4_3" type="MeshInstance3D" parent="Track_01/Section 04"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 57.2958, 81.8211, -28.7096)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 04/Track_4_3" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 04/Track_4_3/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_4_4" type="MeshInstance3D" parent="Track_01/Section 04"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 75.7609, 81.8211, -46.3949)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 04/Track_4_4" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 04/Track_4_4/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_4_5" type="MeshInstance3D" parent="Track_01/Section 04"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 87.8077, 81.7293, -32.9928)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 04/Track_4_5" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 04/Track_4_5/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_4_6" type="MeshInstance3D" parent="Track_01/Section 04"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 83.2532, 82.4012, -7.49757)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 04/Track_4_6" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 04/Track_4_6/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_4_7" type="MeshInstance3D" parent="Track_01/Section 04"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 88.5309, 83.1932, 9.82057)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 04/Track_4_7" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 04/Track_4_7/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Respawn" type="Node3D" parent="Track_01/Section 04"]
+transform = Transform3D(-0.768819, 0, -0.639465, 0, 1, 0, 0.639465, 0, -0.768819, 110.094, 84.9305, -16.6201)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 04/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957973, 6.18735e-06, 0.25, -2.81776e-05, 0.00957973, 2.79198e-05, 0.249816, -0.800448, -2.78182, 0.416656)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 04/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957976, 6.18735e-06, 0.25, -2.81776e-05, 0.00957976, 2.79198e-05, 0.249816, 5.21996, -3.22862, 0.949977)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Section 05" type="Node3D" parent="Track_01"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5002, 0, 65.334)
+
+[node name="Track_5_1" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.183543, 0, -0.0794488, 0, 0.2, 0, 0.0794488, 0, 0.183543, 39.1136, 85.3939, -6.68597)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_1" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_1/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_2" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.187517, 0, 0.0695508, 0, 0.2, 0, -0.0695508, 0, 0.187517, -25.9741, 83.0875, -17.7503)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_2" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_2/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_3" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -90.7787, 78.6644, -4.49316)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_3" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_3/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_4" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -133.34, 76.3144, -12.2801)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_4" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_4/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_5" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.153216, 0, -0.12855, 0, 0.2, 0, 0.12855, 0, 0.153216, -188.174, 75.3733, -13.4232)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_5" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_5/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_6" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -194.605, 71.9111, -32.4603)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_6" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_6/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_7" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -178.695, 71.6682, -41.8527)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_7" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_7/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_8" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -157.357, 71.7178, -41.897)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_8" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_8/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_5_9" type="MeshInstance3D" parent="Track_01/Section 05"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -145.913, 72.0476, -33.836)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 05/Track_5_9" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 05/Track_5_9/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Respawn" type="Node3D" parent="Track_01/Section 05"]
+transform = Transform3D(-0.170468, 0, -0.985362, 0, 1, 0, 0.985362, 0, -0.170468, 71.7965, 84.9305, -2.96444)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 05/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 05/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn2" type="Node3D" parent="Track_01/Section 05"]
+transform = Transform3D(-0.170468, 0, -0.985362, 0, 1, 0, 0.985362, 0, -0.170468, -119.355, 76.2398, -13.6373)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 05/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 05/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Section 06" type="Node3D" parent="Track_01"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5002, 0, 65.334)
+
+[node name="Track_6_1" type="MeshInstance3D" parent="Track_01/Section 06"]
+transform = Transform3D(0.158907, 0, -0.121445, 0, 0.2, 0, 0.121445, 0, 0.158907, -130.358, 72.9459, -32.2988)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 06/Track_6_1" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 06/Track_6_1/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_6_2" type="MeshInstance3D" parent="Track_01/Section 06"]
+transform = Transform3D(0.183676, 0, 0.0791415, 0, 0.2, 0, -0.0791415, 0, 0.183676, -94.3953, 77.5035, -19.4391)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 06/Track_6_2" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 06/Track_6_2/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_6_3" type="MeshInstance3D" parent="Track_01/Section 06"]
+transform = Transform3D(0.191836, 0, -0.056562, 0, 0.2, 0, 0.056562, 0, 0.191836, -36.986, 80.4139, -43.5948)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 06/Track_6_3" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 06/Track_6_3/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_6_4" type="MeshInstance3D" parent="Track_01/Section 06"]
+transform = Transform3D(0.187948, 0, -0.0683778, 0, 0.2, 0, 0.0683778, 0, 0.187948, -54.4033, 73.6069, -100.287)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 06/Track_6_4" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 06/Track_6_4/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Respawn" type="Node3D" parent="Track_01/Section 06"]
+transform = Transform3D(-0.151657, 0, 0.988432, 0, 1, 0, -0.988432, 0, -0.151657, -138.215, 72.1302, -38.0383)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 06/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 06/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 2.90701, 0, 5.10645)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn2" type="Node3D" parent="Track_01/Section 06"]
+transform = Transform3D(-0.213559, 0, -0.976929, 0, 1, 0, 0.976929, 0, -0.213559, -34.8419, 80.0719, -51.2824)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 06/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 06/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 2.90701, 0, 5.10645)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Section 07" type="Node3D" parent="Track_01"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5002, 0, 65.334)
+
+[node name="Track_7_1" type="MeshInstance3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.198339, 0, -0.0257244, 0, 0.2, 0, 0.0257244, 0, 0.198339, -29.0176, 74.4562, -110.077)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 07/Track_7_1" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 07/Track_7_1/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_7_2" type="MeshInstance3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.152948, 0, 0.128868, 0, 0.2, 0, -0.128868, 0, 0.152948, 58.823, 79.156, -84.5446)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 07/Track_7_2" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 07/Track_7_2/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_7_3" type="MeshInstance3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.199863, 0, -0.00742278, 0, 0.2, 0, 0.00742278, 0, 0.199863, 17.7773, 70.5344, -165.853)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 07/Track_7_3" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 07/Track_7_3/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_7_4" type="MeshInstance3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.181425, 0, -0.0841723, 0, 0.2, 0, 0.0841723, 0, 0.181425, -39.7809, 74.4593, -109.363)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 07/Track_7_4" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 07/Track_7_4/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_7_5" type="MeshInstance3D" parent="Track_01/Section 07"]
+transform = Transform3D(-0.13639, 0, 0.14628, 0, 0.2, 0, -0.14628, 0, -0.13639, -129.011, 67.8204, -83.7429)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 07/Track_7_5" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 07/Track_7_5/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_7_6" type="MeshInstance3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.166928, 0, -0.11016, 0, 0.2, 0, 0.11016, 0, 0.166928, -133.338, 67.1301, -116.007)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 07/Track_7_6" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 07/Track_7_6/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Track_7_7" type="MeshInstance3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.180715, 0, -0.0856861, 0, 0.2, 0, 0.0856861, 0, 0.180715, -212.293, 65.7562, -119.558)
+mesh = SubResource("SphereMesh_v302a")
+skeleton = NodePath("")
+
+[node name="ModBuilder_AreaTrigger8" parent="Track_01/Section 07/Track_7_7" instance=ExtResource("9_ixrb5")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+ObjId = 201
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Track_01/Section 07/Track_7_7/ModBuilder_AreaTrigger8"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -0.0476436, -0.234848, -2.49285)
+depth = 10.0
+polygon = PackedVector2Array(25, 25, 25, -25, -25, -25, -25, 25)
+script = ExtResource("7_lk4jv")
+points = PackedVector2Array(-5, -5, -5, 5, 5, 5, 5, -5)
+color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="Respawn" type="Node3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.483022, 0, 0.875607, 0, 1, 0, -0.875607, 0, 0.483022, -40.895, 74.4505, -113.395)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 07/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 07/Respawn"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn2" type="Node3D" parent="Track_01/Section 07"]
+transform = Transform3D(-0.960696, 0, -0.277599, 0, 1, 0, 0.277599, 0, -0.960696, 61.5511, 79.1834, -95.9429)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 07/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 07/Respawn2"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn3" type="Node3D" parent="Track_01/Section 07"]
+transform = Transform3D(-0.597037, 0, 0.802213, 0, 1, 0, -0.802213, 0, -0.597037, 12.4133, 71.1945, -159.987)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 07/Respawn3"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 07/Respawn3"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn4" type="Node3D" parent="Track_01/Section 07"]
+transform = Transform3D(0.386608, 0.00456338, -0.922232, 0.0472268, 0.998578, 0.0247391, 0.921033, -0.0531185, 0.385843, -54.768, 74.4505, -104.579)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 07/Respawn4"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 07/Respawn4"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="Respawn5" type="Node3D" parent="Track_01/Section 07"]
+transform = Transform3D(-0.999724, 0.00456338, 0.0230205, 0.00333291, 0.998578, -0.0532098, -0.0232305, -0.0531185, -0.998317, -128.729, 68.982, -79.8597)
+
+[node name="RespawnStart" type="MeshInstance3D" parent="Track_01/Section 07/Respawn5"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 0, 0, 0)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="RespawnStart2" type="MeshInstance3D" parent="Track_01/Section 07/Respawn5"]
+transform = Transform3D(0.249816, -7.26255e-06, -0.00957975, 6.18735e-06, 0.25, -2.81776e-05, 0.00957975, 2.79198e-05, 0.249816, 5.45111, 0, 0.244095)
+transparency = 0.2
+mesh = SubResource("SphereMesh_aobhe")
+skeleton = NodePath("")
+
+[node name="AI" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 809, 102.033, 149.948)
+
+[node name="AI1" type="Node3D" parent="AI"]
+transform = Transform3D(-0.685437, 0, 0.728132, 0, 1, 0, -0.728132, 0, -0.685437, 8.87042, -18.4569, -91.6795)
+
+[node name="PlanterConcrete_01_256" parent="AI/AI1" instance=ExtResource("22_rebqq")]
+transform = Transform3D(0.9, 0, 0, 0, 1, 0, 0, 0, 1, -1.0098, 0.0393295, 0.55184)
+
+[node name="HighwaySignage_04" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.13247e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.13247e-07, 1.40408, -1.05812, -0.521624)
+
+[node name="HighwaySignage_07" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.44381e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.44381e-07, -1.03965, -1.05812, -0.521624)
+
+[node name="HighwaySignage_05" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.78814e-07, 0, 1.5, 0, 1.78814e-07, 0, 1.5, 0.179959, -1.05812, 0.703611)
+
+[node name="HighwaySignage_06" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 4.76798e-08, 0, 1.5, 0, -4.76798e-08, 0, -1.5, 0.179959, -1.05812, -1.73512)
+
+[node name="HighwaySignage_08" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.19209e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.19209e-07, 1.40411, -3.19124, -0.521606)
+
+[node name="HighwaySignage_09" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.19209e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -1.19209e-07, -1.03961, -3.19124, -0.521545)
+
+[node name="HighwaySignage_10" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.19209e-07, 0, 1.5, 0, 1.19209e-07, 0, 1.5, 0.179993, -3.19124, 0.703613)
+
+[node name="HighwaySignage_11" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 0, 0, 1.5, 0, 0, 0, -1.5, 0.179932, -3.19124, -1.73505)
+
+[node name="HighwaySignage_12" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.19209e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.19209e-07, 1.40417, -5.19124, -0.521545)
+
+[node name="HighwaySignage_13" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.19209e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -1.19209e-07, -1.03955, -5.19124, -0.521484)
+
+[node name="HighwaySignage_14" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.19209e-07, 0, 1.5, 0, 1.19209e-07, 0, 1.5, 0.179993, -5.19124, 0.703613)
+
+[node name="HighwaySignage_15" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 0, 0, 1.5, 0, 0, 0, -1.5, 0.179993, -5.19124, -1.73499)
+
+[node name="HighwaySignage_16" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.19209e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.19209e-07, 1.40424, -7.19124, -0.521484)
+
+[node name="HighwaySignage_17" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.19209e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -1.19209e-07, -1.03949, -7.19124, -0.521423)
+
+[node name="HighwaySignage_18" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.19209e-07, 0, 1.5, 0, 1.19209e-07, 0, 1.5, 0.179993, -7.19124, 0.703613)
+
+[node name="HighwaySignage_19" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 0, 0, 1.5, 0, 0, 0, -1.5, 0.180054, -7.19124, -1.73492)
+
+[node name="HighwaySignage_20" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.19209e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.19209e-07, 1.4043, -9.19124, -0.521423)
+
+[node name="HighwaySignage_21" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.19209e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -1.19209e-07, -1.03943, -9.19124, -0.521362)
+
+[node name="HighwaySignage_22" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.19209e-07, 0, 1.5, 0, 1.19209e-07, 0, 1.5, 0.179993, -9.19124, 0.703613)
+
+[node name="HighwaySignage_23" parent="AI/AI1" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 0, 0, 1.5, 0, 0, 0, -1.5, 0.180115, -9.19124, -1.73486)
+
+[node name="AI_Spawner" parent="AI/AI1" instance=ExtResource("10_robpt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.101135, 1.0123, -0.569458)
+ObjId = 1
+
+[node name="AI2" type="Node3D" parent="AI"]
+transform = Transform3D(0.997122, 0, 0.0758141, 0, 1, 0, -0.0758141, 0, 0.997122, 63.6021, -11.9945, 65.2234)
+
+[node name="PlanterConcrete_01_256" parent="AI/AI2" instance=ExtResource("22_rebqq")]
+transform = Transform3D(0.9, 0, 0, 0, 1, 0, 0, 0, 1, -0.622986, 2.2206, 0.581299)
+
+[node name="HighwaySignage_04" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(8.19564e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, 8.19564e-08, 1.79095, 1.12315, -0.492188)
+
+[node name="HighwaySignage_07" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.16067e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.16067e-07, -0.65271, 1.12315, -0.492188)
+
+[node name="HighwaySignage_05" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.49012e-07, 0, 1.5, 0, 1.49012e-07, 0, 1.5, 0.566956, 1.12315, 0.733032)
+
+[node name="HighwaySignage_06" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 1.49012e-08, 0, 1.5, 0, -1.49012e-08, 0, -1.5, 0.566956, 1.12315, -1.70569)
+
+[node name="HighwaySignage_08" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(6.70552e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, 6.70552e-08, 1.84387, -1.05042, -0.488159)
+
+[node name="HighwaySignage_09" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.01166e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.01166e-07, -0.599792, -1.05042, -0.488159)
+
+[node name="HighwaySignage_10" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.3411e-07, 0, 1.5, 0, 1.3411e-07, 0, 1.5, 0.61969, -1.05042, 0.737061)
+
+[node name="HighwaySignage_11" parent="AI/AI2" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 0, 0, 1.5, 0, 0, 0, -1.5, 0.619812, -1.05042, -1.70166)
+
+[node name="AI_Spawner" parent="AI/AI2" instance=ExtResource("10_robpt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.488098, 3.15044, -0.54007)
+ObjId = 2
+
+[node name="AI3" type="Node3D" parent="AI"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -155.046, -21.1933, 42.4512)
+
+[node name="PlanterConcrete_01_256" parent="AI/AI3" instance=ExtResource("22_rebqq")]
+transform = Transform3D(0.9, 0, 0, 0, 1, 0, 0, 0, 1, -1.0098, -0.324081, 0.55184)
+
+[node name="HighwaySignage_04" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.13247e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.13247e-07, 1.40408, -1.60324, -0.521624)
+
+[node name="HighwaySignage_07" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.44381e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.44381e-07, -1.03965, -1.60324, -0.521624)
+
+[node name="HighwaySignage_05" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.78814e-07, 0, 1.5, 0, 1.78814e-07, 0, 1.5, 0.179959, -1.60324, 0.703611)
+
+[node name="HighwaySignage_06" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 4.76798e-08, 0, 1.5, 0, -4.76798e-08, 0, -1.5, 0.179959, -1.60324, -1.73512)
+
+[node name="HighwaySignage_08" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.13247e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.13247e-07, 1.40408, -5.87105, -0.521624)
+
+[node name="HighwaySignage_09" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.44381e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.44381e-07, -1.03965, -5.87105, -0.521624)
+
+[node name="HighwaySignage_10" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.78814e-07, 0, 1.5, 0, 1.78814e-07, 0, 1.5, 0.179959, -5.87105, 0.703611)
+
+[node name="HighwaySignage_11" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 4.76798e-08, 0, 1.5, 0, -4.76798e-08, 0, -1.5, 0.179959, -5.87105, -1.73512)
+
+[node name="HighwaySignage_12" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.13247e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.13247e-07, 1.40408, -3.68105, -0.521624)
+
+[node name="HighwaySignage_13" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.44381e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.44381e-07, -1.03965, -3.68105, -0.521624)
+
+[node name="HighwaySignage_14" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.78814e-07, 0, 1.5, 0, 1.78814e-07, 0, 1.5, 0.179959, -3.68105, 0.703611)
+
+[node name="HighwaySignage_15" parent="AI/AI3" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 4.76798e-08, 0, 1.5, 0, -4.76798e-08, 0, -1.5, 0.179959, -3.68105, -1.73512)
+
+[node name="AI_Spawner" parent="AI/AI3" instance=ExtResource("10_robpt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.101074, 0.372177, -0.569489)
+ObjId = 3
+
+[node name="AI4" type="Node3D" parent="AI"]
+transform = Transform3D(0.886147, 0, 0.463404, 0, 1, 0, -0.463404, 0, 0.886147, -55.7258, -9.10638, -20.5843)
+
+[node name="PlanterConcrete_01_256" parent="AI/AI4" instance=ExtResource("22_rebqq")]
+transform = Transform3D(0.9, 0, 0, 0, 1, 0, 0, 0, 1, -1.0098, 0.0393295, 0.55184)
+
+[node name="HighwaySignage_04" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.13247e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.13247e-07, 1.40408, -1.05812, -0.521624)
+
+[node name="HighwaySignage_07" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.44381e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.44381e-07, -1.03965, -1.05812, -0.521624)
+
+[node name="HighwaySignage_05" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -1.78814e-07, 0, 1.5, 0, 1.78814e-07, 0, 1.5, 0.179959, -1.05812, 0.703611)
+
+[node name="HighwaySignage_06" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 4.76798e-08, 0, 1.5, 0, -4.76798e-08, 0, -1.5, 0.179959, -1.05812, -1.73512)
+
+[node name="HighwaySignage_08" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.19209e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.19209e-07, 1.40411, -3.14227, -0.521637)
+
+[node name="HighwaySignage_09" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.38419e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.38419e-07, -1.03961, -3.14227, -0.521637)
+
+[node name="HighwaySignage_10" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -2.38419e-07, 0, 1.5, 0, 2.38419e-07, 0, 1.5, 0.179932, -3.14227, 0.703613)
+
+[node name="HighwaySignage_11" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 5.96046e-08, 0, 1.5, 0, -5.96046e-08, 0, -1.5, 0.179993, -3.14227, -1.73511)
+
+[node name="HighwaySignage_12" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.78814e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 1.78814e-07, 1.40411, -5.14227, -0.521667)
+
+[node name="HighwaySignage_13" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.38419e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.38419e-07, -1.03955, -5.14227, -0.521637)
+
+[node name="HighwaySignage_14" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -2.38419e-07, 0, 1.5, 0, 2.38419e-07, 0, 1.5, 0.179932, -5.14227, 0.703583)
+
+[node name="HighwaySignage_15" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 1.19209e-07, 0, 1.5, 0, -1.19209e-07, 0, -1.5, 0.179993, -5.14227, -1.73511)
+
+[node name="HighwaySignage_16" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(2.38419e-07, 0, 1.5, 0, 1.5, 0, -1.5, 0, 2.38419e-07, 1.40411, -7.14227, -0.521698)
+
+[node name="HighwaySignage_17" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-2.38419e-07, 0, -1.5, 0, 1.5, 0, 1.5, 0, -2.38419e-07, -1.03955, -7.14227, -0.521637)
+
+[node name="HighwaySignage_18" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(1.5, 0, -2.38419e-07, 0, 1.5, 0, 2.38419e-07, 0, 1.5, 0.179993, -7.14227, 0.703552)
+
+[node name="HighwaySignage_19" parent="AI/AI4" instance=ExtResource("19_qce52")]
+transform = Transform3D(-1.5, 0, 1.78814e-07, 0, 1.5, 0, -1.78814e-07, 0, -1.5, 0.179993, -7.14227, -1.73511)
+
+[node name="AI_Spawner" parent="AI/AI4" instance=ExtResource("10_robpt")]
+transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0.101074, 0.956093, -0.569458)
+ObjId = 4
+
+[node name="VehicleSelect" type="Node3D" parent="."]
+transform = Transform3D(-0.816108, 0, 0.577901, 0, 1, 0, -0.577901, 0, -0.816108, 874.053, 100.186, 107.418)
+
+[node name="Quadbike" type="Node3D" parent="VehicleSelect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.3804, 0, 1.34009)
+
+[node name="VehicleSpawner" parent="VehicleSelect/Quadbike" instance=ExtResource("13_wvte2")]
+transform = Transform3D(0.258178, 0, 0.966097, 0, 1, 0, -0.966097, 0, 0.258178, -7.27856, 0, 5.22687)
+ObjId = 3
+VehicleType = 9
+P_AutoSpawnEnabled = true
+P_ApplyDamageToAbandonVehicle = false
+P_AbandonVehiclesOutOfCombatArea = false
+P_TimeUntilAbandon = 999999999999999
+P_KeepAliveAbandonRadius = 999999999999999
+P_KeepAliveSpawnerRadius = 999999999999999
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleSelect/Quadbike"]
+transform = Transform3D(0.0505744, 0, -0.998721, 0, 1, 0, 0.998721, 0, 0.0505744, 0.654114, 0, 0.0951538)
+mesh = SubResource("SphereMesh_xd4l2")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="VehicleSelect/Quadbike"]
+transform = Transform3D(0.0505744, 0, -0.998721, 0, 1, 0, 0.998721, 0, 0.0505744, -12.2231, 0, -3.79749)
+mesh = SubResource("SphereMesh_xd4l2")
+skeleton = NodePath("")
+
+[node name="Golfcart" type="Node3D" parent="VehicleSelect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.56805, 0, 6.47461)
+
+[node name="VehicleSpawner2" parent="VehicleSelect/Golfcart" instance=ExtResource("13_wvte2")]
+transform = Transform3D(-0.533511, 0, 0.845793, 0, 1, 0, -0.845793, 0, -0.533511, 5.50195, 0, 4.99573)
+ObjId = 2
+VehicleType = 10
+P_AutoSpawnEnabled = true
+P_ApplyDamageToAbandonVehicle = false
+P_AbandonVehiclesOutOfCombatArea = false
+P_TimeUntilAbandon = 999999999999999
+P_KeepAliveAbandonRadius = 999999999999999
+P_KeepAliveSpawnerRadius = 999999999999999
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VehicleSelect/Golfcart"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5559, 0, 0.738464)
+mesh = SubResource("SphereMesh_xd4l2")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="VehicleSelect/Golfcart"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18622, 0, -2.29718)
+mesh = SubResource("SphereMesh_xd4l2")
+skeleton = NodePath("")
+
+[node name="FiringRange_Floor_02" parent="VehicleSelect" instance=ExtResource("13_lk4jv")]
+transform = Transform3D(1.75138, 0, -0.361004, 0, 1, 0, 0.551939, 0, 1.14552, -9.76845, -1.536, 4.82647)
+
+[node name="LevelArt" type="Node3D" parent="."]
+
+[node name="BarrierStoneBlock_01_G" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.632543, 0, -0.774525, 0, 1, 0, 0.774525, 0, 0.632543, 802.984, 74.3117, 57.2494)
+
+[node name="BarrierStoneBlock_01_G5" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.0983646, 0, -0.995151, 0, 1, 0, 0.995151, 0, 0.0983646, 819.846, 74.01, 30.7528)
+
+[node name="BarrierStoneBlock_01_G6" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.336372, 0, -0.941729, 0, 1, 0, 0.941729, 0, -0.336372, 826.505, 73.9098, 31.3762)
+
+[node name="BarrierStoneBlock_01_G8" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.259089, 0, -0.965853, 0, 1, 0, 0.965853, 0, -0.259089, 836.189, 73.6773, 36.6239)
+
+[node name="BarrierStoneBlock_01_G122" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.620833, 0, -0.783942, 0, 1, 0, 0.783942, 0, -0.620833, 831.458, 73.6773, 34.0927)
+
+[node name="BarrierStoneBlock_01_G9" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.664618, 0, -0.747184, 0, 1, 0, 0.747184, 0, -0.664618, 843.35, 74.3117, 41.0389)
+
+[node name="BarrierStoneBlock_01_G10" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.812196, 0, -0.583385, 0, 1, 0, 0.583385, 0, -0.812196, 847.047, 74.3117, 45.2988)
+
+[node name="BarrierStoneBlock_01_G11" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.998062, 0, -0.0622327, 0, 1, 0, 0.0622327, 0, -0.998062, 848.756, 74.3117, 50.7209)
+
+[node name="BarrierStoneBlock_01_G124" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.981215, 0, 0.192916, 0, 1, 0, -0.192916, 0, -0.981215, 848.531, 74.3117, 56.2441)
+
+[node name="BarrierStoneBlock_01_G125" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.981215, 0, 0.192916, 0, 1, 0, -0.192916, 0, -0.981215, 838.478, 74.3117, 61.7528)
+
+[node name="BarrierStoneBlock_01_G126" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.868078, 0, -0.496428, 0, 1, 0, 0.496428, 0, -0.868078, 838.315, 74.3117, 51.4921)
+
+[node name="BarrierStoneBlock_01_G127" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.553712, 0, -0.832709, 0, 1, 0, 0.832709, 0, -0.553712, 834.509, 74.3117, 47.5804)
+
+[node name="BarrierStoneBlock_01_G128" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.479994, 0, -0.877272, 0, 1, 0, 0.877272, 0, -0.479994, 829.484, 74.3117, 45.022)
+
+[node name="BarrierStoneBlock_01_G129" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.395513, 0, 0.91846, 0, 1, 0, -0.91846, 0, -0.395513, 818.106, 74.3117, 47.519)
+
+[node name="BarrierStoneBlock_01_G131" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.591844, 0, 0.806053, 0, 1, 0, -0.806053, 0, -0.591844, 809.173, 74.3117, 40.09)
+
+[node name="BarrierStoneBlock_01_G130" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.51589, 0, 0.856655, 0, 1, 0, -0.856655, 0, -0.51589, 812.916, 74.3117, 49.9561)
+
+[node name="BarrierStoneBlock_01_G123" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.993764, 0, 0.111504, 0, 1, 0, -0.111504, 0, -0.993764, 847.942, 74.3117, 69.8677)
+
+[node name="BarrierStoneBlock_01_G12" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.0802334, 0, 0.996776, 0, 1, 0, -0.996776, 0, 0.0802334, 852.774, 78.0852, 118.912)
+
+[node name="BarrierStoneBlock_01_G101" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.148276, 0, 0.988946, 0, 1, 0, -0.988946, 0, -0.148276, 847.09, 78.0852, 118.891)
+
+[node name="BarrierStoneBlock_01_G103" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.499198, 0, 0.866488, 0, 1, 0, -0.866488, 0, 0.499198, 842.185, 78.0852, 117.076)
+
+[node name="BarrierStoneBlock_01_G13" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.356037, 0, 0.934472, 0, 1, 0, -0.934472, 0, -0.356037, 858.071, 78.0852, 117.84)
+
+[node name="BarrierStoneBlock_01_G118" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.356037, 0, 0.934472, 0, 1, 0, -0.934472, 0, -0.356037, 856.952, 78.0852, 109.294)
+
+[node name="BarrierStoneBlock_01_G119" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0173656, 0, 0.999849, 0, 1, 0, -0.999849, 0, -0.0173656, 865.339, 78.0852, 107.757)
+
+[node name="BarrierStoneBlock_01_G120" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.28629, 0, 0.958143, 0, 1, 0, -0.958143, 0, 0.28629, 870.606, 78.0852, 108.486)
+
+[node name="BarrierStoneBlock_01_G121" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.439437, 0, 0.898273, 0, 1, 0, -0.898273, 0, 0.439437, 875.878, 78.0852, 110.428)
+
+[node name="BarrierStoneBlock_01_G14" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.678634, 0, 0.734477, 0, 1, 0, -0.734477, 0, -0.678634, 924.628, 74.7605, 130.479)
+
+[node name="BarrierStoneBlock_01_G17" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.760939, 0, -0.648825, 0, 1, 0, 0.648825, 0, -0.760939, 934.023, 73.3843, 122.015)
+
+[node name="BarrierStoneBlock_01_G110" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.982382, 0, -0.186884, 0, 1, 0, 0.186884, 0, -0.982382, 936.716, 73.3843, 126.907)
+
+[node name="BarrierStoneBlock_01_G18" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.774006, 0, 0.633178, 0, 1, 0, -0.633178, 0, -0.774006, 935.444, 73.3843, 132.88)
+
+[node name="BarrierStoneBlock_01_G19" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.68677, 0, 0.726874, 0, 1, 0, -0.726874, 0, -0.68677, 931.82, 74.7485, 136.88)
+
+[node name="BarrierStoneBlock_01_G20" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.68677, 0, 0.726874, 0, 1, 0, -0.726874, 0, -0.68677, 927.734, 74.7485, 141.158)
+
+[node name="BarrierStoneBlock_01_G21" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.160932, 0, -0.986966, 0, 1, 0, 0.986966, 0, -0.160932, 904.075, 85.4255, 237.804)
+
+[node name="BarrierStoneBlock_01_G111" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.531724, 0, -0.846918, 0, 1, 0, 0.846918, 0, 0.531724, 909.663, 85.4255, 236.777)
+
+[node name="BarrierStoneBlock_01_G112" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.799591, 0, -0.600546, 0, 1, 0, 0.600546, 0, 0.799591, 913.931, 85.4255, 232.997)
+
+[node name="BarrierStoneBlock_01_G113" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.995216, 0, -0.0977045, 0, 1, 0, 0.0977045, 0, 0.995216, 915.865, 85.4255, 227.975)
+
+[node name="BarrierStoneBlock_01_G78" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.738397, 0, -0.674367, 0, 1, 0, 0.674367, 0, -0.738397, 895.909, 85.4255, 218.045)
+
+[node name="BarrierStoneBlock_01_G79" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.934694, -0.00894316, -0.35534, -0.0079804, 0.999959, -0.00417506, 0.355363, -0.00106664, -0.934728, 892.925, 85.4255, 213.093)
+
+[node name="BarrierStoneBlock_01_G80" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.999739, -0.00806786, -0.0213697, -0.00798039, 0.999959, -0.00417506, 0.0214026, -0.00400342, -0.999763, 893.654, 85.4255, 218.663)
+
+[node name="BarrierStoneBlock_01_G81" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.998405, -0.00773453, 0.0559169, -0.00798039, 0.999959, -0.00417506, -0.0558823, -0.00461463, -0.998427, 883.662, 85.4255, 212.978)
+
+[node name="BarrierStoneBlock_01_G22" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.90826, 0, -0.418406, 0, 1, 0, 0.418406, 0, -0.90826, 896.669, 85.2428, 244.467)
+
+[node name="BarrierStoneBlock_01_G25" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0697913, 0, -0.997562, 0, 1, 0, 0.997562, 0, -0.0697913, 854.818, 85.5168, 219.525)
+
+[node name="BarrierStoneBlock_01_G28" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.436221, 0, -0.89984, 0, 1, 0, 0.89984, 0, -0.436221, 849.595, 85.5168, 217.793)
+
+[node name="BarrierStoneBlock_01_G29" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.57153, 0, -0.820581, 0, 1, 0, 0.820581, 0, -0.57153, 844.734, 85.9037, 214.691)
+
+[node name="BarrierStoneBlock_01_G37" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.282844, 0, -0.959166, 0, 1, 0, 0.959166, 0, -0.282844, 818.779, 88.1329, 219.346)
+
+[node name="BarrierStoneBlock_01_G38" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.158434, 0, -0.98737, 0, 1, 0, 0.98737, 0, -0.158434, 813.444, 87.942, 218.096)
+
+[node name="BarrierStoneBlock_01_G39" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.158434, 0, -0.98737, 0, 1, 0, 0.98737, 0, -0.158434, 807.83, 88.2068, 217.222)
+
+[node name="BarrierStoneBlock_01_G40" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0570239, 0, -0.998373, 0, 1, 0, 0.998373, 0, -0.0570239, 802.505, 87.9277, 216.511)
+
+[node name="BarrierStoneBlock_01_G41" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.258937, 0, -0.965894, 0, 1, 0, 0.965894, 0, 0.258937, 777.009, 86.1299, 217.7)
+
+[node name="BarrierStoneBlock_01_G42" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.375642, 0, -0.926765, 0, 1, 0, 0.926765, 0, 0.375642, 771.686, 85.9933, 219.454)
+
+[node name="BarrierStoneBlock_01_G43" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.375642, 0, -0.926765, 0, 1, 0, 0.926765, 0, 0.375642, 766.6, 85.9883, 221.544)
+
+[node name="BarrierStoneBlock_01_G89" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.178905, 0, -0.983867, 0, 1, 0, 0.983867, 0, 0.178905, 762.509, 83.5209, 206.039)
+
+[node name="BarrierStoneBlock_01_G105" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.967233, 0, -0.253893, 0, 1, 0, 0.253893, 0, -0.967233, 752.856, 82.3949, 180.265)
+
+[node name="BarrierStoneBlock_01_G108" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.49558, 0, 0.868563, 0, 1, 0, -0.868563, 0, -0.49558, 713.324, 74.5975, 146.825)
+
+[node name="BarrierStoneBlock_01_G109" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.49558, 0, 0.868563, 0, 1, 0, -0.868563, 0, -0.49558, 718.286, 74.5975, 157.247)
+
+[node name="BarrierStoneBlock_01_G106" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.917061, 0, -0.398749, 0, 1, 0, 0.398749, 0, -0.917061, 759.376, 81.941, 171.95)
+
+[node name="BarrierStoneBlock_01_G107" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.874078, 0, -0.485786, 0, 1, 0, 0.485786, 0, -0.874078, 761.977, 81.941, 177.042)
+
+[node name="BarrierStoneBlock_01_G90" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.272515, 0, -0.962152, 0, 1, 0, 0.962152, 0, 0.272515, 767.703, 83.5209, 204.763)
+
+[node name="BarrierStoneBlock_01_G102" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.964022, 0, -0.265826, 0, 1, 0, 0.265826, 0, 0.964022, 767.026, 83.6423, 201.247)
+
+[node name="BarrierStoneBlock_01_G104" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.999911, 0, 0.0133682, 0, 1, 0, -0.0133682, 0, 0.999911, 767.936, 83.8367, 195.435)
+
+[node name="BarrierStoneBlock_01_G91" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0409568, 0.0010171, -0.999161, -0.0903572, 0.995898, 0.00471758, 0.995067, 0.0904745, -0.040697, 796.499, 85.4733, 200.681)
+
+[node name="BarrierStoneBlock_01_G92" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0447371, 0.0430848, -0.99807, -0.0885465, 0.994966, 0.0469198, 0.995067, 0.0904745, -0.040697, 802.452, 85.4733, 200.681)
+
+[node name="BarrierStoneBlock_01_G93" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.039945, -0.010107, -0.999151, -0.0908091, 0.995847, -0.00644321, 0.995067, 0.0904745, -0.040697, 808.345, 85.4733, 200.681)
+
+[node name="BarrierStoneBlock_01_G94" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0406554, -0.0023028, -0.999171, -0.0904932, 0.995896, 0.00138677, 0.995067, 0.0904745, -0.040697, 814.156, 85.4733, 200.681)
+
+[node name="BarrierStoneBlock_01_G97" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0408243, -0.000442956, -0.999167, -0.0904172, 0.995898, 0.00325273, 0.995067, 0.0904745, -0.040697, 819.891, 85.4733, 200.698)
+
+[node name="BarrierStoneBlock_01_G95" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.291176, 0.0832793, -0.953038, -0.0879517, 0.994315, 0.0600149, 0.952618, 0.0663464, 0.296845, 830.21, 85.4733, 200.681)
+
+[node name="BarrierStoneBlock_01_G96" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.201512, 0.0767626, -0.976474, -0.0879517, 0.994315, 0.0600149, 0.97553, 0.0737888, 0.207117, 824.887, 85.4733, 202.11)
+
+[node name="BarrierStoneBlock_01_G44" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.132032, 0, -0.991246, 0, 1, 0, 0.991246, 0, 0.132032, 734.841, 84.9859, 228.385)
+
+[node name="BarrierStoneBlock_01_G45" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.132032, -0.190989, -0.972672, 1.86265e-09, 0.981262, -0.192676, 0.991246, 0.0254393, 0.129558, 729.602, 84.4647, 229.234)
+
+[node name="BarrierStoneBlock_01_G46" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.132032, -0.0980715, -0.986382, 0, 0.995094, -0.0989377, 0.991246, 0.0130629, 0.131384, 724.138, 83.5585, 230.22)
+
+[node name="BarrierStoneBlock_01_G47" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.132032, -0.0661598, -0.989035, 9.31323e-10, 0.99777, -0.0667441, 0.991246, 0.00881232, 0.131737, 718.793, 83.1385, 231.045)
+
+[node name="BarrierStoneBlock_01_G48" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.0503561, -0.0661598, -0.996538, -0.00548168, 0.99777, -0.0665186, 0.998716, 0.00881232, 0.0498812, 713.217, 82.7651, 231.467)
+
+[node name="BarrierStoneBlock_01_G49" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.00467142, -0.0661598, -0.997798, -0.00914131, 0.99777, -0.0661151, 0.999947, 0.00881232, -0.00526582, 707.825, 82.4068, 231.554)
+
+[node name="BarrierStoneBlock_01_G50" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0843837, -0.0661598, -0.994235, -0.0143949, 0.99777, -0.0651733, 0.99633, 0.00881232, -0.085148, 702.559, 81.6628, 230.928)
+
+[node name="BarrierStoneBlock_01_G53" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.0843837, -0.0661598, -0.994235, -0.0143949, 0.99777, -0.0651733, 0.99633, 0.00881232, -0.085148, 705.93, 81.292, 225.783)
+
+[node name="BarrierStoneBlock_01_G54" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.144578, -0.0661598, -0.987279, -0.0183244, 0.99777, -0.0641794, 0.989324, 0.00881232, -0.145468, 700.057, 80.9088, 225.078)
+
+[node name="BarrierStoneBlock_01_G55" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.144578, -0.0661598, -0.987279, -0.0183244, 0.99777, -0.0641794, 0.989324, 0.00881232, -0.145468, 694.296, 80.5346, 224.198)
+
+[node name="BarrierStoneBlock_01_G56" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.144578, -0.152621, -0.977653, -0.0183244, 0.988277, -0.151569, 0.989324, -0.00399877, -0.14568, 688.301, 79.8559, 223.309)
+
+[node name="BarrierStoneBlock_01_G57" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.280822, -0.152621, -0.947548, -0.0394876, 0.988277, -0.147478, 0.958947, -0.00399876, -0.283557, 676.903, 78.3062, 220.287)
+
+[node name="BarrierStoneBlock_01_G58" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.883848, 0, -0.467776, 0, 1, 0, 0.467776, 0, 0.883848, 627.724, 75.2391, 205.537)
+
+[node name="BarrierStoneBlock_01_G60" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.967392, 0, 0.253285, 0, 1, 0, -0.253285, 0, 0.967392, 639.707, 75.2391, 205.923)
+
+[node name="BarrierStoneBlock_01_G62" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.967392, 0, 0.253285, 0, 1, 0, -0.253285, 0, 0.967392, 646.253, 75.2391, 192.07)
+
+[node name="BarrierStoneBlock_01_G65" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.398749, 0, 0.91706, 0, 1, 0, -0.91706, 0, 0.398749, 642.238, 75.2391, 187.08)
+
+[node name="BarrierStoneBlock_01_G67" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.398749, 0, 0.91706, 0, 1, 0, -0.91706, 0, 0.398749, 668.03, 75.2391, 196.191)
+
+[node name="BarrierStoneBlock_01_G68" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.000523627, 0, 1, 0, 1, 0, -1, 0, 0.000523627, 662.495, 75.2391, 195.051)
+
+[node name="BarrierStoneBlock_01_G70" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.000523627, 0, 1, 0, 1, 0, -1, 0, 0.000523627, 658.441, 74.4022, 179.949)
+
+[node name="BarrierStoneBlock_01_G72" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.000523437, -0.0269097, 0.999638, 1.40907e-05, 0.999638, 0.0269097, -1, 0, 0.000523627, 614.492, 74.2925, 180.122)
+
+[node name="BarrierStoneBlock_01_G73" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.402491, 0, 0.915424, 0, 1, 0, -0.915424, 0, -0.402491, 655.095, 74.015, 177.72)
+
+[node name="BarrierStoneBlock_01_G74" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.636307, 0, 0.771436, 0, 1, 0, -0.771436, 0, -0.636307, 660.149, 73.6541, 174.884)
+
+[node name="BarrierStoneBlock_01_G76" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.99866, 0, -0.0517604, 0, 1, 0, 0.0517604, 0, 0.99866, 690.01, 71.6874, 156.797)
+
+[node name="BarrierStoneBlock_01_G114" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.988172, 0, 0.153348, 0, 1, 0, -0.153348, 0, 0.988172, 690.248, 71.6874, 162.239)
+
+[node name="BarrierStoneBlock_01_G75" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.842349, 0, 0.538933, 0, 1, 0, -0.538933, 0, -0.842349, 664.44, 73.0665, 170.858)
+
+[node name="BarrierStoneBlock_01_G71" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.000523627, 0, 1, 0, 1, 0, -1, 0, 0.000523627, 663.69, 74.4022, 179.949)
+
+[node name="BarrierStoneBlock_01_G69" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.756173, 0, 0.654371, 0, 1, 0, -0.654371, 0, -0.756173, 657.773, 75.2391, 197.366)
+
+[node name="BarrierStoneBlock_01_G66" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.00568977, 0, 0.999984, 0, 1, 0, -0.999984, 0, 0.00568977, 636.265, 75.2391, 185.878)
+
+[node name="BarrierStoneBlock_01_G63" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.832167, 0, -0.554525, 0, 1, 0, 0.554525, 0, 0.832167, 619.44, 75.2391, 192.058)
+
+[node name="BarrierStoneBlock_01_G64" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.494855, 0.00912312, -0.868928, -0.00597027, 0.999957, 0.00709876, 0.868955, 0.00167489, 0.494889, 623.469, 75.2391, 188.675)
+
+[node name="BarrierStoneBlock_01_G115" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.494855, 0.00912312, -0.868928, -0.00597027, 0.999957, 0.00709876, 0.868955, 0.00167489, 0.494889, 588.924, 69.3357, 113.955)
+
+[node name="BarrierStoneBlock_01_G116" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.747898, 0.00917736, -0.66375, -0.00597027, 0.999957, 0.00709876, 0.663787, -0.00134637, 0.747921, 583.817, 69.3357, 117.433)
+
+[node name="BarrierStoneBlock_01_G117" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.9438, 0.00798067, -0.33042, -0.00597027, 0.999957, 0.00709876, 0.330463, -0.0047271, 0.943808, 580.548, 69.3357, 122.44)
+
+[node name="BarrierStoneBlock_01_G61" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.407645, 0, 0.913141, 0, 1, 0, -0.913141, 0, 0.407645, 643.149, 75.2391, 209.941)
+
+[node name="BarrierStoneBlock_01_G59" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.449194, 0, -0.893434, 0, 1, 0, 0.893434, 0, 0.449194, 623.747, 75.2391, 209.287)
+
+[node name="BarrierStoneBlock_01_G51" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.246732, -0.0661598, -0.966823, -0.0249164, 0.99777, -0.0619189, 0.968764, 0.00881232, -0.24783, 696.979, 81.2636, 229.861)
+
+[node name="BarrierStoneBlock_01_G52" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.246732, -0.0661598, -0.966823, -0.0249164, 0.99777, -0.0619189, 0.968764, 0.00881232, -0.24783, 691.003, 80.9404, 228.221)
+
+[node name="BarrierStoneBlock_01_G30" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.960678, 0, -0.277667, 0, 1, 0, 0.277667, 0, -0.960678, 834.065, 85.5168, 202.077)
+
+[node name="BarrierStoneBlock_01_G31" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.785878, 0, -0.618381, 0, 1, 0, 0.618381, 0, -0.785878, 836.599, 85.7426, 206.913)
+
+[node name="BarrierStoneBlock_01_G32" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.679352, 0, -0.733813, 0, 1, 0, 0.733813, 0, -0.679352, 840.303, 85.9705, 210.91)
+
+[node name="BarrierStoneBlock_01_G26" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.530319, 0, -0.847798, 0, 1, 0, 0.847798, 0, 0.530319, 865.429, 85.5168, 216.555)
+
+[node name="BarrierStoneBlock_01_G36" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.530319, 0, -0.847798, 0, 1, 0, 0.847798, 0, 0.530319, 865.429, 85.5168, 216.555)
+
+[node name="BarrierStoneBlock_01_G33" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.578797, 0, -0.815471, 0, 1, 0, 0.815471, 0, -0.578797, 853.263, 85.7822, 204.39)
+
+[node name="BarrierStoneBlock_01_G34" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.344086, 0, -0.938938, 0, 1, 0, 0.938938, 0, 0.344086, 870.52, 85.7822, 192.332)
+
+[node name="BarrierStoneBlock_01_G82" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.629144, 0, -0.777289, 0, 1, 0, 0.777289, 0, -0.629144, 870.657, 85.7822, 189.083)
+
+[node name="BarrierStoneBlock_01_G84" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.629144, 0, -0.777289, 0, 1, 0, 0.777289, 0, -0.629144, 875.505, 84.3134, 175.211)
+
+[node name="BarrierStoneBlock_01_G85" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.571301, 0, -0.820741, 0, 1, 0, 0.820741, 0, -0.571301, 870.136, 83.3654, 171.069)
+
+[node name="BarrierStoneBlock_01_G98" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.842809, 0, 0.538212, 0, 1, 0, -0.538212, 0, -0.842809, 866.545, 82.9627, 159.993)
+
+[node name="BarrierStoneBlock_01_G99" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.00158827, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00158827, 857.374, 82.6473, 165.589)
+
+[node name="BarrierStoneBlock_01_G132" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.351891, 0, 0.936041, 0, 1, 0, -0.936041, 0, 0.351891, 847.699, 81.8193, 151.094)
+
+[node name="BarrierStoneBlock_01_G100" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.527534, 0, 0.849533, 0, 1, 0, -0.849533, 0, -0.527534, 862.753, 82.8985, 164.027)
+
+[node name="BarrierStoneBlock_01_G86" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.684865, -0.0732824, -0.724975, 0, 0.99493, -0.10057, 0.72867, -0.0688769, -0.681393, 881.141, 85.1762, 181)
+
+[node name="BarrierStoneBlock_01_G87" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.747323, 0, -0.664461, 0, 1, 0, 0.664461, 0, -0.747323, 885.659, 85.3124, 186.019)
+
+[node name="BarrierStoneBlock_01_G88" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.997566, 0, -0.0697216, 0, 1, 0, 0.0697216, 0, -0.997566, 900.749, 76.7941, 157.968)
+
+[node name="BarrierStoneBlock_01_G83" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.854223, 0, -0.519907, 0, 1, 0, 0.519907, 0, -0.854223, 866.973, 85.5582, 185.079)
+
+[node name="BarrierStoneBlock_01_G35" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.384666, 0, -0.923056, 0, 1, 0, 0.923056, 0, -0.384666, 875.606, 85.5732, 192.101)
+
+[node name="BarrierStoneBlock_01_G27" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.355025, 0, -0.934857, 0, 1, 0, 0.934857, 0, 0.355025, 860.31, 85.5168, 218.757)
+
+[node name="BarrierStoneBlock_01_G23" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.994762, 0, -0.10222, 0, 1, 0, 0.10222, 0, -0.994762, 898.008, 85.2272, 249.876)
+
+[node name="BarrierStoneBlock_01_G24" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.899535, 0, 0.436849, 0, 1, 0, -0.436849, 0, -0.899535, 896.827, 85.239, 255.132)
+
+[node name="BarrierStoneBlock_01_G15" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.678634, 0, 0.734477, 0, 1, 0, -0.734477, 0, -0.678634, 920.633, 74.7605, 134.17)
+
+[node name="BarrierStoneBlock_01_G16" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(-0.678634, 0, 0.734477, 0, 1, 0, -0.734477, 0, -0.678634, 916.577, 74.7605, 137.918)
+
+[node name="BarrierStoneBlock_01_G2" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.632543, 0, -0.774525, 0, 1, 0, 0.774525, 0, 0.632543, 807.17, 74.3117, 53.8312)
+
+[node name="BarrierStoneBlock_01_G3" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.023333, 0, -0.999728, 0, 1, 0, 0.999728, 0, 0.023333, 820.572, 74.3117, 69.3167)
+
+[node name="BarrierStoneBlock_01_G4" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.400173, 0, -0.91644, 0, 1, 0, 0.91644, 0, 0.400173, 814.873, 74.3117, 70.4425)
+
+[node name="BarrierStoneBlock_01_G77" parent="LevelArt" instance=ExtResource("14_ixrb5")]
+transform = Transform3D(0.638056, 0, -0.76999, 0, 1, 0, 0.76999, 0, 0.638056, 810.131, 74.3117, 73.1863)
+
+[node name="HighwayOverpass_Bridge_04" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.0836288, 0.0208526, 0.234673, 0.0604847, 0.242573, 0, -0.227701, 0.0567765, -0.0861894, 848.079, 80.4584, 119.025)
+
+[node name="HighwayOverpass_Bridge_05" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.0836288, 0.0208526, 0.234673, 0.0604847, 0.242573, 0, -0.227701, 0.0567765, -0.0861894, 751.963, 83.226, 164.616)
+
+[node name="HighwayOverpass_Bridge_09" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.228338, 0.0592863, -0.0827466, 0.064622, 0.241445, -0.00533267, 0.0786502, -0.0262596, -0.235849, 725.809, 77.9888, 146.725)
+
+[node name="HighwayOverpass_Bridge_10" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.242887, 0.0592095, -2.18557e-08, 0.0592095, 0.242887, 0, 2.12339e-08, -5.17626e-09, -0.25, 690.856, 73.9871, 159.119)
+
+[node name="HighwayOverpass_Bridge_06" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(0.180823, -0.0927472, -0.145605, 0.114096, 0.222446, 1.244e-08, 0.129557, -0.0664519, 0.203222, 814.013, 79.7914, 135.141)
+
+[node name="HighwayOverpass_Bridge_07" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.186517, 0.0809232, 0.145474, 0.099484, 0.229353, -3.10905e-05, -0.13347, 0.0578661, -0.203316, 813.838, 79.7999, 135.005)
+
+[node name="HighwayOverpass_Bridge_11" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(0.180823, -0.0927472, -0.145605, 0.114096, 0.222446, 1.244e-08, 0.129557, -0.0664519, 0.203222, 821.37, 80.8757, 140.53)
+
+[node name="HighwayOverpass_Bridge_12" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.186517, 0.0809232, 0.145474, 0.099484, 0.229353, -3.10905e-05, -0.13347, 0.0578661, -0.203316, 821.195, 80.8842, 140.394)
+
+[node name="HighwayOverpass_Bridge_13" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(0.180823, -0.0927472, -0.145605, 0.114096, 0.222446, 1.244e-08, 0.129557, -0.0664519, 0.203222, 829.365, 82.0544, 146.166)
+
+[node name="HighwayOverpass_Bridge_14" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.186517, 0.0809232, 0.145474, 0.099484, 0.229353, -3.10905e-05, -0.13347, 0.0578661, -0.203316, 829.19, 82.0629, 146.03)
+
+[node name="HighwayOverpass_Bridge_15" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(0.191308, -0.098125, -0.127564, 0.114096, 0.222446, 1.75124e-08, 0.113505, -0.0582183, 0.215005, 838.681, 82.2913, 152.572)
+
+[node name="HighwayOverpass_Bridge_16" parent="LevelArt" instance=ExtResource("17_aioem")]
+transform = Transform3D(-0.197318, 0.0856056, 0.127426, 0.099484, 0.229353, -3.10879e-05, -0.116913, 0.0506827, -0.215088, 838.495, 82.2998, 152.452)

@@ -1,0 +1,8 @@
+{
+    "PortalFrameTime": "Portal Frame Time: {}",
+    "ServerFrameTime": "Server Frame Time: {}",
+	"SpawnAIs": "Spawn AIs",
+	"UnspawnAIs": "Unspawn AIs",
+	"RunAILogic": "Run AI logic",
+	"StopAILogic": "Stop AI logic"
+}

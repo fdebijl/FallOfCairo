@@ -1,0 +1,10 @@
+{
+    "BOMBSPAWN": "SPAWN BOMB",
+    "BOMBGIVEPLAYER": "(TOGGLE) GIVE BOMB TO PLAYER",
+    "BOMBDROP": "FORCE BOMB DROP",
+    "BOMBRESET": "BOMB RESET",
+    "MCOMARMTYPE": "CHANGE MCOM ARM TYPE",
+    "BOMBPICKEDUP": "Bomb Picked Up",
+    "BOMBDROPPED": "Bomb Dropped",
+    "0": "Bomb Picked up"
+}
