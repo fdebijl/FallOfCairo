@@ -14,7 +14,7 @@ export async function Setup(uiManager: UIManager): Promise<void> {
   uiManager.ShowIntroWidget();
   await mod.Wait(10);
   uiManager.HideIntroWidget();
-  uiManager.ShowWaveInfoWidget();
+  // uiManager.ShowWaveInfoWidget(); - Disable for cinematic screenshots DEMOVALUE
 
   // TODO: This is not adding too much right now, let's work on a proper loot system later
   // const lootSpawner1 = mod.GetLootSpawner(700);

@@ -118,4 +118,8 @@ export class UIManager {
       mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.nextWaveDetailsVehicles, infantryCount, vehicleCount));
     }
   }
+
+  OnPlayerDeath(player: mod.Player) {
+    this.HideIntroWidget();
+  }
 }

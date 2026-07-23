@@ -19,11 +19,6 @@ export async function OnGameModeStarted(): Promise<void> {
   const teamNato = mod.GetTeam(TEAMS.NATO);
 
   mod.EnableGameModeObjective(capturePoint, true);
-
-  // Make the capture point really slow to cap, so players have time to retake it when AI gets on the cap
-  const CAPTURE_POINT_CAPTIME_MULTIPLIER = 5;
-  mod.SetCapturePointCapturingTime(capturePoint, CAPTURE_POINT_CAPTIME_MULTIPLIER);
-  mod.SetCapturePointNeutralizationTime(capturePoint, CAPTURE_POINT_CAPTIME_MULTIPLIER);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
   mod.SetCapturePointOwner(capturePoint, teamNato);
 

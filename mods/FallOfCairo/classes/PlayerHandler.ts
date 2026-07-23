@@ -1,5 +1,6 @@
 import { backfillNATO, isAI } from '../helpers/helpers';
 import { HumanPlayer } from './HumanPlayer';
+import { uiManager } from '../FallOfCairo';
 
 /**
  * Handles human player related events and data, maintains a list of human players and their state.
@@ -44,6 +45,7 @@ export class PlayerHandler {
       return;
     }
 
+    uiManager.OnPlayerDeath(player);
     const humanPlayer = this.humanPlayers.find((hp) => hp.id === mod.GetObjId(player));
 
     if (humanPlayer) {

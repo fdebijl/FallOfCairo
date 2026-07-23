@@ -155,6 +155,8 @@ export class BotHandler {
     const MAX_DISTANCE_FOR_ENTRY = 75;
     const DESIRED_OCCUPANT_COUNT = 2;
     const FIRST_AVAILABLE_SEAT = -1;
+    const DRIVER_SEAT = 1;
+    const GUNNER_SEAT = 2;
 
     const vehPos = mod.GetVehicleState(vehicle, mod.VehicleStateVector.VehiclePosition);
     const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
@@ -177,8 +179,16 @@ export class BotHandler {
         continue;
       }
 
+      // This is the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
       console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
-      mod.ForcePlayerToSeat(aiPlayer.player, vehicle, FIRST_AVAILABLE_SEAT);
+      mod.AIBattlefieldBehavior(aiPlayer.player);
+      await mod.Wait(1);
+
+      if (occupants.length === 0) {
+        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, DRIVER_SEAT);
+      } else {
+        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, GUNNER_SEAT);
+      }
 
       await mod.Wait(1);
 
@@ -186,14 +196,15 @@ export class BotHandler {
       // can confirm the seat actually took before treating them as vehicle crew.
       if (mod.IsPlayerValid(aiPlayer.player) && isObjectIDsEqual(mod.GetVehicleFromPlayer(aiPlayer.player), vehicle)) {
         occupants.push(aiPlayer);
+        aiPlayer.isVehicleCrew = true;
       }
+
+      await mod.Wait(1);
     }
 
     console.log(`Vehicle ${mod.GetObjId(vehicle)} has ${occupants.length} occupants after entry attempts.`);
-    for (const occupant of occupants) {
-      this.DirectAiToAttackPoint(occupant, targetPos, false, 25);
-    }
   }
+
 
   static OnAIExitVehicle(player: mod.Player) {
     const botPlayer = BotHandler.GetBotById(mod.GetObjId(player));
@@ -204,6 +215,7 @@ export class BotHandler {
     // Bot dismounted (vehicle destroyed/abandoned) but is still alive and not
     // already being directed: resume the on-foot assault instead of idling.
     if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAlive) && !botPlayer.isBeingDirected) {
+      botPlayer.isVehicleCrew = false;
       const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
       BotHandler.DirectAiToAttackPoint(botPlayer, targetPos);
     }
@@ -223,7 +235,7 @@ export class BotHandler {
     try {
       mod.AISetMoveSpeed(botPlayer.player, mod.MoveSpeed.InvestigateRun);
 
-      while (mod.GetSoldierState(botPlayer.player, mod.SoldierStateBool.IsAlive)) {
+      while (mod.GetSoldierState(botPlayer.player, mod.SoldierStateBool.IsAlive) && !botPlayer.isVehicleCrew) {
         const playerPosition = mod.GetSoldierState(botPlayer.player, mod.SoldierStateVector.GetPosition);
         const _targetPosition = BotHandler.AIHelpMoveTowardsPoint(playerPosition, targetPosition, maxStep);
 

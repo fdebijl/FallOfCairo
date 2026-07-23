@@ -315,6 +315,8 @@ class BotHandler {
     const MAX_DISTANCE_FOR_ENTRY = 75;
     const DESIRED_OCCUPANT_COUNT = 2;
     const FIRST_AVAILABLE_SEAT = -1;
+    const DRIVER_SEAT = 1;
+    const GUNNER_SEAT = 2;
 
     const vehPos = mod.GetVehicleState(vehicle, mod.VehicleStateVector.VehiclePosition);
     const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
@@ -337,8 +339,16 @@ class BotHandler {
         continue;
       }
 
+      // This is the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
       console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
-      mod.ForcePlayerToSeat(aiPlayer.player, vehicle, FIRST_AVAILABLE_SEAT);
+      mod.AIBattlefieldBehavior(aiPlayer.player);
+      await mod.Wait(1);
+
+      if (occupants.length === 0) {
+        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, DRIVER_SEAT);
+      } else {
+        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, GUNNER_SEAT);
+      }
 
       await mod.Wait(1);
 
@@ -346,14 +356,15 @@ class BotHandler {
       // can confirm the seat actually took before treating them as vehicle crew.
       if (mod.IsPlayerValid(aiPlayer.player) && isObjectIDsEqual(mod.GetVehicleFromPlayer(aiPlayer.player), vehicle)) {
         occupants.push(aiPlayer);
+        aiPlayer.isVehicleCrew = true;
       }
+
+      await mod.Wait(1);
     }
 
     console.log(`Vehicle ${mod.GetObjId(vehicle)} has ${occupants.length} occupants after entry attempts.`);
-    for (const occupant of occupants) {
-      this.DirectAiToAttackPoint(occupant, targetPos, false, 25);
-    }
   }
+
 
   static OnAIExitVehicle(player: mod.Player) {
     const botPlayer = BotHandler.GetBotById(mod.GetObjId(player));
@@ -364,6 +375,7 @@ class BotHandler {
     // Bot dismounted (vehicle destroyed/abandoned) but is still alive and not
     // already being directed: resume the on-foot assault instead of idling.
     if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAlive) && !botPlayer.isBeingDirected) {
+      botPlayer.isVehicleCrew = false;
       const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
       BotHandler.DirectAiToAttackPoint(botPlayer, targetPos);
     }
@@ -383,7 +395,7 @@ class BotHandler {
     try {
       mod.AISetMoveSpeed(botPlayer.player, mod.MoveSpeed.InvestigateRun);
 
-      while (mod.GetSoldierState(botPlayer.player, mod.SoldierStateBool.IsAlive)) {
+      while (mod.GetSoldierState(botPlayer.player, mod.SoldierStateBool.IsAlive) && !botPlayer.isVehicleCrew) {
         const playerPosition = mod.GetSoldierState(botPlayer.player, mod.SoldierStateVector.GetPosition);
         const _targetPosition = BotHandler.AIHelpMoveTowardsPoint(playerPosition, targetPosition, maxStep);
 
@@ -444,6 +456,7 @@ class BotHandler {
 class BotPlayer extends Actor{
   currentTargetPosition?: mod.Vector;
   isBeingDirected?: boolean;
+  isVehicleCrew?: boolean;
 }
 
 // ===== classes\DifficultyManager.ts =====
@@ -454,21 +467,29 @@ class DifficultyManager {
   static applyDifficultySettings(difficulty: Difficulty) {
     this.difficulty = difficulty;
 
+    const capturePoint = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
+
     switch (difficulty) {
       case Difficulty.Easy: {
         console.log('Applying Easy difficulty settings');
         mod.SetAIToHumanDamageModifier(0.75);
+        mod.SetCapturePointCapturingTime(capturePoint, 120);
+        mod.SetCapturePointNeutralizationTime(capturePoint, 120);
         break;
       }
       case Difficulty.Hard: {
         console.log('Applying Hard difficulty settings');
         mod.SetAIToHumanDamageModifier(1.5);
+        mod.SetCapturePointCapturingTime(capturePoint, 30);
+        mod.SetCapturePointNeutralizationTime(capturePoint, 30);
         break;
       }
       case Difficulty.Medium:
       default: {
         console.log('Apply Medium difficulty settings');
         mod.SetAIToHumanDamageModifier(1.0);
+        mod.SetCapturePointCapturingTime(capturePoint, 60);
+        mod.SetCapturePointNeutralizationTime(capturePoint, 60);
         break;
       }
     }
@@ -551,6 +572,7 @@ class PlayerHandler {
       return;
     }
 
+    uiManager.OnPlayerDeath(player);
     const humanPlayer = this.humanPlayers.find((hp) => hp.id === mod.GetObjId(player));
 
     if (humanPlayer) {
@@ -947,7 +969,7 @@ async function Setup(uiManager: UIManager): Promise<void> {
   uiManager.ShowIntroWidget();
   await mod.Wait(10);
   uiManager.HideIntroWidget();
-  uiManager.ShowWaveInfoWidget();
+  // uiManager.ShowWaveInfoWidget(); - Disable for cinematic screenshots DEMOVALUE
 
   // TODO: This is not adding too much right now, let's work on a proper loot system later
   // const lootSpawner1 = mod.GetLootSpawner(700);
@@ -1008,11 +1030,6 @@ export async function OnGameModeStarted(): Promise<void> {
   const teamNato = mod.GetTeam(TEAMS.NATO);
 
   mod.EnableGameModeObjective(capturePoint, true);
-
-  // Make the capture point really slow to cap, so players have time to retake it when AI gets on the cap
-  const CAPTURE_POINT_CAPTIME_MULTIPLIER = 5;
-  mod.SetCapturePointCapturingTime(capturePoint, CAPTURE_POINT_CAPTIME_MULTIPLIER);
-  mod.SetCapturePointNeutralizationTime(capturePoint, CAPTURE_POINT_CAPTIME_MULTIPLIER);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
   mod.SetCapturePointOwner(capturePoint, teamNato);
 
@@ -1395,6 +1412,10 @@ class UIManager {
     } else {
       mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.nextWaveDetailsVehicles, infantryCount, vehicleCount));
     }
+  }
+
+  OnPlayerDeath(player: mod.Player) {
+    this.HideIntroWidget();
   }
 }
 

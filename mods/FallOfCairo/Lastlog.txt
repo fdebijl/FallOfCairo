@@ -1,0 +1,592 @@
+[UTC 2026-07-23 20:34:51] Mod started
+[UTC 2026-07-23 20:34:51] Script loading succeeded
+[UTC 2026-07-23 20:34:51] QuickJS: console.log: Spawning 3 NATO bots (current: 1, humans: 1)
+[UTC 2026-07-23 20:34:51]
+
+========== Start ==========
+Exception: JsUndefinedValue
+Error info:
+	Received undefined value as arguments.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at SpawnAIFromAISpawner (native)
+    at backfillNATO (main:117)
+    at OnHumanPlayerJoin (main:478)
+    at OnPlayerJoinGame (main:909)
+========== End ==========
+
+[UTC 2026-07-23 20:34:53] QuickJS: console.log: Vehicle spawned, checking for nearby AI to enter vehicle
+[UTC 2026-07-23 20:34:53] QuickJS: console.log: Vehicle spawned, checking for nearby AI to enter vehicle
+[UTC 2026-07-23 20:34:53] QuickJS: console.log: Vehicle spawned, checking for nearby AI to enter vehicle
+[UTC 2026-07-23 20:34:56]
+
+========== Start ==========
+Exception: JsUndefinedValue
+Error info:
+	Received undefined value as arguments.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at SpawnAIFromAISpawner (native)
+    at backfillNATO (main:117)
+========== End ==========
+
+[UTC 2026-07-23 20:34:58]
+
+========== Start ==========
+Exception: JsUndefinedValue
+Error info:
+	Received undefined value as arguments.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at SpawnAIFromAISpawner (native)
+    at backfillNATO (main:117)
+========== End ==========
+
+[UTC 2026-07-23 20:34:59] QuickJS: console.log: Vehicle 2084 has 0 occupants after entry attempts.
+[UTC 2026-07-23 20:34:59] QuickJS: console.log: Vehicle 2081 has 0 occupants after entry attempts.
+[UTC 2026-07-23 20:34:59] QuickJS: console.log: Vehicle 2085 has 0 occupants after entry attempts.
+[UTC 2026-07-23 20:35:04] QuickJS: console.log: Fall of Cairo v1.2.0 initializing
+[UTC 2026-07-23 20:35:04]
+
+========== Start ==========
+Exception: TooFewParameters
+Error info:
+	Failed to create message object. Only 0 parameters are provided but there are at least 2 braces.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at AddUIText (native)
+    at __addUIText (modlib:271)
+    at __addUIWidget (modlib:341)
+    at <anonymous> (modlib:246)
+    at forEach (native)
+    at __addUIContainer (modlib:247)
+    at __addUIWidget (modlib:339)
+    at ParseUI (modlib:351)
+    at parseWaveInfoWidgetDefinition (main:1109)
+    at UIManager (main:1109)
+    at OnGameModeStarted (main:846)
+========== End ==========
+
+[UTC 2026-07-23 20:35:05] QuickJS: console.log: Apply Medium difficulty settings
+[UTC 2026-07-23 20:35:15] QuickJS: console.log: Spawning 3 NATO bots (current: 1, humans: 1)
+[UTC 2026-07-23 20:35:32] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:35:43] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:35:53] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:36:04] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:36:05] QuickJS: console.log: Spawning wave 1 at 61 seconds
+[UTC 2026-07-23 20:36:08]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:36:09]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:36:16] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:36:26] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:36:37] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:36:47] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:36:57] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:37:07] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:37:17] QuickJS: console.log: Spawning 3 NATO bots (current: 1, humans: 1)
+[UTC 2026-07-23 20:37:38] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:37:47] QuickJS: console.log: Spawning wave 2 at 156 seconds
+[UTC 2026-07-23 20:37:47] QuickJS: console.log: Spawning vehicle for wave 2 at 156 seconds
+[UTC 2026-07-23 20:37:47] QuickJS: console.log: Vehicle spawned, checking for nearby AI to enter vehicle
+[UTC 2026-07-23 20:37:48] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:37:50] QuickJS: console.log: Directing AI 4 to enter vehicle 2130
+[UTC 2026-07-23 20:37:51] QuickJS: console.log: Directing AI 5 to enter vehicle 2130
+[UTC 2026-07-23 20:37:52] QuickJS: console.log: Vehicle 2130 has 2 occupants after entry attempts.
+[UTC 2026-07-23 20:37:58] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:37:58]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:38:02]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:38:08] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:38:18] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:38:28] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:38:38] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:38:48] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:38:58] QuickJS: console.log: Spawning 1 NATO bots (current: 3, humans: 1)
+[UTC 2026-07-23 20:39:10] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:39:20] QuickJS: console.log: Spawning 1 NATO bots (current: 3, humans: 1)
+[UTC 2026-07-23 20:39:32] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:39:42] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:39:52] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:40:02] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:40:10] QuickJS: console.log: Spawning wave 3 at 298 seconds
+[UTC 2026-07-23 20:40:14] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:40:15]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:40:19]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:40:21]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:40:29] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:40:34]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:40:37]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:40:39] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:40:49] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:40:59] QuickJS: console.log: Spawning 1 NATO bots (current: 3, humans: 1)
+[UTC 2026-07-23 20:41:11] QuickJS: console.log: Spawning 2 NATO bots (current: 2, humans: 1)
+[UTC 2026-07-23 20:41:25] QuickJS: console.log: Spawning 1 NATO bots (current: 3, humans: 1)
+[UTC 2026-07-23 20:41:38] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:41:52] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:42:01] QuickJS: console.log: Spawning wave 4 at 397 seconds
+[UTC 2026-07-23 20:42:04] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:42:04]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:42:14] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:42:18]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:42:23]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:42:25]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:42:25] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:42:26]
+
+========== Start ==========
+Exception: NoWeaponOnSlot
+Function: RemoveEquipment
+Error info:
+
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at RemoveEquipment (native)
+    at OnAIPlayerSpawn (main:247)
+========== End ==========
+
+[UTC 2026-07-23 20:42:36] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:42:46] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:42:56] QuickJS: console.log: NATO team at target size: 4 (1 humans, 3 bots)
+[UTC 2026-07-23 20:43:06] QuickJS: console.log: Spawning 3 NATO bots (current: 1, humans: 1)
+[UTC 2026-07-23 20:43:16]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at DirectAiToAttackPoint (main:326)
+========== End ==========
+
+[UTC 2026-07-23 20:43:19]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at DirectAiToAttackPoint (main:326)
+========== End ==========
+
+[UTC 2026-07-23 20:43:21]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at DirectAiToAttackPoint (main:326)
+========== End ==========
+
+[UTC 2026-07-23 20:43:22]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at DirectAiToAttackPoint (main:326)
+========== End ==========
+
+[UTC 2026-07-23 20:43:24]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at DirectAiToAttackPoint (main:326)
+========== End ==========
+
+[UTC 2026-07-23 20:43:25] QuickJS: console.log: Spawning 3 NATO bots (current: 1, humans: 1)
+[UTC 2026-07-23 20:43:28]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at DirectAiToAttackPoint (main:326)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:32]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at <anonymous> (main)
+    at filter (native)
+    at PurgeBotList (main:220)
+    at SlowestTick (main:930)
+========== End ==========
+
+[UTC 2026-07-23 20:43:42] QuickJS: console.log: Spawning 3 NATO bots (current: 1, humans: 1)
+[UTC 2026-07-23 20:43:52]
+
+========== Start ==========
+Exception: InvalidPlayer
+Function: GetSoldierState
+Error info:
+	Failed to perform operation as invalid player encountered.
+QuickJS: Exception:Error: Captured stack (ignore first line of callstack)
+    at <eval> (<input>:1)
+    at GetSoldierState (native)
+    at isAI (main:20)
+    at OnHumanPlayerLeave (main:481)
+    at OnPlayerLeaveGame (main:919)
+========== End ==========
+
+[UTC 2026-07-23 20:43:52] QuickJS: console.log: Spawning 4 NATO bots (current: 0, humans: 0)
