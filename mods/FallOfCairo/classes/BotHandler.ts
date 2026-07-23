@@ -181,14 +181,19 @@ export class BotHandler {
 
       // TODO: This is allegedly the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
       // It worked once, but has been very sporadic since.
-      console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
       mod.AIBattlefieldBehavior(aiPlayer.player);
       await mod.Wait(1);
 
       if (occupants.length === 0) {
+        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)} at seat ${DRIVER_SEAT}`);
         mod.ForcePlayerToSeat(aiPlayer.player, vehicle, DRIVER_SEAT);
-      } else {
+      } else if (occupants.length === 1){
+        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)} at seat ${GUNNER_SEAT}`);
         mod.ForcePlayerToSeat(aiPlayer.player, vehicle, GUNNER_SEAT);
+      } else {
+        // Shouldn't happen, but just in case, try to force them into the first available seat.
+        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)} at first available seat`);
+        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, FIRST_AVAILABLE_SEAT);
       }
 
       await mod.Wait(1);

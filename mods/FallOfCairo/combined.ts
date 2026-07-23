@@ -24,6 +24,11 @@ function isAI(player: mod.Player): boolean {
     return true;
   }
 
+  // TODO: Might have to return true here instead, unsure
+  if (!mod.IsPlayerValid(player)) {
+    return false;
+  }
+
   return mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier);
 }
 
@@ -38,8 +43,8 @@ function isObjectIDsEqual(left: mod.Object, right: mod.Object): boolean {
 function IsAIAllowedVehicle(vehicle: mod.Vehicle) {
   // Must cover every vehicle type spawned in WAVES, otherwise OnPlayerEnterVehicle
   // will kick freshly force-seated PAX bots straight back out.
-  return mod.CompareVehicleName(vehicle, mod.VehicleList.M2Bradley)
-  || mod.CompareVehicleName(vehicle, mod.VehicleList.Abrams)
+  return mod.CompareVehicleName(vehicle, mod.VehicleList.CV90)
+  || mod.CompareVehicleName(vehicle, mod.VehicleList.Leopard)
   || mod.CompareVehicleName(vehicle, mod.VehicleList.Marauder_Pax)
   || mod.CompareVehicleName(vehicle, mod.VehicleList.Vector);
 }
@@ -315,8 +320,8 @@ class BotHandler {
     const MAX_DISTANCE_FOR_ENTRY = 75;
     const DESIRED_OCCUPANT_COUNT = 2;
     const FIRST_AVAILABLE_SEAT = -1;
-    const DRIVER_SEAT = 1;
-    const GUNNER_SEAT = 2;
+    const DRIVER_SEAT = 0;
+    const GUNNER_SEAT = 1;
 
     const vehPos = mod.GetVehicleState(vehicle, mod.VehicleStateVector.VehiclePosition);
     const targetPos = mod.GetObjectPosition(mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT));
@@ -341,14 +346,19 @@ class BotHandler {
 
       // TODO: This is allegedly the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
       // It worked once, but has been very sporadic since.
-      console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)}`);
       mod.AIBattlefieldBehavior(aiPlayer.player);
       await mod.Wait(1);
 
       if (occupants.length === 0) {
+        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)} at seat ${DRIVER_SEAT}`);
         mod.ForcePlayerToSeat(aiPlayer.player, vehicle, DRIVER_SEAT);
-      } else {
+      } else if (occupants.length === 1){
+        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)} at seat ${GUNNER_SEAT}`);
         mod.ForcePlayerToSeat(aiPlayer.player, vehicle, GUNNER_SEAT);
+      } else {
+        // Shouldn't happen, but just in case, try to force them into the first available seat.
+        console.log(`Directing AI ${mod.GetObjId(aiPlayer.player)} to enter vehicle ${mod.GetObjId(vehicle)} at first available seat`);
+        mod.ForcePlayerToSeat(aiPlayer.player, vehicle, FIRST_AVAILABLE_SEAT);
       }
 
       await mod.Wait(1);
@@ -849,7 +859,7 @@ const WAVES: Wave[] = [
     waveNumber: 1,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
     infantryCounts: [4],
-    vehicleTypes: [mod.VehicleList.Vector],
+    vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [1],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
@@ -911,7 +921,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
     infantryCounts: [16, 16, 16, 16],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [3],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
@@ -925,7 +935,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [3],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
@@ -939,7 +949,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [20, 20, 20, 20],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [4],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
@@ -953,7 +963,7 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
+    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.Leopard],
     vehicleCounts: [4],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },

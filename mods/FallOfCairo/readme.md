@@ -21,6 +21,8 @@ This will run the [charmancer](./bin/charmancer.js) to detect illegal chars, [wi
 - Out of bounds area
 - SFX?
 - Change vehicle types to PAX
+- Driver jumps out of vehicle when they hit the spawn
+- First NATO backfill runs too soon, before game has initted
 
 Upstream blocked bugs:
 - Emplacements spawn TOWS instead of MG's

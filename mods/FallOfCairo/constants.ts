@@ -59,10 +59,7 @@ export const WAVES: Wave[] = [
   {
     waveNumber: 1,
     spawnPoints: [AI_SPAWN_POINTS.MAIN_STREET],
-    infantryCounts: [4],
-    vehicleTypes: [mod.VehicleList.Vector],
-    vehicleCounts: [1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
+    infantryCounts: [10]
   },
   {
     waveNumber: 2,
@@ -122,8 +119,8 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.FLANK_LEFT,
     ],
     infantryCounts: [16, 16, 16, 16],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [3],
+    vehicleTypes: [mod.VehicleList.CV90],
+    vehicleCounts: [1],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
@@ -136,8 +133,8 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [3],
+    vehicleTypes: [mod.VehicleList.CV90],
+    vehicleCounts: [2],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
@@ -150,8 +147,8 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [20, 20, 20, 20],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [4],
+    vehicleTypes: [mod.VehicleList.CV90],
+    vehicleCounts: [3],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
   {
@@ -164,8 +161,8 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
-    vehicleTypes: [mod.VehicleList.M2Bradley],
-    vehicleCounts: [4],
+    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.Leopard],
+    vehicleCounts: [2, 2],
     vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
   },
 ]

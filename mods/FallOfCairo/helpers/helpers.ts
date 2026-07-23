@@ -26,8 +26,8 @@ export function isObjectIDsEqual(left: mod.Object, right: mod.Object): boolean {
 export function IsAIAllowedVehicle(vehicle: mod.Vehicle) {
   // Must cover every vehicle type spawned in WAVES, otherwise OnPlayerEnterVehicle
   // will kick freshly force-seated PAX bots straight back out.
-  return mod.CompareVehicleName(vehicle, mod.VehicleList.M2Bradley)
-  || mod.CompareVehicleName(vehicle, mod.VehicleList.Abrams)
+  return mod.CompareVehicleName(vehicle, mod.VehicleList.CV90)
+  || mod.CompareVehicleName(vehicle, mod.VehicleList.Leopard)
   || mod.CompareVehicleName(vehicle, mod.VehicleList.Marauder_Pax)
   || mod.CompareVehicleName(vehicle, mod.VehicleList.Vector);
 }
