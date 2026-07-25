@@ -14,3 +14,10 @@ GodotProject/raw
 GodotProject/static
 GodotProject/levels/*
 node_modules
+unsupported/
+docs/
+package.json
+package-lock.json
+requirements.txt
+tsconfig.json
+README.html
