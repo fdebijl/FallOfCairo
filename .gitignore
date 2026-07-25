@@ -12,7 +12,6 @@ GodotProject/scripts
 GodotProject/objects
 GodotProject/raw
 GodotProject/static
-GodotProject/levels/*
 node_modules
 unsupported/
 docs/
