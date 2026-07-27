@@ -7,29 +7,34 @@ npm run build
 This will run the [charmancer](./bin/charmancer.js) to detect illegal chars, [widgetter](./bin/widgetter.js) to validate strings.json inclusion and finally the script [combiner](./bin/combine.js) to output a single TS file to upload to the Portal website you can find this at [combined.ts](./combined.ts).
 
 # To-do
-- Fix vehicle pathing
-  - Might have to resort to waypoints for each spawn :(
-- Flesh out waves
-- Player scoring
-- Upgrades for players?
-- Cash system?
+
+## Features
+- Flesh out cap area with more cover and fun verticality
 - Difficulty
   - UI for selecting difficulty
   - DifficultyManager class
 - Number-of-players scaling
-- UI?
+  - With 1 human player, the bots should be pretty tame - maybe the enemy count could be reduced as well
+- Ensure waves are balanced
+- Player scoring
+  - Track their bot kills, vehicle kills and potentially flag defenses
+- Upgrades for players?
+  - Some kind of system for players to upgrade their capabilities
+  - More weapons, better armor, etc.
+- Cash system?
+  - Buy killstreaks, more emplacements or even vehicles
 - Out of bounds area
+- UI?
 - SFX?
-- Change vehicle types to PAX
-- Driver jumps out of vehicle when they hit the spawn
+
+## Bugs
 - First NATO backfill runs too soon, before game has initted
 
 Upstream blocked bugs:
 - Emplacements spawn TOWS instead of MG's
   - Might be fixed, let's retry down the line
 
-Playtest notes:
+## Playtest notes
 - Replace 'Wave N' with 'Next wave in' if all bots dead
 - Also hide wave desc in that case?
-- Remove bus ladder
 - Add flag capture UI from conquest

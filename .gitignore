@@ -20,3 +20,5 @@ package-lock.json
 requirements.txt
 tsconfig.json
 README.html
+*.tscn
+!MP_Abbasid_TD.tscn
