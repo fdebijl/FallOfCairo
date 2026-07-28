@@ -8,6 +8,9 @@ import { uiManager } from '../FallOfCairo';
 export class PlayerHandler {
   static humanPlayers: HumanPlayer[] = [];
 
+  /** First human to actually deploy this match - they get to pick the difficulty. */
+  static firstDeployedHumanPlayer: mod.Player | null = null;
+
   static get humanPlayerCount(): number {
     return this.humanPlayers.length;
   }
@@ -19,6 +22,10 @@ export class PlayerHandler {
   static OnHumanPlayerSpawn(player: mod.Player) {
     if (!player || isAI(player)) {
       return;
+    }
+
+    if (!this.firstDeployedHumanPlayer) {
+      this.firstDeployedHumanPlayer = player;
     }
 
     const humanPlayer = this.humanPlayers.find((hp) => hp.id === mod.GetObjId(player));

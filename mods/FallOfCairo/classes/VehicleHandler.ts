@@ -1,3 +1,5 @@
+import { IsAIAllowedVehicle } from '../helpers/helpers';
+import { BotHandler } from './BotHandler';
 import { Vehicle } from './Vehicle';
 
 export class VehicleHandler {
@@ -23,7 +25,10 @@ export class VehicleHandler {
 
   static async DestroyVehicles() {
     for await (const vehicle of VehicleHandler.vehicles) {
-      mod.DealDamage(vehicle.vehicle, 9999);
+      if (IsAIAllowedVehicle(vehicle.vehicle)) {
+        mod.DealDamage(vehicle.vehicle, 9999);
+      }
+
       await mod.Wait(1);
     }
 

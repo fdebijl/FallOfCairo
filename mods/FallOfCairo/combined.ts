@@ -471,9 +471,34 @@ class BotPlayer extends Actor{
 }
 
 // ===== classes\DifficultyManager.ts =====
-// TODO: Implement difficulty settings
 class DifficultyManager {
   static difficulty: Difficulty;
+
+  /** True once a difficulty has been locked in, either by a player or by the fallback. */
+  static hasBeenChosen: boolean = false;
+
+  /** Getter rather than a field so the enum is never read before it is declared. */
+  static get defaultDifficulty(): Difficulty {
+    return Difficulty.Medium;
+  }
+
+  /**
+   * Locks in the difficulty for the rest of the match. The first call wins, so a second
+   * player hammering another button (or the fallback firing late) can't change it.
+   */
+  static chooseDifficulty(difficulty: Difficulty, chosenBy?: mod.Player): boolean {
+    if (this.hasBeenChosen) {
+      return false;
+    }
+
+    this.hasBeenChosen = true;
+    console.log(`Difficulty ${difficulty} chosen by ${chosenBy ? mod.GetObjId(chosenBy) : 'fallback'}`);
+
+    this.applyDifficultySettings(difficulty);
+    this.applyBotHealthToLivingBots();
+
+    return true;
+  }
 
   static applyDifficultySettings(difficulty: Difficulty) {
     this.difficulty = difficulty;
@@ -503,6 +528,27 @@ class DifficultyManager {
         mod.SetCapturePointNeutralizationTime(capturePoint, 90);
         break;
       }
+    }
+  }
+
+  /**
+   * Bot health is normally applied at spawn time, so the NATO backfill bots that are
+   * already on the field when the difficulty is picked would keep the default values.
+   */
+  private static applyBotHealthToLivingBots() {
+    const players = mod.AllPlayers();
+    const playerCount = mod.CountOf(players);
+    const natoTeamId = mod.GetObjId(mod.GetTeam(TEAMS.NATO));
+
+    for (let i = 0; i < playerCount; i++) {
+      const player = mod.ValueInArray(players, i);
+
+      if (!mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier)) {
+        continue;
+      }
+
+      const isNato = mod.GetObjId(mod.GetTeam(player)) === natoTeamId;
+      mod.SetPlayerMaxHealth(player, isNato ? this.natoBotsHealth : this.paxBotsHealth);
     }
   }
 
@@ -546,6 +592,9 @@ class HumanPlayer extends Actor {
 class PlayerHandler {
   static humanPlayers: HumanPlayer[] = [];
 
+  /** First human to actually deploy this match - they get to pick the difficulty. */
+  static firstDeployedHumanPlayer: mod.Player | null = null;
+
   static get humanPlayerCount(): number {
     return this.humanPlayers.length;
   }
@@ -557,6 +606,10 @@ class PlayerHandler {
   static OnHumanPlayerSpawn(player: mod.Player) {
     if (!player || isAI(player)) {
       return;
+    }
+
+    if (!this.firstDeployedHumanPlayer) {
+      this.firstDeployedHumanPlayer = player;
     }
 
     const humanPlayer = this.humanPlayers.find((hp) => hp.id === mod.GetObjId(player));
@@ -669,7 +722,10 @@ class VehicleHandler {
 
   static async DestroyVehicles() {
     for await (const vehicle of VehicleHandler.vehicles) {
-      mod.DealDamage(vehicle.vehicle, 9999);
+      if (IsAIAllowedVehicle(vehicle.vehicle)) {
+        mod.DealDamage(vehicle.vehicle, 9999);
+      }
+
       await mod.Wait(1);
     }
 
@@ -916,6 +972,10 @@ const INTERMISSION_DURATION_SECONDS = 30;
 const INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE = 5;
 const FIRST_WAVE_START_TIME = 60;
 const WAVE_CLEARED_ANNOUNCEMENT_SECONDS = 6;
+// Difficulty has to be settled before the first wave spawns, since bot health is read at
+// spawn time - so the whole prompt (waiting for a human plus their pick) shares one
+// deadline with a little slack before FIRST_WAVE_START_TIME.
+const DIFFICULTY_SELECT_DEADLINE_SECONDS = FIRST_WAVE_START_TIME - 5;
 
 const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -1079,12 +1139,15 @@ async function Setup(uiManager: UIManager): Promise<void> {
   SetupScoreboard();
   SetupEmplacements();
 
-  DifficultyManager.applyDifficultySettings(Difficulty.Medium);
+  // Applied up front so nothing reads an unset difficulty before a player picks one.
+  DifficultyManager.applyDifficultySettings(DifficultyManager.defaultDifficulty);
 
   uiManager.ShowIntroWidget();
   await mod.Wait(10);
   uiManager.HideIntroWidget();
   uiManager.ShowWaveInfoWidget();
+
+  await PromptForDifficulty(uiManager);
 
   // TODO: This is not adding too much right now, let's work on a proper loot system later
   // const lootSpawner1 = mod.GetLootSpawner(700);
@@ -1095,6 +1158,36 @@ async function Setup(uiManager: UIManager): Promise<void> {
   // mod.SpawnLoot(lootSpawner3, mod.Gadgets.CallIn_Ammo_Drop);
 }
 
+
+/**
+ * Puts the difficulty menu in front of the first human player who deployed and waits for
+ * them to pick one. Falls back to the default difficulty if nobody is there to choose, or
+ * if the chooser sits on it, so the match still starts on schedule either way.
+ */
+async function PromptForDifficulty(uiManager: UIManager): Promise<void> {
+  while (!PlayerHandler.firstDeployedHumanPlayer && mod.GetMatchTimeElapsed() < DIFFICULTY_SELECT_DEADLINE_SECONDS) {
+    await mod.Wait(1);
+  }
+
+  const chooser = PlayerHandler.firstDeployedHumanPlayer;
+
+  if (chooser && mod.IsPlayerValid(chooser)) {
+    uiManager.ShowDifficultySelectWidget(chooser);
+
+    // OnPlayerUIButtonEvent is what flips hasBeenChosen.
+    while (!DifficultyManager.hasBeenChosen && mod.GetMatchTimeElapsed() < DIFFICULTY_SELECT_DEADLINE_SECONDS) {
+      console.log('has diff been chosen?', DifficultyManager.hasBeenChosen);
+      await mod.Wait(1);
+    }
+
+    uiManager.HideDifficultySelectWidget(chooser);
+  }
+
+  if (!DifficultyManager.hasBeenChosen) {
+    console.log('No difficulty was picked in time, keeping the default');
+    DifficultyManager.chooseDifficulty(DifficultyManager.defaultDifficulty);
+  }
+}
 
 function SetupScoreboard(): void {
   mod.SetScoreboardType(mod.ScoreboardType.NotSet);
@@ -1209,6 +1302,23 @@ export async function OnPlayerExitVehicle(player: mod.Player, _vehicle: mod.Vehi
   }
 }
 
+export async function OnPlayerUIButtonEvent(player: mod.Player, widget: mod.UIWidget, buttonEvent: mod.UIButtonEvent): Promise<void> {
+  // Portal hands enum values to event handlers as opaque runtime values, so === and !==
+  // never match one - the rest of this codebase compares through GetObjId for the same
+  // reason. modlib.Equals is the comparison the runtime honours.
+  if (isAI(player) || !modlib.Equals(buttonEvent, mod.UIButtonEvent.ButtonUp)) {
+    return;
+  }
+
+  const difficulty = uiManager.GetDifficultyForButton(widget);
+
+  console.log(`Button up on ${mod.GetUIWidgetName(widget)}, difficulty ${difficulty}`);
+
+  if (difficulty) {
+    DifficultyManager.chooseDifficulty(difficulty, player);
+  }
+}
+
 export async function OnPlayerJoinGame(eventPlayer: mod.Player): Promise<void> {
   if (isAI(eventPlayer)) {
     // Might want to do something for AI players here later
@@ -1271,7 +1381,7 @@ const CapStateWidgetDefinition = {
       name: "Box_CapState_Background",
       type: "Container",
       position: [0, 75],
-      size: [300, 50],
+      size: [300, 25],
       anchor: mod.UIAnchor.TopCenter,
       visible: true,
       padding: 0,
@@ -1283,7 +1393,7 @@ const CapStateWidgetDefinition = {
           name: "Box_CapState_ForeGround",
           type: "Container",
           position: [0, 0],
-          size: [0, 50],
+          size: [0, 25],
           anchor: mod.UIAnchor.CenterLeft,
           visible: true,
           padding: 0,
@@ -1345,6 +1455,173 @@ const DefeatWidgetDefinition = {
     }
   ]
 };
+
+// ===== interfaces\UI\DifficultySelectWidget.ts =====
+const DifficultySelectWidgetDefinition = {
+  name: "Container_DifficultyMenu",
+  type: "Container",
+  position: [0, 0],
+  size: [3840, 200],
+  anchor: mod.UIAnchor.Center,
+  visible: false,
+  padding: 0,
+  bgColor: [0.2, 0.2, 0.2],
+  bgAlpha: 1,
+  bgFill: mod.UIBgFill.None,
+  children: [
+    {
+      name: "Container_DifficultyButtons",
+      type: "Container",
+      position: [0, 0],
+      size: [600, 200],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.0314, 0.0431, 0.0431],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.Blur,
+      children: [
+        {
+          name: "Text_Difficulty_SelectYour",
+          type: "Text",
+          position: [0, 0],
+          size: [298.12, 50],
+          anchor: mod.UIAnchor.TopCenter,
+          visible: true,
+          padding: 0,
+          bgColor: [0.2, 0.2, 0.2],
+          bgAlpha: 1,
+          bgFill: mod.UIBgFill.None,
+          textLabel: mod.stringkeys.Text_Difficulty_SelectYour,
+          textColor: [1, 1, 1],
+          textAlpha: 1,
+          textSize: 24,
+          textAnchor: mod.UIAnchor.Center
+        },
+        {
+          name: "Button_DifficultyEasy",
+          type: "Button",
+          position: [54.31, 75],
+          size: [100, 50],
+          anchor: mod.UIAnchor.TopLeft,
+          visible: true,
+          padding: 0,
+          bgColor: [1, 1, 1],
+          bgAlpha: 1,
+          bgFill: mod.UIBgFill.Solid,
+          buttonEnabled: true,
+          buttonColorBase: [0.2784, 0.4471, 0.2118],
+          buttonAlphaBase: 1,
+          buttonColorDisabled: [0.1, 0.1, 0.1],
+          buttonAlphaDisabled: 0.5,
+          buttonColorPressed: [0.2, 0.2, 0.2],
+          buttonAlphaPressed: 1,
+          buttonColorHover: [0.4, 0.4, 0.4],
+          buttonAlphaHover: 1,
+          buttonColorFocused: [0.5, 0.5, 0.5],
+          buttonAlphaFocused: 1
+        },
+        {
+          name: "Button_DifficultyMedium",
+          type: "Button",
+          position: [250, 75],
+          size: [100, 50],
+          anchor: mod.UIAnchor.TopLeft,
+          visible: true,
+          padding: 0,
+          bgColor: [1, 1, 1],
+          bgAlpha: 1,
+          bgFill: mod.UIBgFill.Solid,
+          buttonEnabled: true,
+          buttonColorBase: [1, 0.9882, 0.6118],
+          buttonAlphaBase: 1,
+          buttonColorDisabled: [0.1, 0.1, 0.1],
+          buttonAlphaDisabled: 0.5,
+          buttonColorPressed: [0.2, 0.2, 0.2],
+          buttonAlphaPressed: 1,
+          buttonColorHover: [0.4, 0.4, 0.4],
+          buttonAlphaHover: 1,
+          buttonColorFocused: [0.5, 0.5, 0.5],
+          buttonAlphaFocused: 1
+        },
+        {
+          name: "Button_DifficultyHard",
+          type: "Button",
+          position: [433.63, 75],
+          size: [100, 50],
+          anchor: mod.UIAnchor.TopLeft,
+          visible: true,
+          padding: 0,
+          bgColor: [1, 1, 1],
+          bgAlpha: 1,
+          bgFill: mod.UIBgFill.Solid,
+          buttonEnabled: true,
+          buttonColorBase: [1, 0.5137, 0.3804],
+          buttonAlphaBase: 1,
+          buttonColorDisabled: [0.1, 0.1, 0.1],
+          buttonAlphaDisabled: 0.5,
+          buttonColorPressed: [0.2, 0.2, 0.2],
+          buttonAlphaPressed: 1,
+          buttonColorHover: [0.4, 0.4, 0.4],
+          buttonAlphaHover: 1,
+          buttonColorFocused: [0.5, 0.5, 0.5],
+          buttonAlphaFocused: 1
+        },
+        {
+          name: "Text_Difficulty_Easy",
+          type: "Text",
+          position: [54.31, 122.69],
+          size: [100, 50],
+          anchor: mod.UIAnchor.TopLeft,
+          visible: true,
+          padding: 0,
+          bgColor: [0.2, 0.2, 0.2],
+          bgAlpha: 1,
+          bgFill: mod.UIBgFill.None,
+          textLabel: mod.stringkeys.Text_Difficulty_Easy,
+          textColor: [1, 1, 1],
+          textAlpha: 1,
+          textSize: 24,
+          textAnchor: mod.UIAnchor.Center
+        },
+        {
+          name: "Text_Difficulty_Medium",
+          type: "Text",
+          position: [250, 122.69],
+          size: [100, 50],
+          anchor: mod.UIAnchor.TopLeft,
+          visible: true,
+          padding: 0,
+          bgColor: [0.2, 0.2, 0.2],
+          bgAlpha: 1,
+          bgFill: mod.UIBgFill.None,
+          textLabel: mod.stringkeys.Text_Difficulty_Medium,
+          textColor: [1, 1, 1],
+          textAlpha: 1,
+          textSize: 24,
+          textAnchor: mod.UIAnchor.Center
+        },
+        {
+          name: "Text_Difficulty_Hard",
+          type: "Text",
+          position: [433.63, 122.69],
+          size: [100, 50],
+          anchor: mod.UIAnchor.TopLeft,
+          visible: true,
+          padding: 0,
+          bgColor: [0.2, 0.2, 0.2],
+          bgAlpha: 1,
+          bgFill: mod.UIBgFill.None,
+          textLabel: mod.stringkeys.Text_Difficulty_Hard,
+          textColor: [1, 1, 1],
+          textAlpha: 1,
+          textSize: 24,
+          textAnchor: mod.UIAnchor.Center
+        }
+      ]
+    }
+  ]
+}
 
 // ===== interfaces\UI\EndOfWaveWidget.ts =====
 const EndOfWaveWidgetDefinition = {
@@ -1529,6 +1806,11 @@ class UIManager {
   endOfWaveWidgetContainer: mod.UIWidget;
   endOfWaveWidgetSubtitle: mod.UIWidget;
 
+  difficultySelectWidgetContainer: mod.UIWidget;
+  difficultySelectEasyButton: mod.UIWidget;
+  difficultySelectMediumButton: mod.UIWidget;
+  difficultySelectHardButton: mod.UIWidget;
+
   // Bumped per announcement so a stale auto-hide can't close a newer banner.
   private endOfWaveAnnouncementId = 0;
 
@@ -1539,6 +1821,7 @@ class UIManager {
     (function parseDefeatWidgetDefinition()   { modlib.ParseUI(DefeatWidgetDefinition)   })();
     (function parseCapStateWidgetDefinition() { modlib.ParseUI(CapStateWidgetDefinition) })();
     (function parseEndOfWaveWidgetDefinition(){ modlib.ParseUI(EndOfWaveWidgetDefinition) })();
+    (function parseDifficultySelectWidgetDefinition(){ modlib.ParseUI(DifficultySelectWidgetDefinition) })();
 
     this.waveInfoWidgetContainer = mod.FindUIWidgetWithName('Container_WaveInfo');
     this.waveInfoWidgetWaveNumber = mod.FindUIWidgetWithName('Text_WaveInfo_WaveNumber');
@@ -1550,6 +1833,10 @@ class UIManager {
     this.capStateWidgetContainer = mod.FindUIWidgetWithName('Container_CapState');
     this.endOfWaveWidgetContainer = mod.FindUIWidgetWithName('Container_EndOfWave');
     this.endOfWaveWidgetSubtitle = mod.FindUIWidgetWithName('Text_EndOfWave_Subtitle');
+    this.difficultySelectWidgetContainer = mod.FindUIWidgetWithName('Container_DifficultyMenu');
+    this.difficultySelectEasyButton = mod.FindUIWidgetWithName('Button_DifficultyEasy');
+    this.difficultySelectMediumButton = mod.FindUIWidgetWithName('Button_DifficultyMedium');
+    this.difficultySelectHardButton = mod.FindUIWidgetWithName('Button_DifficultyHard');
 
     mod.SetUIWidgetBgFill(this.waveInfoWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.introWidgetContainer, mod.UIBgFill.Blur);
@@ -1563,6 +1850,13 @@ class UIManager {
     mod.SetUIWidgetVisible(this.defeatWidgetContainer, false);
     mod.SetUIWidgetVisible(this.capStateWidgetContainer, false);
     mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, false);
+    mod.SetUIWidgetVisible(this.difficultySelectWidgetContainer, false);
+
+    // Buttons stay silent until their event is explicitly enabled - without this,
+    // OnPlayerUIButtonEvent never fires for them.
+    mod.EnableUIButtonEvent(this.difficultySelectEasyButton, mod.UIButtonEvent.ButtonUp, true);
+    mod.EnableUIButtonEvent(this.difficultySelectMediumButton, mod.UIButtonEvent.ButtonUp, true);
+    mod.EnableUIButtonEvent(this.difficultySelectHardButton, mod.UIButtonEvent.ButtonUp, true);
   }
 
   ShowWaveInfoWidget() {
@@ -1621,6 +1915,42 @@ class UIManager {
 
   HideEndOfWaveWidget() {
     mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, false);
+  }
+
+  /**
+   * Widgets are global, so everyone sees the menu, but only the chooser gets the cursor
+   * that can actually click it - the difficulty is a one-time, match-wide decision.
+   */
+  ShowDifficultySelectWidget(chooser: mod.Player) {
+    mod.SetUIWidgetVisible(this.difficultySelectWidgetContainer, true);
+    mod.EnableUIInputMode(true, chooser);
+  }
+
+  HideDifficultySelectWidget(chooser: mod.Player) {
+    mod.SetUIWidgetVisible(this.difficultySelectWidgetContainer, false);
+
+    // Leaving input mode on would keep the chooser stuck in cursor mode with no UI to
+    // click, so this has to run even if they left the match in the meantime.
+    if (mod.IsPlayerValid(chooser)) {
+      mod.EnableUIInputMode(false, chooser);
+    }
+  }
+
+  /**
+   * Maps a pressed widget onto the difficulty it selects, or null if the press came from
+   * some other button entirely.
+   */
+  GetDifficultyForButton(widget: mod.UIWidget): Difficulty | null {
+    switch (mod.GetUIWidgetName(widget)) {
+      case 'Button_DifficultyEasy':
+        return Difficulty.Easy;
+      case 'Button_DifficultyMedium':
+        return Difficulty.Medium;
+      case 'Button_DifficultyHard':
+        return Difficulty.Hard;
+      default:
+        return null;
+    }
   }
 
   /**
@@ -1700,7 +2030,9 @@ class UIManager {
     const bgColor: mod.Vector = ownerIsNato ? mod.CreateVector(0.4392, 0.9216, 1) : mod.CreateVector(1, 0.5137, 0.3804);
 
     mod.SetUIWidgetBgColor(progressBarContainer, bgColor);
-    mod.SetUIWidgetSize(progressBarContainer, mod.CreateVector(Math.round(barWidth * fill), 50, 0))
+    const width = Math.round(barWidth * fill);
+    const height = 25;
+    mod.SetUIWidgetSize(progressBarContainer, mod.CreateVector(width, height, 0))
   }
 
   OnPlayerDeath(player: mod.Player) {

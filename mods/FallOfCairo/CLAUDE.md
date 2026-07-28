@@ -128,6 +128,11 @@ Two recursive `async` loops started in `OnGameModeStarted`, using `await mod.Wai
   `mod.FindUIWidgetWithName('Container_...')`. Toggle visibility with `mod.SetUIWidgetVisible`.
 - **Adding UI text**: add the key to the strings file (or `widgetter` fails the build),
   reference it in the widget definition, and wire show/hide + update methods in `UIManager`.
+- **Never hardcode user-facing text.** Always go through `mod.stringkeys` / the strings file.
+  The runtime runs a profanity filter over raw string literals passed to `mod.Message` and
+  friends, so a hardcoded label gets filtered out and never renders. This includes
+  "harmless" fallbacks like `mod.stringkeys.Foo || 'Foo'` — the fallback branch is dead
+  weight that silently produces nothing.
 
 ### Async/Await for Timing
 ```typescript
@@ -166,5 +171,4 @@ await mod.Wait(5); // seconds
 - Build for distribution: `npm run build` → upload `combined.ts` to the Portal website.
 - Test by loading the mod in Battlefield Portal's game-mode editor.
 - See [README.md](README.md) for the current to-do list and playtest notes.
-</content>
-</invoke>
+- Don't bother running tsc, it won't work - as long as 'npm run build' clears you're good

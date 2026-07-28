@@ -1,4 +1,5 @@
 import { BotHandler } from './classes/BotHandler';
+import { DifficultyManager } from './classes/DifficultyManager';
 import { PlayerHandler } from './classes/PlayerHandler';
 import { VehicleHandler } from './classes/VehicleHandler';
 import { WaveManager } from './classes/WaveManager';
@@ -81,6 +82,23 @@ export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehi
 export async function OnPlayerExitVehicle(player: mod.Player, _vehicle: mod.Vehicle) {
   if (mod.GetSoldierState(player, mod.SoldierStateBool.IsAISoldier)) {
     BotHandler.OnAIExitVehicle(player);
+  }
+}
+
+export async function OnPlayerUIButtonEvent(player: mod.Player, widget: mod.UIWidget, buttonEvent: mod.UIButtonEvent): Promise<void> {
+  // Portal hands enum values to event handlers as opaque runtime values, so === and !==
+  // never match one - the rest of this codebase compares through GetObjId for the same
+  // reason. modlib.Equals is the comparison the runtime honours.
+  if (isAI(player) || !modlib.Equals(buttonEvent, mod.UIButtonEvent.ButtonUp)) {
+    return;
+  }
+
+  const difficulty = uiManager.GetDifficultyForButton(widget);
+
+  console.log(`Button up on ${mod.GetUIWidgetName(widget)}, difficulty ${difficulty}`);
+
+  if (difficulty) {
+    DifficultyManager.chooseDifficulty(difficulty, player);
   }
 }
 

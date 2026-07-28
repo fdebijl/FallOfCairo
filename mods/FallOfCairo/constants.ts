@@ -16,6 +16,10 @@ export const INTERMISSION_DURATION_SECONDS = 30;
 export const INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE = 5;
 export const FIRST_WAVE_START_TIME = 60;
 export const WAVE_CLEARED_ANNOUNCEMENT_SECONDS = 6;
+// Difficulty has to be settled before the first wave spawns, since bot health is read at
+// spawn time - so the whole prompt (waiting for a human plus their pick) shares one
+// deadline with a little slack before FIRST_WAVE_START_TIME.
+export const DIFFICULTY_SELECT_DEADLINE_SECONDS = FIRST_WAVE_START_TIME - 5;
 
 export const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,

@@ -61,4 +61,7 @@ Upstream blocked bugs:
 - Retaking the point is not fun, add more paths
 - Auto-recap flag after wave
   - Or not? Recapping is pretty fun
-- More cover for bots, especially main street spawn
+- ~~More cover for bots, especially main street spawn~~
+- If there are only a few players left, add a marker
+- Add text to capture progress bar (BASE STATUS or sum)
+- Add 3D text on the cap, something like 'DEFEND HERE'
