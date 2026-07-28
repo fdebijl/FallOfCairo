@@ -747,6 +747,10 @@ class WaveManager {
       const nextWave = this.waves[0];
 
       if (this.nextWaveStartsAtSeconds <= this.elapsedMatchTimeSeconds) {
+        // Scheduling the next wave pushes nextWaveStartsAtSeconds into the future, so
+        // this branch runs exactly once per cleared wave - the right spot to announce it.
+        this.AnnounceWaveCleared();
+
         // Next wave hasn't been scheduled yet, do it now
         this.nextWaveStartsAtSeconds = this.elapsedMatchTimeSeconds + INTERMISSION_DURATION_SECONDS + (INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE * this.elapsedWaves);
         this.infantryRemaining = nextWave.infantryCounts ? nextWave.infantryCounts.reduce((sum, count) => sum + count, 0) : 0;
@@ -781,6 +785,18 @@ class WaveManager {
     if (this.hasNoAIAlive && this.hasNoWaves && !this.isSpawning) {
       triggerVictory(this.uiManager);
     }
+  }
+
+  private AnnounceWaveCleared() {
+    if (!this.currentWave) {
+      return;
+    }
+
+    console.log(`Wave ${this.currentWave.waveNumber} cleared at ${Math.round(this.elapsedMatchTimeSeconds)} seconds`);
+
+    // Not awaited: the banner stays up for WAVE_CLEARED_ANNOUNCEMENT_SECONDS, which
+    // would otherwise stall the tick loop for the length of the announcement.
+    this.uiManager.AnnounceWaveCleared(this.currentWave.waveNumber, WAVE_CLEARED_ANNOUNCEMENT_SECONDS);
   }
 
   async DoBeforeSpawnWave() {
@@ -899,6 +915,7 @@ const VERSION = '1.2.0';
 const INTERMISSION_DURATION_SECONDS = 30;
 const INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE = 5;
 const FIRST_WAVE_START_TIME = 60;
+const WAVE_CLEARED_ANNOUNCEMENT_SECONDS = 6;
 
 const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -1329,6 +1346,56 @@ const DefeatWidgetDefinition = {
   ]
 };
 
+// ===== interfaces\UI\EndOfWaveWidget.ts =====
+const EndOfWaveWidgetDefinition = {
+  name: "Container_EndOfWave",
+  type: "Container",
+  position: [0, -260],
+  size: [900, 150],
+  anchor: mod.UIAnchor.Center,
+  visible: false,
+  padding: 0,
+  bgColor: [0.0745, 0.1843, 0.2471],
+  bgAlpha: 0.75,
+  bgFill: mod.UIBgFill.Blur,
+  children: [
+    {
+      name: "Text_EndOfWave_Title",
+      type: "Text",
+      position: [0, -28],
+      size: [860, 70],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_EndOfWave_Title,
+      textColor: [0.4392, 0.9216, 1],
+      textAlpha: 1,
+      textSize: 60,
+      textAnchor: mod.UIAnchor.Center
+    },
+    {
+      name: "Text_EndOfWave_Subtitle",
+      type: "Text",
+      position: [0, 34],
+      size: [860, 45],
+      anchor: mod.UIAnchor.Center,
+      visible: true,
+      padding: 0,
+      bgColor: [0.2, 0.2, 0.2],
+      bgAlpha: 1,
+      bgFill: mod.UIBgFill.None,
+      textLabel: mod.stringkeys.Text_EndOfWave_Subtitle,
+      textColor: [1, 1, 1],
+      textAlpha: 1,
+      textSize: 26,
+      textAnchor: mod.UIAnchor.Center
+    }
+  ]
+}
+
 // ===== interfaces\UI\IntroWidget.ts =====
 const IntroWidgetDefinition = {
   name: "Container_Intro",
@@ -1459,12 +1526,19 @@ class UIManager {
   defeatWidgetContainer: mod.UIWidget;
   capStateWidgetContainer: mod.UIWidget;
 
+  endOfWaveWidgetContainer: mod.UIWidget;
+  endOfWaveWidgetSubtitle: mod.UIWidget;
+
+  // Bumped per announcement so a stale auto-hide can't close a newer banner.
+  private endOfWaveAnnouncementId = 0;
+
   constructor() {
     (function parseWaveInfoWidgetDefinition() { modlib.ParseUI(WaveInfoWidgetDefinition) })();
     (function parseIntroWidgetDefinition()    { modlib.ParseUI(IntroWidgetDefinition)    })();
     (function parseVictoryWidgetDefinition()  { modlib.ParseUI(VictoryWidgetDefinition)  })();
     (function parseDefeatWidgetDefinition()   { modlib.ParseUI(DefeatWidgetDefinition)   })();
     (function parseCapStateWidgetDefinition() { modlib.ParseUI(CapStateWidgetDefinition) })();
+    (function parseEndOfWaveWidgetDefinition(){ modlib.ParseUI(EndOfWaveWidgetDefinition) })();
 
     this.waveInfoWidgetContainer = mod.FindUIWidgetWithName('Container_WaveInfo');
     this.waveInfoWidgetWaveNumber = mod.FindUIWidgetWithName('Text_WaveInfo_WaveNumber');
@@ -1474,17 +1548,21 @@ class UIManager {
     this.victoryWidgetContainer = mod.FindUIWidgetWithName('Container_Victory');
     this.defeatWidgetContainer = mod.FindUIWidgetWithName('Container_Defeat');
     this.capStateWidgetContainer = mod.FindUIWidgetWithName('Container_CapState');
+    this.endOfWaveWidgetContainer = mod.FindUIWidgetWithName('Container_EndOfWave');
+    this.endOfWaveWidgetSubtitle = mod.FindUIWidgetWithName('Text_EndOfWave_Subtitle');
 
     mod.SetUIWidgetBgFill(this.waveInfoWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.introWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.victoryWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.defeatWidgetContainer, mod.UIBgFill.Blur);
+    mod.SetUIWidgetBgFill(this.endOfWaveWidgetContainer, mod.UIBgFill.Blur);
 
     mod.SetUIWidgetVisible(this.waveInfoWidgetContainer, false);
     mod.SetUIWidgetVisible(this.introWidgetContainer, false);
     mod.SetUIWidgetVisible(this.victoryWidgetContainer, false);
     mod.SetUIWidgetVisible(this.defeatWidgetContainer, false);
     mod.SetUIWidgetVisible(this.capStateWidgetContainer, false);
+    mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, false);
   }
 
   ShowWaveInfoWidget() {
@@ -1504,6 +1582,7 @@ class UIManager {
   }
 
   ShowVictoryWidget() {
+    this.HideEndOfWaveWidget();
     mod.SetUIWidgetVisible(this.victoryWidgetContainer, true);
   }
 
@@ -1512,6 +1591,7 @@ class UIManager {
   }
 
   ShowDefeatWidget() {
+    this.HideEndOfWaveWidget();
     mod.SetUIWidgetVisible(this.defeatWidgetContainer, true);
   }
 
@@ -1533,6 +1613,34 @@ class UIManager {
 
   HideCapStateWidget() {
     mod.SetUIWidgetVisible(this.capStateWidgetContainer, false);
+  }
+
+  ShowEndOfWaveWidget() {
+    mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, true);
+  }
+
+  HideEndOfWaveWidget() {
+    mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, false);
+  }
+
+  /**
+   * Flashes the WAVE CLEARED banner for durationSeconds, then hides it again.
+   * Deliberately not awaited by callers - it sleeps for the whole display duration.
+   */
+  async AnnounceWaveCleared(waveNumber: number, durationSeconds: number) {
+    this.endOfWaveAnnouncementId++;
+    const announcementId = this.endOfWaveAnnouncementId;
+
+    mod.SetUITextLabel(this.endOfWaveWidgetSubtitle, mod.Message(mod.stringkeys.endOfWaveSubtitle, waveNumber));
+    this.ShowEndOfWaveWidget();
+
+    await mod.Wait(durationSeconds);
+
+    // Something newer (another wave clear, victory, defeat) may own the banner by
+    // now - only the most recent announcement gets to take it down.
+    if (announcementId === this.endOfWaveAnnouncementId) {
+      this.HideEndOfWaveWidget();
+    }
   }
 
   UpdateWaveInfoInfantry(waveNumber: number, infantryCountRemaining: number) {

@@ -3,6 +3,7 @@ import { WaveInfoWidgetDefinition } from './WaveInfoWidget';
 import { VictoryWidgetDefinition } from './VictoryWidget';
 import { DefeatWidgetDefinition } from './DefeatWidget';
 import { CapStateWidgetDefinition } from './CapStateWidget';
+import { EndOfWaveWidgetDefinition } from './EndOfWaveWidget';
 import { TEAMS } from '../../constants';
 
 export class UIManager {
@@ -16,12 +17,19 @@ export class UIManager {
   defeatWidgetContainer: mod.UIWidget;
   capStateWidgetContainer: mod.UIWidget;
 
+  endOfWaveWidgetContainer: mod.UIWidget;
+  endOfWaveWidgetSubtitle: mod.UIWidget;
+
+  // Bumped per announcement so a stale auto-hide can't close a newer banner.
+  private endOfWaveAnnouncementId = 0;
+
   constructor() {
     (function parseWaveInfoWidgetDefinition() { modlib.ParseUI(WaveInfoWidgetDefinition) })();
     (function parseIntroWidgetDefinition()    { modlib.ParseUI(IntroWidgetDefinition)    })();
     (function parseVictoryWidgetDefinition()  { modlib.ParseUI(VictoryWidgetDefinition)  })();
     (function parseDefeatWidgetDefinition()   { modlib.ParseUI(DefeatWidgetDefinition)   })();
     (function parseCapStateWidgetDefinition() { modlib.ParseUI(CapStateWidgetDefinition) })();
+    (function parseEndOfWaveWidgetDefinition(){ modlib.ParseUI(EndOfWaveWidgetDefinition) })();
 
     this.waveInfoWidgetContainer = mod.FindUIWidgetWithName('Container_WaveInfo');
     this.waveInfoWidgetWaveNumber = mod.FindUIWidgetWithName('Text_WaveInfo_WaveNumber');
@@ -31,17 +39,21 @@ export class UIManager {
     this.victoryWidgetContainer = mod.FindUIWidgetWithName('Container_Victory');
     this.defeatWidgetContainer = mod.FindUIWidgetWithName('Container_Defeat');
     this.capStateWidgetContainer = mod.FindUIWidgetWithName('Container_CapState');
+    this.endOfWaveWidgetContainer = mod.FindUIWidgetWithName('Container_EndOfWave');
+    this.endOfWaveWidgetSubtitle = mod.FindUIWidgetWithName('Text_EndOfWave_Subtitle');
 
     mod.SetUIWidgetBgFill(this.waveInfoWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.introWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.victoryWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.defeatWidgetContainer, mod.UIBgFill.Blur);
+    mod.SetUIWidgetBgFill(this.endOfWaveWidgetContainer, mod.UIBgFill.Blur);
 
     mod.SetUIWidgetVisible(this.waveInfoWidgetContainer, false);
     mod.SetUIWidgetVisible(this.introWidgetContainer, false);
     mod.SetUIWidgetVisible(this.victoryWidgetContainer, false);
     mod.SetUIWidgetVisible(this.defeatWidgetContainer, false);
     mod.SetUIWidgetVisible(this.capStateWidgetContainer, false);
+    mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, false);
   }
 
   ShowWaveInfoWidget() {
@@ -61,6 +73,7 @@ export class UIManager {
   }
 
   ShowVictoryWidget() {
+    this.HideEndOfWaveWidget();
     mod.SetUIWidgetVisible(this.victoryWidgetContainer, true);
   }
 
@@ -69,6 +82,7 @@ export class UIManager {
   }
 
   ShowDefeatWidget() {
+    this.HideEndOfWaveWidget();
     mod.SetUIWidgetVisible(this.defeatWidgetContainer, true);
   }
 
@@ -90,6 +104,34 @@ export class UIManager {
 
   HideCapStateWidget() {
     mod.SetUIWidgetVisible(this.capStateWidgetContainer, false);
+  }
+
+  ShowEndOfWaveWidget() {
+    mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, true);
+  }
+
+  HideEndOfWaveWidget() {
+    mod.SetUIWidgetVisible(this.endOfWaveWidgetContainer, false);
+  }
+
+  /**
+   * Flashes the WAVE CLEARED banner for durationSeconds, then hides it again.
+   * Deliberately not awaited by callers - it sleeps for the whole display duration.
+   */
+  async AnnounceWaveCleared(waveNumber: number, durationSeconds: number) {
+    this.endOfWaveAnnouncementId++;
+    const announcementId = this.endOfWaveAnnouncementId;
+
+    mod.SetUITextLabel(this.endOfWaveWidgetSubtitle, mod.Message(mod.stringkeys.endOfWaveSubtitle, waveNumber));
+    this.ShowEndOfWaveWidget();
+
+    await mod.Wait(durationSeconds);
+
+    // Something newer (another wave clear, victory, defeat) may own the banner by
+    // now - only the most recent announcement gets to take it down.
+    if (announcementId === this.endOfWaveAnnouncementId) {
+      this.HideEndOfWaveWidget();
+    }
   }
 
   UpdateWaveInfoInfantry(waveNumber: number, infantryCountRemaining: number) {

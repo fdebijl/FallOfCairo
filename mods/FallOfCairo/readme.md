@@ -55,7 +55,7 @@ Upstream blocked bugs:
 - ~~Enemy infantry counter gets stuck at 5 for large waves~~
   - Hopefully fixed with the do-wave-logic await bug
 - ~~Is interspawn delay respected??~~
-- Add end of wave 'WAVE CLEARED' announcement or sum
+- ~~Add end of wave 'WAVE CLEARED' announcement or sum~~
 - Additional time method doesn't work - waveElapsed not respected?
 - Encase TOW's more
 - Retaking the point is not fun, add more paths

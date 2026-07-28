@@ -1,4 +1,4 @@
-import { FIRST_WAVE_START_TIME, INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE, INTERMISSION_DURATION_SECONDS, INFANTRY_INTERSPAWN_DELAY, TEAMS, WAVES, VEHICLE_INTERSPAWN_DELAY } from '../constants';
+import { FIRST_WAVE_START_TIME, INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE, INTERMISSION_DURATION_SECONDS, INFANTRY_INTERSPAWN_DELAY, TEAMS, WAVES, VEHICLE_INTERSPAWN_DELAY, WAVE_CLEARED_ANNOUNCEMENT_SECONDS } from '../constants';
 import { isAI, isObjectIDsEqual, triggerVictory } from '../helpers/helpers';
 import { UIManager } from '../interfaces/UI/UIManager';
 import { Wave } from '../interfaces/Wave';
@@ -74,6 +74,10 @@ export class WaveManager {
       const nextWave = this.waves[0];
 
       if (this.nextWaveStartsAtSeconds <= this.elapsedMatchTimeSeconds) {
+        // Scheduling the next wave pushes nextWaveStartsAtSeconds into the future, so
+        // this branch runs exactly once per cleared wave - the right spot to announce it.
+        this.AnnounceWaveCleared();
+
         // Next wave hasn't been scheduled yet, do it now
         this.nextWaveStartsAtSeconds = this.elapsedMatchTimeSeconds + INTERMISSION_DURATION_SECONDS + (INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE * this.elapsedWaves);
         this.infantryRemaining = nextWave.infantryCounts ? nextWave.infantryCounts.reduce((sum, count) => sum + count, 0) : 0;
@@ -108,6 +112,18 @@ export class WaveManager {
     if (this.hasNoAIAlive && this.hasNoWaves && !this.isSpawning) {
       triggerVictory(this.uiManager);
     }
+  }
+
+  private AnnounceWaveCleared() {
+    if (!this.currentWave) {
+      return;
+    }
+
+    console.log(`Wave ${this.currentWave.waveNumber} cleared at ${Math.round(this.elapsedMatchTimeSeconds)} seconds`);
+
+    // Not awaited: the banner stays up for WAVE_CLEARED_ANNOUNCEMENT_SECONDS, which
+    // would otherwise stall the tick loop for the length of the announcement.
+    this.uiManager.AnnounceWaveCleared(this.currentWave.waveNumber, WAVE_CLEARED_ANNOUNCEMENT_SECONDS);
   }
 
   async DoBeforeSpawnWave() {
