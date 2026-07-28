@@ -22,6 +22,7 @@ export async function OnGameModeStarted(): Promise<void> {
   mod.EnableGameModeObjective(capturePoint, true);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
   mod.SetCapturePointOwner(capturePoint, teamNato);
+  uiManager.UpdateCapStateWidget(teamNato, 1);
 
   mod.DeployAllPlayers();
 
@@ -105,6 +106,12 @@ export async function OnPlayerLeaveGame(playerId: number): Promise<void> {
 async function SlowTick() {
   await mod.Wait(1);
   await waveManager.DoWaveLoop();
+
+  const cap = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
+  const team = mod.GetCurrentOwnerTeam(cap)
+  const progress = mod.GetCaptureProgress(cap);
+  uiManager.UpdateCapStateWidget(team, progress);
+
   SlowTick();
 }
 

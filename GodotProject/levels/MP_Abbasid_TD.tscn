@@ -435,7 +435,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -74.4245, 64.0347, -21.3354)
 transform = Transform3D(-0.869159, 0, 0.494534, 0, 1, 0, -0.494534, 0, -0.869159, -77.3122, 64.0331, -51.0499)
 
 [node name="VEH_M2MG_MainStreet" parent="HumanEmplacements" unique_id=1075730272 instance=ExtResource("23_nol6w")]
-transform = Transform3D(0.7061929, 0, -0.70801944, 0, 1, 0, 0.70801944, 0, 0.7061929, -65.854866, 68.23832, 26.126616)
+transform = Transform3D(0.7061929, 0, -0.70801944, 0, 1, 0, 0.70801944, 0, 0.7061929, -65.835976, 68.23832, 26.10777)
 
 [node name="VEH_Stationary_BGM71TOW2" parent="HumanEmplacements" unique_id=284169696 instance=ExtResource("24_rlt8q")]
 transform = Transform3D(-0.1636359, 0, -0.9865208, 0, 1, 0, 0.9865208, 0, -0.1636359, -90.26831, 67.512115, -59.376186)
@@ -444,7 +444,7 @@ transform = Transform3D(-0.1636359, 0, -0.9865208, 0, 1, 0, 0.9865208, 0, -0.163
 transform = Transform3D(0.984902, 0, 0.173115, 0, 1, 0, -0.173115, 0, 0.984902, -89.0962, 67.5121, -53.3373)
 
 [node name="VEH_M2MG" parent="HumanEmplacements" unique_id=182046064 instance=ExtResource("23_nol6w")]
-transform = Transform3D(0.007400163, 0, -0.99997264, 0, 1, 0, 0.99997264, 0, 0.007400163, -65.040245, 68.39692, -17.564753)
+transform = Transform3D(0.007400163, 0, -0.99997264, 0, 1, 0, 0.99997264, 0, 0.007400163, -64.9521, 68.388855, -17.565405)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1729699963]
 transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, -80.4583, 263.722, -30.3798)

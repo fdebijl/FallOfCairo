@@ -783,6 +783,10 @@ class WaveManager {
     }
   }
 
+  async DoBeforeSpawnWave() {
+    VehicleHandler.DestroyVehicles();
+  }
+
   async SpawnWave(wave: Wave) {
     console.log(`Spawning wave ${wave.waveNumber} at ${Math.round(this.elapsedMatchTimeSeconds)} seconds`);
 
@@ -792,7 +796,8 @@ class WaveManager {
     try {
       await this.SetWaveDetailsUI(wave, true);
 
-      // TODO: Cleanup existing vehicles here
+      await this.DoBeforeSpawnWave();
+
       this.SpawnWaveVehicles(wave);
       await this.SpawnWaveInfantry(wave);
     } finally {
@@ -1125,6 +1130,7 @@ export async function OnGameModeStarted(): Promise<void> {
   mod.EnableGameModeObjective(capturePoint, true);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
   mod.SetCapturePointOwner(capturePoint, teamNato);
+  uiManager.UpdateCapStateWidget(teamNato, 1);
 
   mod.DeployAllPlayers();
 
@@ -1208,6 +1214,12 @@ export async function OnPlayerLeaveGame(playerId: number): Promise<void> {
 async function SlowTick() {
   await mod.Wait(1);
   await waveManager.DoWaveLoop();
+
+  const cap = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
+  const team = mod.GetCurrentOwnerTeam(cap)
+  const progress = mod.GetCaptureProgress(cap);
+  uiManager.UpdateCapStateWidget(team, progress);
+
   SlowTick();
 }
 
@@ -1223,6 +1235,48 @@ export enum Difficulty {
   Easy = 'EASY',
   Medium = 'MEDIUM',
   Hard = 'HARD',
+}
+
+// ===== interfaces\UI\CapStateWidget.ts =====
+const CapStateWidgetDefinition = {
+  name: "Container_CapState",
+  type: "Container",
+  position: [0, 0],
+  size: [3840, 150],
+  anchor: mod.UIAnchor.TopCenter,
+  visible: false,
+  padding: 0,
+  bgColor: [0.2, 0.2, 0.2],
+  bgAlpha: 0,
+  bgFill: mod.UIBgFill.None,
+  children: [
+    {
+      name: "Box_CapState_Background",
+      type: "Container",
+      position: [0, 75],
+      size: [300, 50],
+      anchor: mod.UIAnchor.TopCenter,
+      visible: true,
+      padding: 0,
+      bgColor: [0.0314, 0.0431, 0.0431],
+      bgAlpha: 0.3,
+      bgFill: mod.UIBgFill.Blur,
+      children: [
+        {
+          name: "Box_CapState_ForeGround",
+          type: "Container",
+          position: [0, 0],
+          size: [0, 50],
+          anchor: mod.UIAnchor.CenterLeft,
+          visible: true,
+          padding: 0,
+          bgColor: [1, 0.5137, 0.3804],
+          bgAlpha: 0,
+          bgFill: mod.UIBgFill.Blur
+        }
+      ]
+    }
+  ]
 }
 
 // ===== interfaces\UI\DefeatWidget.ts =====
@@ -1403,12 +1457,14 @@ class UIManager {
   introWidgetContainer: mod.UIWidget;
   victoryWidgetContainer: mod.UIWidget;
   defeatWidgetContainer: mod.UIWidget;
+  capStateWidgetContainer: mod.UIWidget;
 
   constructor() {
     (function parseWaveInfoWidgetDefinition() { modlib.ParseUI(WaveInfoWidgetDefinition) })();
     (function parseIntroWidgetDefinition()    { modlib.ParseUI(IntroWidgetDefinition)    })();
     (function parseVictoryWidgetDefinition()  { modlib.ParseUI(VictoryWidgetDefinition)  })();
     (function parseDefeatWidgetDefinition()   { modlib.ParseUI(DefeatWidgetDefinition)   })();
+    (function parseCapStateWidgetDefinition() { modlib.ParseUI(CapStateWidgetDefinition) })();
 
     this.waveInfoWidgetContainer = mod.FindUIWidgetWithName('Container_WaveInfo');
     this.waveInfoWidgetWaveNumber = mod.FindUIWidgetWithName('Text_WaveInfo_WaveNumber');
@@ -1417,6 +1473,7 @@ class UIManager {
     this.introWidgetContainer = mod.FindUIWidgetWithName('Container_Intro');
     this.victoryWidgetContainer = mod.FindUIWidgetWithName('Container_Victory');
     this.defeatWidgetContainer = mod.FindUIWidgetWithName('Container_Defeat');
+    this.capStateWidgetContainer = mod.FindUIWidgetWithName('Container_CapState');
 
     mod.SetUIWidgetBgFill(this.waveInfoWidgetContainer, mod.UIBgFill.Blur);
     mod.SetUIWidgetBgFill(this.introWidgetContainer, mod.UIBgFill.Blur);
@@ -1427,6 +1484,7 @@ class UIManager {
     mod.SetUIWidgetVisible(this.introWidgetContainer, false);
     mod.SetUIWidgetVisible(this.victoryWidgetContainer, false);
     mod.SetUIWidgetVisible(this.defeatWidgetContainer, false);
+    mod.SetUIWidgetVisible(this.capStateWidgetContainer, false);
   }
 
   ShowWaveInfoWidget() {
@@ -1469,6 +1527,14 @@ class UIManager {
     mod.SetUIWidgetVisible(this.waveInfoWidgetWaveTime, false);
   }
 
+  ShowCapStateWidget() {
+    mod.SetUIWidgetVisible(this.capStateWidgetContainer, true);
+  }
+
+  HideCapStateWidget() {
+    mod.SetUIWidgetVisible(this.capStateWidgetContainer, false);
+  }
+
   UpdateWaveInfoInfantry(waveNumber: number, infantryCountRemaining: number) {
     mod.SetUITextLabel(this.waveInfoWidgetWaveNumber, mod.Message(mod.stringkeys.waveNumber, waveNumber));
     mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.waveDetailsInfantry, infantryCountRemaining));
@@ -1508,6 +1574,25 @@ class UIManager {
     } else {
       mod.SetUITextLabel(this.waveInfoWidgetWaveDetails, mod.Message(mod.stringkeys.nextWaveDetailsVehicles, infantryCount, vehicleCount));
     }
+  }
+
+  UpdateCapStateWidget(owner: mod.Team, progress: number) {
+    this.ShowCapStateWidget();
+
+    const progressBarContainer = mod.FindUIWidgetWithName('Box_CapState_ForeGround');
+    const barWidth = 300;
+
+    // GetCaptureProgress returns 0..1, and reads 0 while the point sits uncontested,
+    // so show a full bar for the owning team and let a contest eat into it.
+    const fill = progress > 0 ? Math.min(progress, 1) : 1;
+
+    mod.SetUIWidgetBgAlpha(progressBarContainer, 1);
+
+    const ownerIsNato = mod.GetObjId(owner) === mod.GetObjId(mod.GetTeam(TEAMS.NATO));
+    const bgColor: mod.Vector = ownerIsNato ? mod.CreateVector(0.4392, 0.9216, 1) : mod.CreateVector(1, 0.5137, 0.3804);
+
+    mod.SetUIWidgetBgColor(progressBarContainer, bgColor);
+    mod.SetUIWidgetSize(progressBarContainer, mod.CreateVector(Math.round(barWidth * fill), 50, 0))
   }
 
   OnPlayerDeath(player: mod.Player) {
