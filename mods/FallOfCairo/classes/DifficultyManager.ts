@@ -21,7 +21,7 @@ export class DifficultyManager {
       }
       case Difficulty.Hard: {
         console.log('Applying Hard difficulty settings');
-        mod.SetAIToHumanDamageModifier(1.5);
+        mod.SetAIToHumanDamageModifier(1.2);
         mod.SetCapturePointCapturingTime(capturePoint, 30);
         mod.SetCapturePointNeutralizationTime(capturePoint, 30);
         break;
@@ -29,9 +29,9 @@ export class DifficultyManager {
       case Difficulty.Medium:
       default: {
         console.log('Apply Medium difficulty settings');
-        mod.SetAIToHumanDamageModifier(1.0);
-        mod.SetCapturePointCapturingTime(capturePoint, 60);
-        mod.SetCapturePointNeutralizationTime(capturePoint, 60);
+        mod.SetAIToHumanDamageModifier(0.90);
+        mod.SetCapturePointCapturingTime(capturePoint, 90);
+        mod.SetCapturePointNeutralizationTime(capturePoint, 90);
         break;
       }
     }
@@ -54,10 +54,10 @@ export class DifficultyManager {
       case Difficulty.Easy:
         return 75;
       case Difficulty.Hard:
-        return 200;
+        return 150;
       case Difficulty.Medium:
       default:
-        return 100;
+        return 90;
     }
   }
 }

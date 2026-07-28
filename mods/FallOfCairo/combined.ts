@@ -260,11 +260,13 @@ class BotHandler {
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => mod.IsPlayerValid(bot.player) && mod.GetSoldierState(bot.player, mod.SoldierStateBool.IsAlive));
   }
 
+  // Callers must await this: the backoff below is the only thing keeping us under
+  // maxAmountOfAi, and an unawaited call turns it into a detached retry loop that
+  // ignores the caller's spawn pacing entirely.
   static async SpawnAI(spawnPoint: mod.Spawner): Promise<void> {
-    if (this.botPlayerCount >= BotHandler.maxAmountOfAi) {
+    while (this.botPlayerCount >= BotHandler.maxAmountOfAi) {
       console.log('Max AI limit reached, backing off spawn.');
       await mod.Wait(5);
-      return BotHandler.SpawnAI(spawnPoint);
     }
 
     const team = mod.GetTeam(TEAMS.PAX_ARMATA);
@@ -490,7 +492,7 @@ class DifficultyManager {
       }
       case Difficulty.Hard: {
         console.log('Applying Hard difficulty settings');
-        mod.SetAIToHumanDamageModifier(1.5);
+        mod.SetAIToHumanDamageModifier(1.2);
         mod.SetCapturePointCapturingTime(capturePoint, 30);
         mod.SetCapturePointNeutralizationTime(capturePoint, 30);
         break;
@@ -498,9 +500,9 @@ class DifficultyManager {
       case Difficulty.Medium:
       default: {
         console.log('Apply Medium difficulty settings');
-        mod.SetAIToHumanDamageModifier(1.0);
-        mod.SetCapturePointCapturingTime(capturePoint, 60);
-        mod.SetCapturePointNeutralizationTime(capturePoint, 60);
+        mod.SetAIToHumanDamageModifier(0.90);
+        mod.SetCapturePointCapturingTime(capturePoint, 90);
+        mod.SetCapturePointNeutralizationTime(capturePoint, 90);
         break;
       }
     }
@@ -523,10 +525,10 @@ class DifficultyManager {
       case Difficulty.Easy:
         return 75;
       case Difficulty.Hard:
-        return 200;
+        return 150;
       case Difficulty.Medium:
       default:
-        return 100;
+        return 90;
     }
   }
 }
@@ -634,6 +636,8 @@ class WaveManager {
   waves: Wave[];
   currentWave: Wave | null = null;
   canAdvanceWave: boolean = true;
+  isSpawning: boolean = false;
+  elapsedWaves = 0;
 
   infantryRemaining = 0;
   vehiclesRemaining = 0;
@@ -673,23 +677,30 @@ class WaveManager {
   }
 
   async DoWaveLoop() {
-    for (const wave of this.waves) {
-      if (this.elapsedMatchTimeSeconds >= this.nextWaveStartsAtSeconds && this.canAdvanceWave) {
-        this.canAdvanceWave = false;
-        await this.SpawnWave(wave);
+    // Waves are chronological and only one can ever be pending, so waves[0] is the
+    // only candidate. Removing it up front keeps hasWaves accurate while it spawns.
+    const pendingWave = this.waves[0];
 
-        // Remove the wave from the list to prevent re-spawning
-        this.waves.splice(this.waves.indexOf(wave), 1);
-      }
+    if (pendingWave && this.canAdvanceWave && this.elapsedMatchTimeSeconds >= this.nextWaveStartsAtSeconds) {
+      this.canAdvanceWave = false;
+      this.waves.splice(0, 1);
+      this.elapsedWaves++;
+
+      // Deliberately not awaited: spawning a wave takes infantryCount *
+      // INFANTRY_INTERSPAWN_DELAY seconds, which would stall this whole tick loop
+      // (and with it the UI and the victory check) for minutes at a time. isSpawning
+      // is set synchronously inside SpawnWave, before the first await, so the checks
+      // below already see it on this pass.
+      this.SpawnWave(pendingWave);
     }
 
-    if (this.hasWaves && this.hasNoAIAlive) {
+    if (this.hasWaves && this.hasNoAIAlive && !this.isSpawning) {
       // All bots from the current wave have been killed, prepare for the next wave
       const nextWave = this.waves[0];
 
       if (this.nextWaveStartsAtSeconds <= this.elapsedMatchTimeSeconds) {
         // Next wave hasn't been scheduled yet, do it now
-        this.nextWaveStartsAtSeconds = this.elapsedMatchTimeSeconds + INTERMISSION_DURATION_SECONDS;
+        this.nextWaveStartsAtSeconds = this.elapsedMatchTimeSeconds + INTERMISSION_DURATION_SECONDS + (INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE * this.elapsedWaves);
         this.infantryRemaining = nextWave.infantryCounts ? nextWave.infantryCounts.reduce((sum, count) => sum + count, 0) : 0;
         this.vehiclesRemaining = nextWave.vehicleCounts ? nextWave.vehicleCounts.reduce((sum, count) => sum + count, 0) : 0;
         this.canAdvanceWave = true;
@@ -717,7 +728,9 @@ class WaveManager {
       this.uiManager.HideWaveTime();
     }
 
-    if (this.hasNoAIAlive && this.hasNoWaves) {
+    // isSpawning guards against the final wave winning the match the instant it starts,
+    // before any of its bots have registered as alive.
+    if (this.hasNoAIAlive && this.hasNoWaves && !this.isSpawning) {
       triggerVictory(this.uiManager);
     }
   }
@@ -725,27 +738,46 @@ class WaveManager {
   async SpawnWave(wave: Wave) {
     console.log(`Spawning wave ${wave.waveNumber} at ${Math.round(this.elapsedMatchTimeSeconds)} seconds`);
 
+    this.isSpawning = true;
     this.currentWave = wave;
-    await this.SetWaveDetailsUI(wave, true);
 
-    this.SpawnWaveVehicles(wave);
-    await this.SpawnWaveInfantry(wave);
+    try {
+      await this.SetWaveDetailsUI(wave, true);
+
+      // TODO: Cleanup existing vehicles here
+      this.SpawnWaveVehicles(wave);
+      await this.SpawnWaveInfantry(wave);
+    } finally {
+      // Nobody awaits SpawnWave, so a throw here would otherwise leave isSpawning
+      // stuck and the wave loop deadlocked.
+      this.isSpawning = false;
+    }
   }
 
   private async SpawnWaveInfantry(wave: Wave) {
-        if (wave.spawnPoints && wave.infantryCounts) {
-      const maxInfantryCount = Math.max(...wave.infantryCounts);
+    if (!wave.spawnPoints || !wave.infantryCounts) {
+      return;
+    }
 
-      for (let round = 0; round < maxInfantryCount; round++) {
-        for (const spawnPointId of wave.spawnPoints) {
-          const index = wave.spawnPoints.indexOf(spawnPointId);
-          const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+    const maxInfantryCount = Math.max(...wave.infantryCounts);
+    let hasSpawnedAny = false;
 
-          if (round < infantryPerSpawnPoint) {
-            const spawnPoint = mod.GetSpawner(spawnPointId);
-            BotHandler.SpawnAI(spawnPoint);
-            await mod.Wait(INTERSPAWN_DELAY);
+    for (let round = 0; round < maxInfantryCount; round++) {
+      for (let index = 0; index < wave.spawnPoints.length; index++) {
+        const infantryPerSpawnPoint = wave.infantryCounts[index] || 0;
+
+        if (round < infantryPerSpawnPoint) {
+          // Delay before the spawn rather than after it, so we don't idle for an
+          // extra INFANTRY_INTERSPAWN_DELAY once the final bot is out.
+          if (hasSpawnedAny) {
+            await mod.Wait(INFANTRY_INTERSPAWN_DELAY);
           }
+
+          const spawnPoint = mod.GetSpawner(wave.spawnPoints[index]);
+          // Awaited so the AI-cap backoff inside SpawnAI stalls this loop instead of
+          // spawning a pile of detached retries that burst past the interspawn delay.
+          await BotHandler.SpawnAI(spawnPoint);
+          hasSpawnedAny = true;
         }
       }
     }
@@ -770,7 +802,7 @@ class WaveManager {
         }
 
         if (round < maxVehicleCount - 1) {
-          await mod.Wait(10);
+          await mod.Wait(VEHICLE_INTERSPAWN_DELAY);
         }
       }
     }
@@ -812,6 +844,7 @@ class WaveManager {
 const VERSION = '1.2.0';
 
 const INTERMISSION_DURATION_SECONDS = 30;
+const INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE = 5;
 const FIRST_WAVE_START_TIME = 60;
 
 const CAPTURE_POINTS = {
@@ -907,7 +940,7 @@ const WAVES: Wave[] = [
     infantryCounts: [14, 14, 12, 12],
     vehicleTypes: [mod.VehicleList.Marauder_Pax, mod.VehicleList.Marauder_Pax],
     vehicleCounts: [1, 1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE, VEHICLE_SPAWN_POINTS.MAIN_STREET],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.FLANK_RIGHT, VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 7,
@@ -920,7 +953,7 @@ const WAVES: Wave[] = [
     infantryCounts: [16, 16, 16, 16],
     vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 8,
@@ -932,9 +965,9 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
-    vehicleTypes: [mod.VehicleList.CV90],
-    vehicleCounts: [2],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.CV90, mod.VehicleList.CV90],
+    vehicleCounts: [1, 1, 1],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.FLANK_RIGHT, VEHICLE_SPAWN_POINTS.MAIN_STREET, VEHICLE_SPAWN_POINTS.FLANK_LEFT],
   },
   {
     waveNumber: 9,
@@ -948,7 +981,7 @@ const WAVES: Wave[] = [
     infantryCounts: [20, 20, 20, 20],
     vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [3],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 10,
@@ -960,14 +993,15 @@ const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
-    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.Leopard],
-    vehicleCounts: [2, 2],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.CV90, mod.VehicleList.Leopard],
+    vehicleCounts: [1, 1, 2],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.FLANK_RIGHT, VEHICLE_SPAWN_POINTS.FLANK_LEFT, VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
 ]
 
 // Delay between spawning individual infantry units in a wave, in seconds
-const INTERSPAWN_DELAY = 1;
+const INFANTRY_INTERSPAWN_DELAY = 2;
+const VEHICLE_INTERSPAWN_DELAY = 20;
 
 // ===== helpers\setup.ts =====
 /** Run all one-time setup methods */

@@ -35,6 +35,30 @@ Upstream blocked bugs:
   - Might be fixed, let's retry down the line
 
 ## Playtest notes
+
+### Playtest 1
 - Replace 'Wave N' with 'Next wave in' if all bots dead
 - Also hide wave desc in that case?
 - Add flag capture UI from conquest
+  - When on point, there's no feedback you're capping
+
+### Playtest 2
+- Destroy PAX vehicles at end of wave
+- Give humans vehicles as well?
+  - Probably not
+- Add more emplacements along road
+- ~~More time between waves~~
+- ~~MG crossroads hovers (one inch), too far back (one inch)~~
+- ~~Side apartment MG is too high (two inches)~~
+- ~~Mosque spawn no longer works because the map geometry changed, vehicles get stuck~~
+  - No longer using this spawn, maybe remove it?
+- ~~Enemy infantry counter gets stuck at 5 for large waves~~
+  - Hopefully fixed with the do-wave-logic await bug
+- ~~Is interspawn delay respected??~~
+- Add end of wave 'WAVE CLEARED' announcement or sum
+- Additional time method doesn't work - waveElapsed not respected?
+- Encase TOW's more
+- Retaking the point is not fun, add more paths
+- Auto-recap flag after wave
+  - Or not? Recapping is pretty fun
+- More cover for bots, especially main street spawn

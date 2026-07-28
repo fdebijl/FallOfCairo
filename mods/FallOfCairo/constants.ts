@@ -13,6 +13,7 @@ import { Wave } from './interfaces/Wave';
 export const VERSION = '1.2.0';
 
 export const INTERMISSION_DURATION_SECONDS = 30;
+export const INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE = 5;
 export const FIRST_WAVE_START_TIME = 60;
 
 export const CAPTURE_POINTS = {
@@ -108,7 +109,7 @@ export const WAVES: Wave[] = [
     infantryCounts: [14, 14, 12, 12],
     vehicleTypes: [mod.VehicleList.Marauder_Pax, mod.VehicleList.Marauder_Pax],
     vehicleCounts: [1, 1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE, VEHICLE_SPAWN_POINTS.MAIN_STREET],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.FLANK_RIGHT, VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 7,
@@ -121,7 +122,7 @@ export const WAVES: Wave[] = [
     infantryCounts: [16, 16, 16, 16],
     vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [1],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 8,
@@ -133,9 +134,9 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [18, 18, 18, 18],
-    vehicleTypes: [mod.VehicleList.CV90],
-    vehicleCounts: [2],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.CV90, mod.VehicleList.CV90],
+    vehicleCounts: [1, 1, 1],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.FLANK_RIGHT, VEHICLE_SPAWN_POINTS.MAIN_STREET, VEHICLE_SPAWN_POINTS.FLANK_LEFT],
   },
   {
     waveNumber: 9,
@@ -149,7 +150,7 @@ export const WAVES: Wave[] = [
     infantryCounts: [20, 20, 20, 20],
     vehicleTypes: [mod.VehicleList.CV90],
     vehicleCounts: [3],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
   {
     waveNumber: 10,
@@ -161,11 +162,12 @@ export const WAVES: Wave[] = [
       AI_SPAWN_POINTS.PLAZA
     ],
     infantryCounts: [24, 24, 24, 24],
-    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.Leopard],
-    vehicleCounts: [2, 2],
-    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.MOSQUE],
+    vehicleTypes: [mod.VehicleList.CV90, mod.VehicleList.CV90, mod.VehicleList.Leopard],
+    vehicleCounts: [1, 1, 2],
+    vehicleSpawnPoints: [VEHICLE_SPAWN_POINTS.FLANK_RIGHT, VEHICLE_SPAWN_POINTS.FLANK_LEFT, VEHICLE_SPAWN_POINTS.MAIN_STREET],
   },
 ]
 
 // Delay between spawning individual infantry units in a wave, in seconds
-export const INTERSPAWN_DELAY = 1;
+export const INFANTRY_INTERSPAWN_DELAY = 2;
+export const VEHICLE_INTERSPAWN_DELAY = 20;

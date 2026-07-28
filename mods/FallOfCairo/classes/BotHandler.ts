@@ -95,11 +95,13 @@ export class BotHandler {
     BotHandler.botPlayers = BotHandler.botPlayers.filter(bot => mod.IsPlayerValid(bot.player) && mod.GetSoldierState(bot.player, mod.SoldierStateBool.IsAlive));
   }
 
+  // Callers must await this: the backoff below is the only thing keeping us under
+  // maxAmountOfAi, and an unawaited call turns it into a detached retry loop that
+  // ignores the caller's spawn pacing entirely.
   static async SpawnAI(spawnPoint: mod.Spawner): Promise<void> {
-    if (this.botPlayerCount >= BotHandler.maxAmountOfAi) {
+    while (this.botPlayerCount >= BotHandler.maxAmountOfAi) {
       console.log('Max AI limit reached, backing off spawn.');
       await mod.Wait(5);
-      return BotHandler.SpawnAI(spawnPoint);
     }
 
     const team = mod.GetTeam(TEAMS.PAX_ARMATA);
@@ -131,7 +133,7 @@ export class BotHandler {
     } else {
       // NATO AI
       mod.SetPlayerMaxHealth(player, DifficultyManager.natoBotsHealth);
-      BotHandler.DirectAiToAttackPoint(newAIProfile, targetPos, false) // TODO: Testing if false here works better
+      BotHandler.DirectAiToAttackPoint(newAIProfile, targetPos, false); // False for `defendOnArrival` may seem weird but this produces much better behaviour
 
       await mod.Wait(2);
 
@@ -179,8 +181,6 @@ export class BotHandler {
         continue;
       }
 
-      // TODO: This is allegedly the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
-      // It worked once, but has been very sporadic since.
       mod.AIBattlefieldBehavior(aiPlayer.player);
       await mod.Wait(1);
 
