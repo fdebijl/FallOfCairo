@@ -43,10 +43,10 @@ Upstream blocked bugs:
   - When on point, there's no feedback you're capping
 
 ### Playtest 2
-- Destroy PAX vehicles at end of wave
-- Give humans vehicles as well?
-  - Probably not
-- Add more emplacements along road
+- ~~Destroy PAX vehicles at end of wave~~
+- ~~Give humans vehicles as well~~
+  - Considered, too powerful
+- ~~Add more emplacements along road~~
 - ~~More time between waves~~
 - ~~MG crossroads hovers (one inch), too far back (one inch)~~
 - ~~Side apartment MG is too high (two inches)~~
@@ -56,12 +56,14 @@ Upstream blocked bugs:
   - Hopefully fixed with the do-wave-logic await bug
 - ~~Is interspawn delay respected??~~
 - ~~Add end of wave 'WAVE CLEARED' announcement or sum~~
-- Additional time method doesn't work - waveElapsed not respected?
-- Encase TOW's more
-- Retaking the point is not fun, add more paths
-- Auto-recap flag after wave
-  - Or not? Recapping is pretty fun
+- ~~Additional time method doesn't work - waveElapsed not respected?~~
+- ~~Encase TOW's more~~
+  - Main street tow can't be exited when facing the street
+- ~~Retaking the point is not fun, add more paths~~
+  - Done, scaffolding needs a little bit of work
+- ~~Auto-recap flag after wave~~
+  - Considered, not necessary right now
 - ~~More cover for bots, especially main street spawn~~
-- If there are only a few players left, add a marker
-- Add text to capture progress bar (BASE STATUS or sum)
+- If there are only a few players left, add a marker to each player
+- ~~Add text to capture progress bar (BASE STATUS or sum)~~
 - Add 3D text on the cap, something like 'DEFEND HERE'

@@ -132,7 +132,8 @@ Two recursive `async` loops started in `OnGameModeStarted`, using `await mod.Wai
   The runtime runs a profanity filter over raw string literals passed to `mod.Message` and
   friends, so a hardcoded label gets filtered out and never renders. This includes
   "harmless" fallbacks like `mod.stringkeys.Foo || 'Foo'` — the fallback branch is dead
-  weight that silently produces nothing.
+  weight that silently produces nothing. Note that interpolated values also need to be in the strings file, only
+  integers can be interpolated without being in the strings file.
 
 ### Async/Await for Timing
 ```typescript

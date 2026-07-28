@@ -18,6 +18,8 @@ export class UIManager {
   victoryWidgetContainer: mod.UIWidget;
   defeatWidgetContainer: mod.UIWidget;
   capStateWidgetContainer: mod.UIWidget;
+  capStateWidgetBar: mod.UIWidget;
+  capStateWidgetStatus: mod.UIWidget;
 
   endOfWaveWidgetContainer: mod.UIWidget;
   endOfWaveWidgetSubtitle: mod.UIWidget;
@@ -29,6 +31,9 @@ export class UIManager {
 
   // Bumped per announcement so a stale auto-hide can't close a newer banner.
   private endOfWaveAnnouncementId = 0;
+
+  // Flips every tick while the point is in danger, driving the status-line flash.
+  private capStateFlashOn = false;
 
   constructor() {
     (function parseWaveInfoWidgetDefinition() { modlib.ParseUI(WaveInfoWidgetDefinition) })();
@@ -47,6 +52,8 @@ export class UIManager {
     this.victoryWidgetContainer = mod.FindUIWidgetWithName('Container_Victory');
     this.defeatWidgetContainer = mod.FindUIWidgetWithName('Container_Defeat');
     this.capStateWidgetContainer = mod.FindUIWidgetWithName('Container_CapState');
+    this.capStateWidgetBar = mod.FindUIWidgetWithName('Box_CapState_ForeGround');
+    this.capStateWidgetStatus = mod.FindUIWidgetWithName('Text_CapState_Status');
     this.endOfWaveWidgetContainer = mod.FindUIWidgetWithName('Container_EndOfWave');
     this.endOfWaveWidgetSubtitle = mod.FindUIWidgetWithName('Text_EndOfWave_Subtitle');
     this.difficultySelectWidgetContainer = mod.FindUIWidgetWithName('Container_DifficultyMenu');
@@ -233,22 +240,46 @@ export class UIManager {
   UpdateCapStateWidget(owner: mod.Team, progress: number) {
     this.ShowCapStateWidget();
 
-    const progressBarContainer = mod.FindUIWidgetWithName('Box_CapState_ForeGround');
     const barWidth = 300;
+    const barHeight = 25;
+    const criticalThreshold = 0.4;
 
-    // GetCaptureProgress returns 0..1, and reads 0 while the point sits uncontested,
-    // so show a full bar for the owning team and let a contest eat into it.
-    const fill = progress > 0 ? Math.min(progress, 1) : 1;
-
-    mod.SetUIWidgetBgAlpha(progressBarContainer, 1);
+    const percent = Math.round(progress * 100);
 
     const ownerIsNato = mod.GetObjId(owner) === mod.GetObjId(mod.GetTeam(TEAMS.NATO));
-    const bgColor: mod.Vector = ownerIsNato ? mod.CreateVector(0.4392, 0.9216, 1) : mod.CreateVector(1, 0.5137, 0.3804);
 
-    mod.SetUIWidgetBgColor(progressBarContainer, bgColor);
-    const width = Math.round(barWidth * fill);
-    const height = 25;
-    mod.SetUIWidgetSize(progressBarContainer, mod.CreateVector(width, height, 0))
+    // The bar and the status line share a colour so the state reads at a glance:
+    // NATO cyan while the point is safe, amber once PAX start eating into it, red when
+    // it is close to flipping.
+    let stateColor: mod.Vector;
+    let statusLabel: mod.Message;
+
+    if (!ownerIsNato) {
+      stateColor = mod.CreateVector(1, 0.5137, 0.3804);
+      statusLabel = mod.Message(mod.stringkeys.capStateOverrun);
+    } else if (progress >= 1) {
+      stateColor = mod.CreateVector(0.4392, 0.9216, 1);
+      statusLabel = mod.Message(mod.stringkeys.capStateSecure, percent);
+    } else if (progress >= criticalThreshold) {
+      stateColor = mod.CreateVector(1, 0.7843, 0.3373);
+      statusLabel = mod.Message(mod.stringkeys.capStateContested, percent);
+    } else {
+      stateColor = mod.CreateVector(1, 0.3373, 0.2941);
+      statusLabel = mod.Message(mod.stringkeys.capStateCritical, percent);
+    }
+
+    mod.SetUIWidgetBgAlpha(this.capStateWidgetBar, 1);
+    mod.SetUIWidgetBgColor(this.capStateWidgetBar, stateColor);
+    mod.SetUIWidgetSize(this.capStateWidgetBar, mod.CreateVector(Math.round(barWidth * progress), barHeight, 0));
+
+    mod.SetUITextLabel(this.capStateWidgetStatus, statusLabel);
+    mod.SetUITextColor(this.capStateWidgetStatus, stateColor);
+
+    // This only updates once a second, so an alpha flip between ticks is the only
+    // animation available - use it to make a near-lost point demand attention.
+    const shouldFlash = !ownerIsNato || progress < criticalThreshold;
+    this.capStateFlashOn = shouldFlash ? !this.capStateFlashOn : false;
+    mod.SetUITextAlpha(this.capStateWidgetStatus, this.capStateFlashOn ? 0.35 : 1);
   }
 
   OnPlayerDeath(player: mod.Player) {
