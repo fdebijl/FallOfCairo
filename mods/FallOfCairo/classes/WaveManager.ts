@@ -3,6 +3,7 @@ import { isAI, isObjectIDsEqual, triggerVictory } from '../helpers/helpers';
 import { UIManager } from '../interfaces/UI/UIManager';
 import { Wave } from '../interfaces/Wave';
 import { BotHandler } from './BotHandler';
+import { VehicleHandler } from './VehicleHandler';
 
 export class WaveManager {
   nextWaveStartsAtSeconds: number = FIRST_WAVE_START_TIME;
@@ -109,6 +110,10 @@ export class WaveManager {
     }
   }
 
+  async DoBeforeSpawnWave() {
+    VehicleHandler.DestroyVehicles();
+  }
+
   async SpawnWave(wave: Wave) {
     console.log(`Spawning wave ${wave.waveNumber} at ${Math.round(this.elapsedMatchTimeSeconds)} seconds`);
 
@@ -118,7 +123,8 @@ export class WaveManager {
     try {
       await this.SetWaveDetailsUI(wave, true);
 
-      // TODO: Cleanup existing vehicles here
+      await this.DoBeforeSpawnWave();
+
       this.SpawnWaveVehicles(wave);
       await this.SpawnWaveInfantry(wave);
     } finally {

@@ -298,7 +298,7 @@ class BotHandler {
     } else {
       // NATO AI
       mod.SetPlayerMaxHealth(player, DifficultyManager.natoBotsHealth);
-      BotHandler.DirectAiToAttackPoint(newAIProfile, targetPos, false) // TODO: Testing if false here works better
+      BotHandler.DirectAiToAttackPoint(newAIProfile, targetPos, false); // False for `defendOnArrival` may seem weird but this produces much better behaviour
 
       await mod.Wait(2);
 
@@ -346,8 +346,6 @@ class BotHandler {
         continue;
       }
 
-      // TODO: This is allegedly the only way to get AI's to actually drive the vehicle towards the cap: set them to AIBattlefieldBehavior
-      // It worked once, but has been very sporadic since.
       mod.AIBattlefieldBehavior(aiPlayer.player);
       await mod.Wait(1);
 
@@ -626,6 +624,56 @@ class PlayerHandler {
     if (humanPlayer) {
       humanPlayer.kills += 1;
     }
+  }
+}
+
+// ===== classes\Vehicle.ts =====
+class Vehicle {
+  id?: number;
+  team: mod.Team;
+  vehicle: mod.Vehicle;
+
+  isAlive?: boolean = true;
+  kills?: number = 0;
+  deaths?: number = 0;
+  score?: number = 0;
+
+  constructor(vehicle: mod.Vehicle, team: mod.Team) {
+    this.team = team;
+    this.vehicle = vehicle;
+    this.id = mod.GetObjId(vehicle);
+  }
+}
+
+// ===== classes\VehicleHandler.ts =====
+class VehicleHandler {
+  static vehicles: Vehicle[] = [];
+
+  static get vehicleCount() {
+    return VehicleHandler.vehicles.length;
+  }
+
+  static GetVehicleByID(id: number): Vehicle | undefined {
+    return VehicleHandler.vehicles.find(bot => bot.id === id);
+  }
+
+  static async VehicleSpawned(vehicle: mod.Vehicle): Promise<void> {
+    const team = mod.GetVehicleTeam(vehicle);
+    const managedVehicle = new Vehicle(vehicle, team);
+    VehicleHandler.vehicles.push(managedVehicle);
+  }
+
+  static async PurgeVehicleList() {
+    VehicleHandler.vehicles = [];
+  }
+
+  static async DestroyVehicles() {
+    for await (const vehicle of VehicleHandler.vehicles) {
+      mod.DealDamage(vehicle.vehicle, 9999);
+      await mod.Wait(1);
+    }
+
+    VehicleHandler.PurgeVehicleList();
   }
 }
 
@@ -1116,7 +1164,10 @@ export async function OnPlayerDied(victim: mod.Player, killer: mod.Player | null
 
 export async function OnVehicleSpawned(vehicle: mod.Vehicle) {
   console.log('Vehicle spawned, checking for nearby AI to enter vehicle');
+  // Tell bots to get into the vehicle
   await BotHandler.VehicleSpawned(vehicle);
+  // Register the vehicle for later destruction/other management
+  await VehicleHandler.VehicleSpawned(vehicle);
 }
 
 export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehicle) {

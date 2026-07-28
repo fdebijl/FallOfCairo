@@ -1,5 +1,6 @@
 import { BotHandler } from './classes/BotHandler';
 import { PlayerHandler } from './classes/PlayerHandler';
+import { VehicleHandler } from './classes/VehicleHandler';
 import { WaveManager } from './classes/WaveManager';
 import { CAPTURE_POINTS, TEAMS, VEHICLE_SPAWN_POINTS, VERSION } from './constants';
 import { backfillNATO, isAI, IsAIAllowedVehicle, triggerDefeat } from './helpers/helpers';
@@ -60,7 +61,10 @@ export async function OnPlayerDied(victim: mod.Player, killer: mod.Player | null
 
 export async function OnVehicleSpawned(vehicle: mod.Vehicle) {
   console.log('Vehicle spawned, checking for nearby AI to enter vehicle');
+  // Tell bots to get into the vehicle
   await BotHandler.VehicleSpawned(vehicle);
+  // Register the vehicle for later destruction/other management
+  await VehicleHandler.VehicleSpawned(vehicle);
 }
 
 export async function OnPlayerEnterVehicle(player: mod.Player, vehicle: mod.Vehicle) {
