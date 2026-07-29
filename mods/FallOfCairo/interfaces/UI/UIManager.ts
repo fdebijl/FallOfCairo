@@ -35,6 +35,11 @@ export class UIManager {
   // Flips every tick while the point is in danger, driving the status-line flash.
   private capStateFlashOn = false;
 
+  // Which team the capture bar last belonged to - see UpdateCapStateWidget. Only read
+  // while the point sits neutral with nobody capturing, where neither the owner nor the
+  // capturing team can say which way the bar is about to move.
+  private capStateNatoSide = true;
+
   constructor() {
     (function parseWaveInfoWidgetDefinition() { modlib.ParseUI(WaveInfoWidgetDefinition) })();
     (function parseIntroWidgetDefinition()    { modlib.ParseUI(IntroWidgetDefinition)    })();
@@ -237,16 +242,38 @@ export class UIManager {
     }
   }
 
-  UpdateCapStateWidget(owner: mod.Team, progress: number) {
+  /**
+   * Renders the capture bar. The point runs on a single 0..1 progress value that belongs
+   * to whichever team is currently claiming it: NATO's hold drains 1 -> 0, the point is
+   * neutral at 0, then PAX's claim climbs 0 -> 1 and the match is lost when it tops out.
+   * So progress means nothing on its own - it only reads correctly against the team it
+   * belongs to, which is why both teams are passed in.
+   */
+  UpdateCapStateWidget(owner: mod.Team | null, capturingTeam: mod.Team | null, progress: number) {
     this.ShowCapStateWidget();
 
     const barWidth = 300;
     const barHeight = 25;
     const criticalThreshold = 0.4;
 
-    const percent = Math.round(progress * 100);
+    const claim = Math.max(0, Math.min(1, progress));
+    const percent = Math.round(claim * 100);
 
-    const ownerIsNato = mod.GetObjId(owner) === mod.GetObjId(mod.GetTeam(TEAMS.NATO));
+    // The owner is authoritative, but at exactly neutral nobody owns the point - then the
+    // team actively capturing tells us which way the bar is moving, and if nobody is on
+    // the point at all the previous side is the best guess left.
+    const ownerId = owner ? mod.GetObjId(owner) : 0;
+    const capturingId = capturingTeam ? mod.GetObjId(capturingTeam) : 0;
+
+    let natoSide: boolean;
+    if (ownerId === TEAMS.NATO || ownerId === TEAMS.PAX_ARMATA) {
+      natoSide = ownerId === TEAMS.NATO;
+    } else if (capturingId === TEAMS.NATO || capturingId === TEAMS.PAX_ARMATA) {
+      natoSide = capturingId === TEAMS.NATO;
+    } else {
+      natoSide = this.capStateNatoSide;
+    }
+    this.capStateNatoSide = natoSide;
 
     // The bar and the status line share a colour so the state reads at a glance:
     // NATO cyan while the point is safe, amber once PAX start eating into it, red when
@@ -254,13 +281,15 @@ export class UIManager {
     let stateColor: mod.Vector;
     let statusLabel: mod.Message;
 
-    if (!ownerIsNato) {
+    if (!natoSide) {
+      // Past neutral the bar switches meaning - it now fills with PAX's claim, so the
+      // percentage counts up towards defeat and back down again as the point is retaken.
       stateColor = mod.CreateVector(1, 0.5137, 0.3804);
-      statusLabel = mod.Message(mod.stringkeys.capStateOverrun);
-    } else if (progress >= 1) {
+      statusLabel = mod.Message(mod.stringkeys.capStateOverrun, percent);
+    } else if (claim >= 1) {
       stateColor = mod.CreateVector(0.4392, 0.9216, 1);
       statusLabel = mod.Message(mod.stringkeys.capStateSecure, percent);
-    } else if (progress >= criticalThreshold) {
+    } else if (claim >= criticalThreshold) {
       stateColor = mod.CreateVector(1, 0.7843, 0.3373);
       statusLabel = mod.Message(mod.stringkeys.capStateContested, percent);
     } else {
@@ -270,14 +299,14 @@ export class UIManager {
 
     mod.SetUIWidgetBgAlpha(this.capStateWidgetBar, 1);
     mod.SetUIWidgetBgColor(this.capStateWidgetBar, stateColor);
-    mod.SetUIWidgetSize(this.capStateWidgetBar, mod.CreateVector(Math.round(barWidth * progress), barHeight, 0));
+    mod.SetUIWidgetSize(this.capStateWidgetBar, mod.CreateVector(Math.round(barWidth * claim), barHeight, 0));
 
     mod.SetUITextLabel(this.capStateWidgetStatus, statusLabel);
     mod.SetUITextColor(this.capStateWidgetStatus, stateColor);
 
     // This only updates once a second, so an alpha flip between ticks is the only
     // animation available - use it to make a near-lost point demand attention.
-    const shouldFlash = !ownerIsNato || progress < criticalThreshold;
+    const shouldFlash = !natoSide || claim < criticalThreshold;
     this.capStateFlashOn = shouldFlash ? !this.capStateFlashOn : false;
     mod.SetUITextAlpha(this.capStateWidgetStatus, this.capStateFlashOn ? 0.35 : 1);
   }

@@ -23,7 +23,7 @@ export async function OnGameModeStarted(): Promise<void> {
   mod.EnableGameModeObjective(capturePoint, true);
   mod.SetMaxCaptureMultiplier(capturePoint, 1);
   mod.SetCapturePointOwner(capturePoint, teamNato);
-  uiManager.UpdateCapStateWidget(teamNato, 1);
+  uiManager.UpdateCapStateWidget(teamNato, teamNato, 1);
 
   mod.DeployAllPlayers();
 
@@ -126,9 +126,12 @@ async function SlowTick() {
   await waveManager.DoWaveLoop();
 
   const cap = mod.GetCapturePoint(CAPTURE_POINTS.HUMAN_CAPTURE_POINT);
-  const team = mod.GetCurrentOwnerTeam(cap)
+  const owner = mod.GetCurrentOwnerTeam(cap);
+  // The capture progress belongs to whoever is claiming the point, not to NATO, so the
+  // widget needs the capturing team too to tell a drain from a takeover.
+  const capturingTeam = mod.GetOwnerProgressTeam(cap);
   const progress = mod.GetCaptureProgress(cap);
-  uiManager.UpdateCapStateWidget(team, progress);
+  uiManager.UpdateCapStateWidget(owner, capturingTeam, progress);
 
   SlowTick();
 }
