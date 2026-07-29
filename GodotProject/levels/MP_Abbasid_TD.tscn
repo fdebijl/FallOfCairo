@@ -180,7 +180,7 @@ P_DefaultRespawnTime = 100
 P_AbandonVehiclesOutOfCombatArea = false
 
 [node name="VehicleSpawner_FlankRight" parent="AIVehicleSpawnPoints" unique_id=1120728898 instance=ExtResource("16_km4fq")]
-transform = Transform3D(-0.873687, 0, 0.486488, 0, 1, 0, -0.486488, 0, -0.873687, -138.701, 67.7599, -47.1428)
+transform = Transform3D(0.0033512712, 0, 0.99999416, 0, 1, 0, -0.99999416, 0, 0.0033512712, -166.11302, 68.38239, -40.658947)
 ObjId = 402
 VehicleType = 3
 P_DefaultRespawnTime = 100
@@ -305,16 +305,16 @@ transform = Transform3D(0.881658, 0, 0.471889, 0, 1, 0, -0.471889, 0, 0.881658, 
 transform = Transform3D(0.881658, 0, 0.471889, 0, 1, 0, -0.471889, 0, 0.881658, -86.6807, 63.9887, -20.1139)
 
 [node name="BarrierHesco_01_128x137" parent="HumanStructures" unique_id=1978649842 instance=ExtResource("10_yavc4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -61.1384)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -59.95556)
 
 [node name="BarrierHesco_01_128x138" parent="HumanStructures" unique_id=968210457 instance=ExtResource("10_yavc4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -62.4059)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -61.238976)
 
 [node name="BarrierHesco_01_128x139" parent="HumanStructures" unique_id=2013539609 instance=ExtResource("10_yavc4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -63.7002)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -62.526756)
 
 [node name="BarrierHesco_01_128x140" parent="HumanStructures" unique_id=2049965923 instance=ExtResource("10_yavc4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -64.9543)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -63.8311)
 
 [node name="BarrierHesco_01_128x142" parent="HumanStructures" unique_id=14021383 instance=ExtResource("10_yavc4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.9063, 63.9883, -37.3266)

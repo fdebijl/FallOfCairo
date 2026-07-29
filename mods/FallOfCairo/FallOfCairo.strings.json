@@ -25,6 +25,8 @@
   "capStateSecure": "SECURE - {}%",
   "capStateContested": "CONTESTED - {}%",
   "capStateCritical": "CRITICAL - {}%",
+  "capStateRecapturing": "RECAPTURING - {}%",
+  "capStateHolding": "HOLDING - {}%",
   "capStateOverrun": "OVERRUN BY PAX ARMATA - {}%",
   "Text_EndOfWave_Title": "WAVE CLEARED",
   "Text_EndOfWave_Subtitle": "Regroup and resupply",

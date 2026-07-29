@@ -40,6 +40,10 @@ export class UIManager {
   // capturing team can say which way the bar is about to move.
   private capStateNatoSide = true;
 
+  // Last rendered claim, so the next update can tell which way the bar is travelling.
+  // Starts at 1 to match the fully secured point the match opens on.
+  private capStateLastClaim = 1;
+
   constructor() {
     (function parseWaveInfoWidgetDefinition() { modlib.ParseUI(WaveInfoWidgetDefinition) })();
     (function parseIntroWidgetDefinition()    { modlib.ParseUI(IntroWidgetDefinition)    })();
@@ -273,11 +277,36 @@ export class UIManager {
     } else {
       natoSide = this.capStateNatoSide;
     }
-    this.capStateNatoSide = natoSide;
 
-    // The bar and the status line share a colour so the state reads at a glance:
-    // NATO cyan while the point is safe, amber once PAX start eating into it, red when
-    // it is close to flipping.
+    // Which way the bar is travelling: 1 gaining for the side that holds it, -1 losing,
+    // 0 stalled. A bar that has not moved in a whole second is not being captured by
+    // anyone, so the measured delta outranks the capturing team the runtime reports -
+    // that team is not guaranteed to clear out once the point goes quiet. The delta is
+    // meaningless across a flip though, because progress restarts for the new side.
+    const sideFlipped = natoSide !== this.capStateNatoSide;
+    const delta = sideFlipped ? 0 : claim - this.capStateLastClaim;
+
+    let direction: number;
+    if (delta > 0.001) {
+      direction = 1;
+    } else if (delta < -0.001) {
+      direction = -1;
+    } else if (capturingId === (natoSide ? TEAMS.NATO : TEAMS.PAX_ARMATA)) {
+      direction = 1;
+    } else if (capturingId === (natoSide ? TEAMS.PAX_ARMATA : TEAMS.NATO)) {
+      direction = -1;
+    } else {
+      direction = 0;
+    }
+
+    this.capStateNatoSide = natoSide;
+    this.capStateLastClaim = claim;
+
+    // The bar and the status line share a colour so the severity reads at a glance -
+    // NATO cyan while the point is safe, amber once PAX start eating into it, red when it
+    // is close to flipping - while the label carries which way it is moving. CONTESTED is
+    // deliberately reserved for PAX actually taking ground, since that is what it means in
+    // the base game; NATO pushing the bar back up is RECAPTURING, not contested.
     let stateColor: mod.Vector;
     let statusLabel: mod.Message;
 
@@ -289,12 +318,19 @@ export class UIManager {
     } else if (claim >= 1) {
       stateColor = mod.CreateVector(0.4392, 0.9216, 1);
       statusLabel = mod.Message(mod.stringkeys.capStateSecure, percent);
-    } else if (claim >= criticalThreshold) {
-      stateColor = mod.CreateVector(1, 0.7843, 0.3373);
-      statusLabel = mod.Message(mod.stringkeys.capStateContested, percent);
     } else {
-      stateColor = mod.CreateVector(1, 0.3373, 0.2941);
-      statusLabel = mod.Message(mod.stringkeys.capStateCritical, percent);
+      const critical = claim < criticalThreshold;
+      stateColor = critical ? mod.CreateVector(1, 0.3373, 0.2941) : mod.CreateVector(1, 0.7843, 0.3373);
+
+      if (direction > 0) {
+        statusLabel = mod.Message(mod.stringkeys.capStateRecapturing, percent);
+      } else if (direction < 0) {
+        statusLabel = critical
+          ? mod.Message(mod.stringkeys.capStateCritical, percent)
+          : mod.Message(mod.stringkeys.capStateContested, percent);
+      } else {
+        statusLabel = mod.Message(mod.stringkeys.capStateHolding, percent);
+      }
     }
 
     mod.SetUIWidgetBgAlpha(this.capStateWidgetBar, 1);
