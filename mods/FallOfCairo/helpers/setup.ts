@@ -79,17 +79,14 @@ function SetupScoreboard(): void {
 }
 
 function SetupEmplacements() {
-  // TODO: EmplacementSpawners only spawn TOW's at the moment, this is a known bug
-  return;
-
   console.log('Setting up weapon emplacements');
 
   for (const emplacementLocation of Object.values(WEAPON_EMPLACEMENTS)) {
     console.log(`Setting up emplacement at ID ${emplacementLocation.id} with type ${emplacementLocation.type}`);
     const emplacement = mod.GetEmplacementSpawner(emplacementLocation.id);
-    mod.SetEmplacementSpawnerType(emplacement, emplacementLocation.type);
-    mod.SetEmplacementSpawnerAutoSpawn(emplacement, true);
-    mod.SetEmplacementSpawnerRespawnTime(emplacement, 0);
+    // mod.SetEmplacementSpawnerType(emplacement, emplacementLocation.type);
+    // mod.SetEmplacementSpawnerAutoSpawn(emplacement, true);
+    // mod.SetEmplacementSpawnerRespawnTime(emplacement, 0);
     mod.ForceEmplacementSpawnerSpawn(emplacement);
   }
 }

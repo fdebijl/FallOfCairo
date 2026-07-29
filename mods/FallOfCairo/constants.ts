@@ -7,6 +7,7 @@
 // Weapon emplacements: 500-599
 // Area Triggers: 600-699
 // Loot spawners: 700-799
+// FX: 800-899
 
 import { Wave } from './interfaces/Wave';
 
@@ -14,12 +15,14 @@ export const VERSION = '1.2.0';
 
 export const INTERMISSION_DURATION_SECONDS = 30;
 export const INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE = 5;
-export const FIRST_WAVE_START_TIME = 60;
+export const FIRST_WAVE_START_TIME = 90;
 export const WAVE_CLEARED_ANNOUNCEMENT_SECONDS = 6;
 // Difficulty has to be settled before the first wave spawns, since bot health is read at
 // spawn time - so the whole prompt (waiting for a human plus their pick) shares one
 // deadline with a little slack before FIRST_WAVE_START_TIME.
 export const DIFFICULTY_SELECT_DEADLINE_SECONDS = FIRST_WAVE_START_TIME - 5;
+
+export const AUTOSPOT_BOT_COUNT = 3; // Spot the last N bots for all players
 
 export const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -58,7 +61,11 @@ export const WEAPON_EMPLACEMENTS: {
   }
 } = {
   PLAZA_MG_NORTH: { id: 500, type: mod.StationaryEmplacements.M2MG },
-  PLAZA_MG_SOUTH: { id: 501, type: mod.StationaryEmplacements.M2MG },
+  MAIN_STREET_MG: { id: 501, type: mod.StationaryEmplacements.M2MG },
+  APPARTMENT_MG: { id: 502, type: mod.StationaryEmplacements.M2MG },
+  MAIN_STREET_TOW: { id: 503, type: mod.StationaryEmplacements.BGM71TOW },
+  FLANK_LEFT_TOW: { id: 504, type: mod.StationaryEmplacements.BGM71TOW },
+  HQ_MG: { id: 505, type: mod.StationaryEmplacements.BGM71TOW }
 };
 
 export const WAVES: Wave[] = [

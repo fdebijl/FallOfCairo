@@ -430,6 +430,12 @@ class BotHandler {
     }
   }
 
+  static async SpotAllBots() {
+    for (const bot of BotHandler.botPlayers) {
+      mod.SpotTarget(bot.player, 60, mod.SpotStatus.SpotInBoth);
+    }
+  }
+
   static AIHelpMoveTowardsPoint(
     from: any,
     to: any,
@@ -742,6 +748,7 @@ class WaveManager {
   canAdvanceWave: boolean = true;
   isSpawning: boolean = false;
   elapsedWaves = 0;
+  lastWaveStartedAt = 0;
 
   infantryRemaining = 0;
   vehiclesRemaining = 0;
@@ -760,12 +767,20 @@ class WaveManager {
     return mod.GetMatchTimeElapsed();
   }
 
+  get elapsedWaveTimeSeconds(): number {
+    return this.elapsedMatchTimeSeconds - this.lastWaveStartedAt;
+  }
+
   get enemyAICount(): number {
     return BotHandler.paxBotPlayerCount;
   }
 
   get hasNoAIAlive(): boolean {
     return this.enemyAICount === 0;
+  }
+
+  get hasFewAIAlive(): boolean {
+    return this.enemyAICount <= AUTOSPOT_BOT_COUNT && this.enemyAICount > 0;
   }
 
   get hasAIAlive(): boolean {
@@ -786,9 +801,12 @@ class WaveManager {
     const pendingWave = this.waves[0];
 
     if (pendingWave && this.canAdvanceWave && this.elapsedMatchTimeSeconds >= this.nextWaveStartsAtSeconds) {
+      // Case: time to spawn the next wave
+
       this.canAdvanceWave = false;
       this.waves.splice(0, 1);
       this.elapsedWaves++;
+      this.lastWaveStartedAt = this.elapsedMatchTimeSeconds;
 
       // Deliberately not awaited: spawning a wave takes infantryCount *
       // INFANTRY_INTERSPAWN_DELAY seconds, which would stall this whole tick loop
@@ -799,7 +817,7 @@ class WaveManager {
     }
 
     if (this.hasWaves && this.hasNoAIAlive && !this.isSpawning) {
-      // All bots from the current wave have been killed, prepare for the next wave
+      // Case: all bots from the current wave have been killed, prepare for the next wave
       const nextWave = this.waves[0];
 
       if (this.nextWaveStartsAtSeconds <= this.elapsedMatchTimeSeconds) {
@@ -828,9 +846,14 @@ class WaveManager {
         this.uiManager.ShowWaveTime();
       }
     } else {
-      // Wave is still ongoing or there are no more waves
+      // Wave is still ongoing (hasAiAlive) or there are no more waves (hasNoWaves)
       if (this.currentWave) {
         await this.SetWaveDetailsUI(this.currentWave, true);
+      }
+
+      // Spot the last few bots if the wave has been going on for a bit
+      if (this.hasFewAIAlive && this.elapsedWaveTimeSeconds >= 60) {
+        BotHandler.SpotAllBots();
       }
 
       this.uiManager.HideWaveTime();
@@ -970,12 +993,14 @@ const VERSION = '1.2.0';
 
 const INTERMISSION_DURATION_SECONDS = 30;
 const INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE = 5;
-const FIRST_WAVE_START_TIME = 60;
+const FIRST_WAVE_START_TIME = 90;
 const WAVE_CLEARED_ANNOUNCEMENT_SECONDS = 6;
 // Difficulty has to be settled before the first wave spawns, since bot health is read at
 // spawn time - so the whole prompt (waiting for a human plus their pick) shares one
 // deadline with a little slack before FIRST_WAVE_START_TIME.
 const DIFFICULTY_SELECT_DEADLINE_SECONDS = FIRST_WAVE_START_TIME - 5;
+
+const AUTOSPOT_BOT_COUNT = 3; // Spot the last N bots for all players
 
 const CAPTURE_POINTS = {
   HUMAN_CAPTURE_POINT: 100,
@@ -1014,7 +1039,11 @@ const WEAPON_EMPLACEMENTS: {
   }
 } = {
   PLAZA_MG_NORTH: { id: 500, type: mod.StationaryEmplacements.M2MG },
-  PLAZA_MG_SOUTH: { id: 501, type: mod.StationaryEmplacements.M2MG },
+  MAIN_STREET_MG: { id: 501, type: mod.StationaryEmplacements.M2MG },
+  APPARTMENT_MG: { id: 502, type: mod.StationaryEmplacements.M2MG },
+  MAIN_STREET_TOW: { id: 503, type: mod.StationaryEmplacements.BGM71TOW },
+  FLANK_LEFT_TOW: { id: 504, type: mod.StationaryEmplacements.BGM71TOW },
+  HQ_MG: { id: 505, type: mod.StationaryEmplacements.BGM71TOW }
 };
 
 const WAVES: Wave[] = [
@@ -1209,17 +1238,14 @@ function SetupScoreboard(): void {
 }
 
 function SetupEmplacements() {
-  // TODO: EmplacementSpawners only spawn TOW's at the moment, this is a known bug
-  return;
-
   console.log('Setting up weapon emplacements');
 
   for (const emplacementLocation of Object.values(WEAPON_EMPLACEMENTS)) {
     console.log(`Setting up emplacement at ID ${emplacementLocation.id} with type ${emplacementLocation.type}`);
     const emplacement = mod.GetEmplacementSpawner(emplacementLocation.id);
-    mod.SetEmplacementSpawnerType(emplacement, emplacementLocation.type);
-    mod.SetEmplacementSpawnerAutoSpawn(emplacement, true);
-    mod.SetEmplacementSpawnerRespawnTime(emplacement, 0);
+    // mod.SetEmplacementSpawnerType(emplacement, emplacementLocation.type);
+    // mod.SetEmplacementSpawnerAutoSpawn(emplacement, true);
+    // mod.SetEmplacementSpawnerRespawnTime(emplacement, 0);
     mod.ForceEmplacementSpawnerSpawn(emplacement);
   }
 }

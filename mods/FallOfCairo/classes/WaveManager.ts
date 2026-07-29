@@ -1,4 +1,4 @@
-import { FIRST_WAVE_START_TIME, INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE, INTERMISSION_DURATION_SECONDS, INFANTRY_INTERSPAWN_DELAY, TEAMS, WAVES, VEHICLE_INTERSPAWN_DELAY, WAVE_CLEARED_ANNOUNCEMENT_SECONDS } from '../constants';
+import { FIRST_WAVE_START_TIME, INTERMISSION_ADDITIONAL_SECONDS_PER_WAVE, INTERMISSION_DURATION_SECONDS, INFANTRY_INTERSPAWN_DELAY, TEAMS, WAVES, VEHICLE_INTERSPAWN_DELAY, WAVE_CLEARED_ANNOUNCEMENT_SECONDS, AUTOSPOT_BOT_COUNT } from '../constants';
 import { isAI, isObjectIDsEqual, triggerVictory } from '../helpers/helpers';
 import { UIManager } from '../interfaces/UI/UIManager';
 import { Wave } from '../interfaces/Wave';
@@ -13,6 +13,7 @@ export class WaveManager {
   canAdvanceWave: boolean = true;
   isSpawning: boolean = false;
   elapsedWaves = 0;
+  lastWaveStartedAt = 0;
 
   infantryRemaining = 0;
   vehiclesRemaining = 0;
@@ -31,12 +32,20 @@ export class WaveManager {
     return mod.GetMatchTimeElapsed();
   }
 
+  get elapsedWaveTimeSeconds(): number {
+    return this.elapsedMatchTimeSeconds - this.lastWaveStartedAt;
+  }
+
   get enemyAICount(): number {
     return BotHandler.paxBotPlayerCount;
   }
 
   get hasNoAIAlive(): boolean {
     return this.enemyAICount === 0;
+  }
+
+  get hasFewAIAlive(): boolean {
+    return this.enemyAICount <= AUTOSPOT_BOT_COUNT && this.enemyAICount > 0;
   }
 
   get hasAIAlive(): boolean {
@@ -57,9 +66,12 @@ export class WaveManager {
     const pendingWave = this.waves[0];
 
     if (pendingWave && this.canAdvanceWave && this.elapsedMatchTimeSeconds >= this.nextWaveStartsAtSeconds) {
+      // Case: time to spawn the next wave
+
       this.canAdvanceWave = false;
       this.waves.splice(0, 1);
       this.elapsedWaves++;
+      this.lastWaveStartedAt = this.elapsedMatchTimeSeconds;
 
       // Deliberately not awaited: spawning a wave takes infantryCount *
       // INFANTRY_INTERSPAWN_DELAY seconds, which would stall this whole tick loop
@@ -70,7 +82,7 @@ export class WaveManager {
     }
 
     if (this.hasWaves && this.hasNoAIAlive && !this.isSpawning) {
-      // All bots from the current wave have been killed, prepare for the next wave
+      // Case: all bots from the current wave have been killed, prepare for the next wave
       const nextWave = this.waves[0];
 
       if (this.nextWaveStartsAtSeconds <= this.elapsedMatchTimeSeconds) {
@@ -99,9 +111,14 @@ export class WaveManager {
         this.uiManager.ShowWaveTime();
       }
     } else {
-      // Wave is still ongoing or there are no more waves
+      // Wave is still ongoing (hasAiAlive) or there are no more waves (hasNoWaves)
       if (this.currentWave) {
         await this.SetWaveDetailsUI(this.currentWave, true);
+      }
+
+      // Spot the last few bots if the wave has been going on for a bit
+      if (this.hasFewAIAlive && this.elapsedWaveTimeSeconds >= 60) {
+        BotHandler.SpotAllBots();
       }
 
       this.uiManager.HideWaveTime();

@@ -64,6 +64,13 @@ Upstream blocked bugs:
 - ~~Auto-recap flag after wave~~
   - Considered, not necessary right now
 - ~~More cover for bots, especially main street spawn~~
-- If there are only a few players left, add a marker to each player
+- If there are only a few players left, add a marker to each player (use mod.SpotPlayer)
 - ~~Add text to capture progress bar (BASE STATUS or sum)~~
 - Add 3D text on the cap, something like 'DEFEND HERE'
+
+### Playtest 3
+- 3D Text with route names
+- CapState shows OVERRUN BY PAX ARMATA when PAX is capping, but no percentage. This doesn't go away when the humans recap
+- Infantry spawns in the ground
+  - Maybe fixed
+- ~~Can't get out of the TOWS~~

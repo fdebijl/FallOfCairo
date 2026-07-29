@@ -14,6 +14,10 @@ config/name="Battlefield™ Portal Project"
 config/features=PackedStringArray("4.6")
 config/icon="res://addons/bf_portal/godot_portal_logo.svg"
 
+[dotnet]
+
+project/assembly_name="Battlefield™ Portal Project"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/bf_portal/plugin.cfg", "res://addons/bf_portal/portal_tools/plugin.cfg", "res://addons/bf_portal/memory_plugin/plugin.cfg", "res://addons/bf_portal/level_validator/plugin.cfg", "res://addons/bf_portal/experience_exporter/plugin.cfg", "res://addons/bf_portal/terrain_decal/plugin.cfg", "res://addons/scene-library/plugin.cfg")

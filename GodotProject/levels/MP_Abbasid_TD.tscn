@@ -5,36 +5,36 @@
 [ext_resource type="PackedScene" path="res://objects/entities/SpawnPoint.tscn" id="3_jrxtc"]
 [ext_resource type="PackedScene" path="res://objects/Gameplay/Common/CombatArea.tscn" id="4_mrhce"]
 [ext_resource type="PackedScene" path="res://objects/Gameplay/Common/DeployCam.tscn" id="5_oqq52"]
+[ext_resource type="PackedScene" path="res://objects/props/SandBagsDoorBlock_01_256x256.tscn" id="6_i1fkl"]
 [ext_resource type="PackedScene" path="res://static/MP_Abbasid_Terrain.tscn" id="6_sgshq"]
 [ext_resource type="Texture2D" uid="uid://c8wdmnra4ca5" path="res://addons/bf_portal/terrain_decal/textures/MP_Abbasid.jpg" id="7_i1fkl"]
 [ext_resource type="PackedScene" path="res://objects/Gameplay/Common/StationaryEmplacementSpawner.tscn" id="7_rg0xo"]
+[ext_resource type="PackedScene" path="res://objects/architecture/ScaffoldingPlywood_01_A_256.tscn" id="7_v8qdj"]
 [ext_resource type="PackedScene" path="res://static/MP_Abbasid_Assets.tscn" id="7_yavc4"]
 [ext_resource type="PackedScene" path="res://objects/Gameplay/Conquest/CapturePoint.tscn" id="8_oqq52"]
 [ext_resource type="Script" uid="uid://ck5uniw0pl6u8" path="res://addons/bf_portal/portal_tools/types/PolygonVolume/PolygonVolume.gd" id="9_sgshq"]
 [ext_resource type="PackedScene" path="res://objects/props/BarrierHesco_01_128x120.tscn" id="10_yavc4"]
 [ext_resource type="PackedScene" path="res://objects/props/BarrierHesco_01_128x120_DDPF.tscn" id="11_rg0xo"]
-[ext_resource type="PackedScene" path="res://objects/Gameplay/Common/Sector.tscn" id="13_aalnk"]
 [ext_resource type="PackedScene" path="res://objects/props/BarrierConcreteWall_01_192x320.tscn" id="13_v8qdj"]
 [ext_resource type="PackedScene" path="res://objects/Gameplay/AI/AI_Spawner.tscn" id="14_km4fq"]
 [ext_resource type="PackedScene" path="res://objects/props/BarrierHesco_01_128x240_DDPF.tscn" id="14_w2utx"]
 [ext_resource type="PackedScene" path="res://objects/props/SandBags_01_256x120_DDPF.tscn" id="15_c6ur4"]
 [ext_resource type="PackedScene" path="res://objects/props/FenceBarbedWire_01_128x64_A.tscn" id="15_rh1wd"]
 [ext_resource type="PackedScene" path="res://objects/Gameplay/Common/VehicleSpawner.tscn" id="16_km4fq"]
-[ext_resource type="PackedScene" path="res://objects/props/SandBags_01_C90_A.tscn" id="16_m2w7q"]
-[ext_resource type="PackedScene" path="res://objects/Gameplay/Vehicles/VEH_M2MG.tscn" id="18_y8q8x"]
 [ext_resource type="PackedScene" path="res://objects/props/CommandPost_01_A.tscn" id="18_y8sa6"]
 [ext_resource type="PackedScene" path="res://objects/uncategorized/CommandPost_01_PropsC.tscn" id="20_f608c"]
 [ext_resource type="PackedScene" path="res://objects/architecture/ScaffoldingStairs_01_A_384.tscn" id="21_j477e"]
-[ext_resource type="PackedScene" path="res://objects/Gameplay/Vehicles/VEH_Stationary_BGM71TOW.tscn" id="22_nol6w"]
 [ext_resource type="PackedScene" path="res://objects/props/SandBags_01_256x180_DDPF.tscn" id="23_mv1qw"]
-[ext_resource type="PackedScene" path="res://objects/gameplay/vehicles/VEH_M2MG.tscn" id="23_nol6w"]
 [ext_resource type="PackedScene" path="res://objects/props/SandBags_01_256x60_DDPF.tscn" id="24_7nd5d"]
-[ext_resource type="PackedScene" path="res://objects/gameplay/vehicles/VEH_Stationary_BGM71TOW.tscn" id="24_rlt8q"]
 [ext_resource type="PackedScene" path="res://objects/architecture/ScaffoldingBase_01_A_512x384x160.tscn" id="25_jbmsp"]
 [ext_resource type="PackedScene" path="res://objects/architecture/ScaffoldingWalkway_01_A_512x160.tscn" id="26_8p64n"]
 [ext_resource type="PackedScene" path="res://objects/Gameplay/Common/LootSpawner.tscn" id="26_f608c"]
 [ext_resource type="PackedScene" path="res://objects/props/AmmoChest_Small_01.tscn" id="26_j477e"]
 [ext_resource type="PackedScene" path="res://objects/props/SandBagsDoorBlock_01_160x256.tscn" id="27_i4vvs"]
+[ext_resource type="PackedScene" path="res://objects/props/SandBagsPlatform_01_320x60.tscn" id="28_w2utx"]
+[ext_resource type="PackedScene" path="res://objects/architecture/ScaffoldingPlywood_01_A_512.tscn" id="29_rh1wd"]
+[ext_resource type="PackedScene" path="res://objects/architecture/ScaffoldingRailing_01_A_160.tscn" id="30_mv1qw"]
+[ext_resource type="PackedScene" path="res://objects/gameplay/common/StationaryEmplacementSpawner.tscn" id="32_7nd5d"]
 [ext_resource type="PackedScene" path="res://objects/fx/FX_BASE_Dust_Large_Area.tscn" id="36_xtr1y"]
 [ext_resource type="PackedScene" path="res://objects/props/BarrelBurned_01.tscn" id="37_luh81"]
 [ext_resource type="PackedScene" path="res://objects/fx/FX_BASE_Fire_M.tscn" id="38_mrcqk"]
@@ -72,9 +72,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82, 64, 49)
 Team = 2
 AltTeam = 0
 HQEnabled = false
-HQArea = NodePath("../VolumeOutOfBounds")
+HQArea = NodePath("")
 
 [node name="CombatArea" parent="." unique_id=1477361778 node_paths=PackedStringArray("CombatVolume") instance=ExtResource("4_mrhce")]
+visible = false
 CombatVolume = NodePath("CombatVolume")
 
 [node name="CombatVolume" parent="CombatArea" unique_id=453906795 instance=ExtResource("2_j1eil")]
@@ -87,10 +88,22 @@ height = 100.0
 [node name="MP_Abbasid_Terrain" parent="Static" unique_id=755159261 instance=ExtResource("6_sgshq")]
 metadata/_edit_lock_ = true
 
+[node name="Terrain" parent="Static/MP_Abbasid_Terrain/Mesh" index="0" unique_id=1575139240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14127731, -7.6293945e-06, -0.101802826)
+
 [node name="StaticBody3D" type="StaticBody3D" parent="Static/MP_Abbasid_Terrain/Mesh/Terrain" index="0" unique_id=42136160]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Static/MP_Abbasid_Terrain/Mesh/Terrain/StaticBody3D" unique_id=813051215]
 shape = SubResource("ConcavePolygonShape3D_aalnk")
+
+[node name="SandBagsDoorBlock_01_256x256" parent="Static/MP_Abbasid_Terrain/Mesh" index="1" unique_id=887003219 instance=ExtResource("6_i1fkl")]
+transform = Transform3D(-0.0040142867, 0, 0.99999195, 0, 1, 0, -0.99999195, 0, -0.0040142867, -68.03611, 64.07602, -52.881336)
+
+[node name="SandBagsDoorBlock_01_256x257" parent="Static/MP_Abbasid_Terrain/Mesh" index="2" unique_id=1909176863 instance=ExtResource("6_i1fkl")]
+transform = Transform3D(-0.0040142867, 0, 0.99999195, 0, 1, 0, -0.99999195, 0, -0.0040142867, -68.04435, 64.1066, -54.932976)
+
+[node name="ScaffoldingPlywood_01_A_256" parent="Static/MP_Abbasid_Terrain/Mesh" index="3" unique_id=854179194 instance=ExtResource("7_v8qdj")]
+transform = Transform3D(0.007208122, 0, -0.999974, 0, 1, 0, 0.999974, 0, 0.007208122, -58.611877, 66.552795, -53.75731)
 
 [node name="MP_Abbasid_Assets" parent="Static" unique_id=789250791 instance=ExtResource("7_yavc4")]
 metadata/_edit_lock_ = true
@@ -106,7 +119,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -81.6099, 64.1952, -22.7115)
 FlagPoleSize = 1
 ObjId = 100
 CameraLookAtDistanceTrim = 56
-TacticalAdviceLandVehicleFriendly = false
 TacticalAdvicePriorityLevel_Team2 = 2
 CaptureArea = NodePath("PolygonVolume")
 
@@ -118,53 +130,31 @@ height = 10.0
 color = Color(0, 0.6, 0.7, 0.42)
 metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
 
-[node name="VolumeOutOfBounds" parent="." unique_id=1016364140 instance=ExtResource("2_j1eil")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00839996, 56.99, 0.213402)
-points = PackedVector2Array(-129.819, -72.93, -129.472, -83.343, -139.985, -81.8334, -168.181, -66.2023, -181.484, -60.3675, -200.613, -59.2482, -204.785, -38.1857, -226.925, -27.3281, -227.4, -9.52571, -239.98, -8.9323, -240.218, 0.681003, -250.306, 1.27442, -252.769, 63.4065, -252.888, 112.066, -214.755, 112.768, -206.528, 121.968, -194.636, 123.613, -96.5864, 122.566, -96.661, 103.794, -68.9756, 103.379, -45.649, 97.6191, -44.6315, 63.588, 10.8436, 55.1037, 57.9097, 7.09969, 78.8298, -11.1813, 80.208, -51.1729, 79.2165, -89.1882, 57.0786, -105.642, 57.2282, -118.955, 36.9601, -119.104, 36.5861, -111.625, 35.1651, -111.625, 35.0635, -104.861, 24.8172, -105.011, 25.4904, -126.176, -5.84673, -125.503, -5.84673, -113.612, -30.5788, -112.896, -31.2553, -72.9596, -32.3082, -50.5857, -21.6204, -48.8811, -21.9652, -6.0593, -58.6502, -5.75536, -59.4864, 25.3128, -141.106, 24.395, -140.992, 7.26936, -136.885, -19.1254, -130.646, -48.7873, -130.252, -60.6748)
-height = 100.0
-color = Color(0, 0.6, 0.701961, 0.501961)
-
-[node name="HumanSector" parent="." unique_id=1146855379 node_paths=PackedStringArray("SectorArea", "CapturePoints") instance=ExtResource("13_aalnk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -81.9371, 64.071, -68.6673)
-ObjId = 200
-SectorArea = NodePath("HumanSectorVolume")
-CapturePoints = [NodePath("../HumanCapturePoint")]
-
-[node name="HumanSectorVolume" type="Node3D" parent="HumanSector" unique_id=54292157]
-transform = Transform3D(0.999854, 0, -0.0171187, 0, 1, 0, 0.0171187, 0, 0.999853, -0.814697, 0, 0)
-script = ExtResource("9_sgshq")
-points = PackedVector2Array(61.8964, 61.8107, 61.4801, 18.9434, 50.7623, 17.4223, 51.4891, -4.94803, 51.4573, -45.0401, 15.209, -44.9074, -13.4616, -37.1806, -46.9568, -13.6593, -47.5359, 20.918, -53.2673, 50.6707, -56.8622, 77.1848, -56.656, 94.1161, 24.9123, 93.7736, 25.2065, 62.7072)
-height = 50.0
-color = Color(0.984314, 0, 0.607843, 0.4)
-metadata/_custom_type_script = "uid://ck5uniw0pl6u8"
-
 [node name="AISpawnPoints" type="Node3D" parent="." unique_id=1595669419]
 
 [node name="AI_Spawner_MainStreet" parent="AISpawnPoints" unique_id=1435281111 instance=ExtResource("14_km4fq")]
-transform = Transform3D(0.00267036, -3.09228e-11, 0.999996, -4.65661e-10, 1, 3.06954e-11, -0.999996, -4.65661e-10, 0.00267036, -125.562, 64.1674, 94.3929)
+transform = Transform3D(0.00267036, -3.09228e-11, 0.999996, -4.65661e-10, 1, 3.06954e-11, -0.999996, -4.65661e-10, 0.00267036, -125.562, 65.09079, 94.3929)
 ObjId = 300
 
 [node name="AI_Spawner_Mosque" parent="AISpawnPoints" unique_id=1730617165 instance=ExtResource("14_km4fq")]
-transform = Transform3D(0.0226698, 0, 0.999743, 0, 1, 0, -0.999743, 0, 0.0226698, -142.115, 64.8085, 16.0552)
+transform = Transform3D(0.0226698, 0, 0.999743, 0, 1, 0, -0.999743, 0, 0.0226698, -142.115, 65.55944, 16.0552)
 ObjId = 301
 
 [node name="AI_Spawner_FlankRight" parent="AISpawnPoints" unique_id=1871546256 instance=ExtResource("14_km4fq")]
-transform = Transform3D(-0.913914, 0, 0.405907, 0, 1, 0, -0.405907, 0, -0.913914, -135.119, 64, -53.7177)
+transform = Transform3D(-0.007819235, 0, 0.99996907, 0, 1, 0, -0.99996907, 0, -0.007819235, -167.47728, 67.242195, -50.007973)
 ObjId = 302
 
 [node name="AI_Spawner_FlankLeft" parent="AISpawnPoints" unique_id=1441144569 instance=ExtResource("14_km4fq")]
-transform = Transform3D(-0.00158827, 0, -0.999999, 0, 1, 0, 0.999999, 0, -0.00158827, -18.7318, 63.6079, -97.7291)
+transform = Transform3D(-0.00158827, 0, -0.999999, 0, 1, 0, 0.999999, 0, -0.00158827, -18.597603, 64.68482, -97.72889)
 ObjId = 303
 
 [node name="AI_Spawner_Plaza" parent="AISpawnPoints" unique_id=1825117954 instance=ExtResource("14_km4fq")]
-transform = Transform3D(-0.999998, 0, 0.00183265, 0, 1, 0, -0.00183265, 0, -0.999998, 3.14716, 64.0123, -23.1755)
+transform = Transform3D(-0.999998, 0, 0.00183265, 0, 1, 0, -0.00183265, 0, -0.999998, 3.14716, 65.19429, -23.1755)
 ObjId = 304
 
 [node name="AI_Spawner_NATO" parent="AISpawnPoints" unique_id=179457984 instance=ExtResource("14_km4fq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.7605, 64.9102, -57.2016)
 ObjId = 399
-
-[node name="AIWayPoints" type="Node3D" parent="." unique_id=1467981388]
 
 [node name="AIVehicleSpawnPoints" type="Node3D" parent="." unique_id=1347540843]
 
@@ -290,26 +280,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.9157, 63.9672, -19.3642)
 [node name="BarrierHesco_01_128x133" parent="HumanStructures" unique_id=80065342 instance=ExtResource("10_yavc4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -75.2091, 63.9549, -19.5965)
 
+[node name="BarrierHesco_01_128x146" parent="HumanStructures" unique_id=1364890549 instance=ExtResource("10_yavc4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -76.25495, 63.53509, -21.969334)
+
 [node name="BarrierHesco_01_128x134" parent="HumanStructures" unique_id=1018131165 instance=ExtResource("10_yavc4")]
 transform = Transform3D(0.881658, 0, 0.471889, 0, 1, 0, -0.471889, 0, 0.881658, -84.5418, 64.0884, -21.3961)
 
 [node name="BarrierHesco_01_128x135" parent="HumanStructures" unique_id=645168969 instance=ExtResource("10_yavc4")]
 transform = Transform3D(0.881658, 0, 0.471889, 0, 1, 0, -0.471889, 0, 0.881658, -85.5778, 63.9962, -20.7295)
 
+[node name="BarrierHesco_01_128x143" parent="HumanStructures" unique_id=1364851588 instance=ExtResource("10_yavc4")]
+transform = Transform3D(0.80524606, 0, 0.5929409, 0, 1, 0, -0.5929409, 0, 0.80524606, -72.74531, 63.979233, -9.295939)
+
+[node name="BarrierHesco_01_128x145" parent="HumanStructures" unique_id=456657539 instance=ExtResource("10_yavc4")]
+transform = Transform3D(0.80524606, 0, 0.5929409, 0, 1, 0, -0.5929409, 0, 0.80524606, -73.276146, 65.14423, -8.905057)
+
+[node name="BarrierHesco_01_128x144" parent="HumanStructures" unique_id=528373492 instance=ExtResource("10_yavc4")]
+transform = Transform3D(0.80524606, 0, 0.5929409, 0, 1, 0, -0.5929409, 0, 0.80524606, -73.750534, 63.97122, -8.516219)
+
 [node name="BarrierHesco_01_128x141" parent="HumanStructures" unique_id=9241211 instance=ExtResource("10_yavc4")]
 transform = Transform3D(0.881658, 0, 0.471889, 0, 1, 0, -0.471889, 0, 0.881658, -85.2973, 65.1989, -20.8781)
 
 [node name="BarrierHesco_01_128x136" parent="HumanStructures" unique_id=109881651 instance=ExtResource("10_yavc4")]
 transform = Transform3D(0.881658, 0, 0.471889, 0, 1, 0, -0.471889, 0, 0.881658, -86.6807, 63.9887, -20.1139)
-
-[node name="SandBags_01_256x120_DDPF" parent="HumanStructures" unique_id=116326006 instance=ExtResource("15_c6ur4")]
-transform = Transform3D(0.874035, 0, -0.485863, 0, 1, 0, 0.485863, 0, 0.874035, -77.694, 64.0188, -52.8274)
-
-[node name="SandBags_01_C90_A" parent="HumanStructures" unique_id=1149670481 instance=ExtResource("16_m2w7q")]
-transform = Transform3D(0.479963, 0, 0.877289, 0, 1, 0, -0.877289, 0, 0.479963, -74.5296, 64.0182, -50.3389)
-
-[node name="SandBags_01_C90_A2" parent="HumanStructures" unique_id=307930969 instance=ExtResource("16_m2w7q")]
-transform = Transform3D(-0.874035, 0, 0.485862, 0, 1, 0, -0.485862, 0, -0.874035, -77.4647, 64.0203, -53.4465)
 
 [node name="BarrierHesco_01_128x137" parent="HumanStructures" unique_id=1978649842 instance=ExtResource("10_yavc4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.8386, 63.9975, -61.1384)
@@ -332,7 +325,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.9063, 63.9883, -37.3266)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.0064, 63.9885, -56.1242)
 
 [node name="CommandPost_01_PropsC" parent="HumanStructures/HumanCommandPost" unique_id=610084069 instance=ExtResource("20_f608c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.0064, 63.9885, -56.1242)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.13072, 63.9885, -56.319195)
 
 [node name="ScaffoldingStairs_01_A_384" parent="HumanStructures/HumanCommandPost" unique_id=1082698719 instance=ExtResource("21_j477e")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -91.8303, 63.709, -46.444)
@@ -346,38 +339,56 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.92287, 65.233665, -40.812
 [node name="BarrierHesco_01_128x120_DDPF4" parent="HumanStructures" unique_id=843147879 instance=ExtResource("11_rg0xo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -71.175575, 63.98664, -40.75962)
 
-[node name="SandBags_01_256x120_DDPF2" parent="HumanStructures" unique_id=104306348 instance=ExtResource("15_c6ur4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90.219025, 67.78483, -54.690357)
-
-[node name="SandBags_01_256x120_DDPF3" parent="HumanStructures" unique_id=2043946889 instance=ExtResource("15_c6ur4")]
-transform = Transform3D(-0.008866118, 0, -0.9999607, 0, 1, 0, 0.9999607, 0, -0.008866118, -92.7341, 67.16738, -54.252644)
-
 [node name="SandBags_01_256x180_DDPF" parent="HumanStructures" unique_id=920728316 instance=ExtResource("23_mv1qw")]
 transform = Transform3D(-0.0022514286, 0, -0.99999744, 0, 1, 0, 0.99999744, 0, -0.0022514286, -85.96506, 67.51474, -54.207024)
 
-[node name="SandBags_01_256x180_DDPF3" parent="HumanStructures" unique_id=1547297686 instance=ExtResource("23_mv1qw")]
-transform = Transform3D(-0.0022514286, 0, -0.99999744, 0, 1, 0, 0.99999744, 0, -0.0022514286, -85.864136, 67.664246, -56.75486)
+[node name="SandBags_01_256x180_DDPF2" parent="HumanStructures" unique_id=1528564273 instance=ExtResource("23_mv1qw")]
+transform = Transform3D(-0.0022514286, 0, -0.99999744, 0, 1, 0, 0.99999744, 0, -0.0022514286, -90.15771, 67.51474, -54.216465)
 
 [node name="SandBags_01_256x180_DDPF4" parent="HumanStructures" unique_id=1047275192 instance=ExtResource("23_mv1qw")]
-transform = Transform3D(0.999993, 0, 0.0037350245, 0, 1, 0, -0.0037350245, 0, 0.999993, -87.71645, 67.51474, -59.994762)
+transform = Transform3D(0.999993, 0, 0.0037350245, 0, 1, 0, -0.0037350245, 0, 0.999993, -87.86876, 67.51474, -59.994194)
 
-[node name="SandBags_01_256x180_DDPF5" parent="HumanStructures" unique_id=57049612 instance=ExtResource("23_mv1qw")]
-transform = Transform3D(0.009721408, 0, -0.99995273, 0, 1, 0, 0.99995273, 0, 0.009721408, -85.89649, 67.54876, -58.521595)
+[node name="SandBags_01_256x180_DDPF6" parent="HumanStructures" unique_id=573840041 instance=ExtResource("23_mv1qw")]
+transform = Transform3D(0.999993, 0, 0.0037350245, 0, 1, 0, -0.0037350245, 0, 0.999993, -90.341606, 67.51474, -59.98496)
 
-[node name="SandBags_01_256x120_DDPF4" parent="HumanStructures" unique_id=1242944983 instance=ExtResource("15_c6ur4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.125305, 67.532005, -51.639442)
+[node name="SandBags_01_256x180_DDPF7" parent="HumanStructures" unique_id=244092569 instance=ExtResource("23_mv1qw")]
+transform = Transform3D(0.999993, 0, 0.0037350245, 0, 1, 0, -0.0037350245, 0, 0.999993, -92.67506, 67.51474, -59.976242)
 
-[node name="SandBags_01_256x120_DDPF5" parent="HumanStructures" unique_id=1294560970 instance=ExtResource("15_c6ur4")]
-transform = Transform3D(-0.011466534, 0, -0.99993426, 0, 1, 0, 0.99993426, 0, -0.011466534, -92.7172, 67.82082, -56.85186)
+[node name="SandBags_01_256x180_DDPF5" parent="HumanStructures" unique_id=1011091302 instance=ExtResource("23_mv1qw")]
+transform = Transform3D(-0.0020070823, 0, -0.999998, 0, 1, 0, 0.999998, 0, -0.0020070823, -85.93104, 67.51474, -60.52091)
 
 [node name="SandBags_01_256x60_DDPF" parent="HumanStructures" unique_id=506071858 instance=ExtResource("24_7nd5d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90.21303, 67.53318, -51.678947)
 
+[node name="SandBags_01_256x60_DDPF3" parent="HumanStructures" unique_id=1512800512 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.18143, 67.53318, -51.678947)
+
+[node name="SandBags_01_256x60_DDPF4" parent="HumanStructures" unique_id=824455141 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.92244, 69.1083, -51.678947)
+
+[node name="SandBags_01_256x60_DDPF5" parent="HumanStructures" unique_id=149192513 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90.19571, 69.1083, -51.678947)
+
+[node name="SandBags_01_256x60_DDPF7" parent="HumanStructures" unique_id=1106152109 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(-0.0069638365, 0, 0.99997574, 0, 1, 0, -0.99997574, 0, -0.0069638365, -91.686165, 69.1083, -51.60494)
+
+[node name="SandBags_01_256x60_DDPF8" parent="HumanStructures" unique_id=583801165 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(-0.0069638365, 0, 0.99997574, 0, 1, 0, -0.99997574, 0, -0.0069638365, -92.067764, 69.433174, -54.255154)
+
+[node name="SandBags_01_256x60_DDPF9" parent="HumanStructures" unique_id=1070030070 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(-0.0069638365, 0, 0.99997574, 0, 1, 0, -0.99997574, 0, -0.0069638365, -92.08307, 69.433174, -56.45296)
+
+[node name="SandBags_01_256x60_DDPF10" parent="HumanStructures" unique_id=1184896526 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(-0.0069638365, 0, 0.99997574, 0, 1, 0, -0.99997574, 0, -0.0069638365, -92.09342, 69.403244, -57.940407)
+
+[node name="SandBags_01_256x60_DDPF11" parent="HumanStructures" unique_id=2014392300 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(0.99995273, 0, 0.009721365, 0, 1, 0, -0.009721365, 0, 0.99995273, -92.68828, 69.0463, -59.984634)
+
+[node name="SandBags_01_256x60_DDPF12" parent="HumanStructures" unique_id=1089429100 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(0.99995273, 0, 0.009721365, 0, 1, 0, -0.009721365, 0, 0.99995273, -90.20854, 69.0463, -60.008743)
+
 [node name="SandBags_01_256x60_DDPF2" parent="HumanStructures" unique_id=215608880 instance=ExtResource("24_7nd5d")]
 transform = Transform3D(0.0059166364, 0, -0.9999825, 0, 1, 0, 0.9999825, 0, 0.0059166364, -92.69651, 67.53318, -60.64807)
-
-[node name="SandBags_01_256x180_DDPF2" parent="HumanStructures" unique_id=492305629 instance=ExtResource("23_mv1qw")]
-transform = Transform3D(0.009738805, 0, -0.9999525, 0, 1, 0, 0.9999525, 0, 0.009738805, -89.006134, 67.51474, -60.625427)
 
 [node name="ScaffoldingBase_01_A_512x384x160" parent="HumanStructures" unique_id=1821555623 instance=ExtResource("25_jbmsp")]
 transform = Transform3D(-0.008709126, 0, -0.9999621, 0, 1, 0, 0.9999621, 0, -0.008709126, -68.86202, 63.993965, -38.41069)
@@ -406,15 +417,54 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.42695, 64.01956, -47.0042
 [node name="SandBagsDoorBlock_01_160x260" parent="HumanStructures" unique_id=83743482 instance=ExtResource("27_i4vvs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -83.635796, 64.123276, -47.024055)
 
+[node name="SandBagsDoorBlock_01_160x263" parent="HumanStructures" unique_id=949537618 instance=ExtResource("27_i4vvs")]
+transform = Transform3D(0.8995654, 0, 0.4367861, 0, 1, 0, -0.4367861, 0, 0.8995654, -82.54492, 64.123276, -47.22527)
+
 [node name="SandBagsDoorBlock_01_160x258" parent="HumanStructures" unique_id=634576948 instance=ExtResource("27_i4vvs")]
-transform = Transform3D(0.0018151551, 0, 0.99999833, 0, 1, 0, -0.99999833, 0, 0.0018151551, -83.800545, 64.211655, -49.059002)
+transform = Transform3D(0.0018151551, 0, 0.99999833, 0, 1, 0, -0.99999833, 0, 0.0018151551, -83.800026, 64.211655, -49.345657)
 
 [node name="SandBagsDoorBlock_01_160x259" parent="HumanStructures" unique_id=879664365 instance=ExtResource("27_i4vvs")]
-transform = Transform3D(0.0018151551, 0, 0.99999833, 0, 1, 0, -0.99999833, 0, 0.0018151551, -83.82094, 64.211655, -50.4905)
+transform = Transform3D(0.0018151551, 0, 0.99999833, 0, 1, 0, -0.99999833, 0, 0.0018151551, -83.82042, 64.211655, -50.77735)
+
+[node name="SandBags_01_256x120_DDPF2" parent="HumanStructures" unique_id=421241323 instance=ExtResource("15_c6ur4")]
+transform = Transform3D(0.012950014, 0, -0.99991614, 0, 1, 0, 0.99991614, 0, 0.012950014, -86.0372, 67.58628, -55.881985)
+
+[node name="SandBags_01_256x120_DDPF4" parent="HumanStructures" unique_id=2129281565 instance=ExtResource("15_c6ur4")]
+transform = Transform3D(-0.0516736, 0, -0.998664, 0, 1, 0, 0.998664, 0, -0.0516736, -85.95751, 67.58557, -58.046635)
+
+[node name="SandBags_01_256x180_DDPF3" parent="HumanStructures" unique_id=1387852299 instance=ExtResource("23_mv1qw")]
+transform = Transform3D(0.004625141, 0, 0.99998933, 0, 1, 0, -0.99998933, 0, 0.004625141, -91.753685, 67.51474, -51.635876)
+
+[node name="SandBags_01_256x180_DDPF8" parent="HumanStructures" unique_id=1267307464 instance=ExtResource("23_mv1qw")]
+transform = Transform3D(0.004625141, 0, 0.99998933, 0, 1, 0, -0.99998933, 0, 0.004625141, -92.07882, 67.767784, -54.261765)
+
+[node name="SandBags_01_256x180_DDPF9" parent="HumanStructures" unique_id=1895542866 instance=ExtResource("23_mv1qw")]
+transform = Transform3D(0.004625141, 0, 0.99998933, 0, 1, 0, -0.99998933, 0, 0.004625141, -92.07332, 67.767784, -55.45163)
+
+[node name="SandBagsDoorBlock_01_256x256" parent="HumanStructures" unique_id=1032249503 instance=ExtResource("6_i1fkl")]
+transform = Transform3D(0.99993587, 0, -0.011326944, 0, 1, 0, 0.011326944, 0, 0.99993587, -61.77038, 64.22768, -49.937023)
+
+[node name="SandBags_01_256x60_DDPF6" parent="HumanStructures" unique_id=1755963732 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(-0.010419462, 0, -0.9999457, 0, 1, 0, 0.9999457, 0, -0.010419462, -85.95608, 69.04271, -60.667957)
+
+[node name="SandBags_01_256x60_DDPF13" parent="HumanStructures" unique_id=890815991 instance=ExtResource("24_7nd5d")]
+transform = Transform3D(0.9999797, 0, -0.0063705007, 0, 1, 0, 0.0063705007, 0, 0.9999797, -87.93441, 69.04271, -59.96174)
+
+[node name="SandBagsPlatform_01_320x60" parent="HumanStructures" unique_id=241384867 instance=ExtResource("28_w2utx")]
+transform = Transform3D(0.9958891, 0, 0.09058043, 0, 1, 0, -0.09058043, 0, 0.9958891, -89.014656, 67.67739, -56.24818)
+
+[node name="ScaffoldingPlywood_01_A_512" parent="HumanStructures" unique_id=902313990 instance=ExtResource("29_rh1wd")]
+transform = Transform3D(0.004031671, 0, 0.9999919, 0, 1, 0, -0.9999919, 0, 0.004031671, -70.42191, 65.520546, -33.34086)
+
+[node name="ScaffoldingPlywood_01_A_513" parent="HumanStructures" unique_id=1109777818 instance=ExtResource("29_rh1wd")]
+transform = Transform3D(-0.4972163, 0, 0.86762667, 0, 1, 0, -0.86762667, 0, -0.4972163, -67.79643, 65.512146, -27.973743)
+
+[node name="ScaffoldingRailing_01_A_160" parent="HumanStructures" unique_id=484208159 instance=ExtResource("30_mv1qw")]
+transform = Transform3D(-0.00694634, 0, -0.9999758, 0, 1, 0, 0.9999758, 0, -0.00694634, -68.928986, 66.003845, -33.305798)
 
 [node name="HumanEmplacements" type="Node3D" parent="." unique_id=585502884]
 
-[node name="MG_North" parent="HumanEmplacements" unique_id=1426992853 instance=ExtResource("7_rg0xo")]
+[node name="Spawner_MG_North" parent="HumanEmplacements" unique_id=1426992853 instance=ExtResource("7_rg0xo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -74.433, 64.0368, -21.4528)
 ObjId = 500
 StationaryEmplacementType = 2
@@ -423,28 +473,48 @@ P_DefaultRespawnTime = 30
 P_ApplyDamageToAbandonVehicle = false
 P_AbandonVehiclesOutOfCombatArea = false
 
-[node name="MG_South" parent="HumanEmplacements" unique_id=292970253 instance=ExtResource("7_rg0xo")]
-transform = Transform3D(-0.863554, 0, 0.504256, 0, 1, 0, -0.504256, 0, -0.863554, -77.3597, 64.198, -50.955)
+[node name="Spawner_MG_MainStreet" parent="HumanEmplacements" unique_id=930600495 instance=ExtResource("32_7nd5d")]
+transform = Transform3D(0.701096, 0, -0.71306694, 0, 1, 0, 0.71306694, 0, 0.701096, -65.80109, 68.20044, 26.014187)
 ObjId = 501
 StationaryEmplacementType = 2
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 30
+P_ApplyDamageToAbandonVehicle = false
+P_AbandonVehiclesOutOfCombatArea = false
 
-[node name="VEH_M2MG_North" parent="HumanEmplacements" unique_id=1713233769 instance=ExtResource("18_y8q8x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -74.4245, 64.0347, -21.3354)
+[node name="Spawner_MG_Appartment" parent="HumanEmplacements" unique_id=158616722 instance=ExtResource("32_7nd5d")]
+transform = Transform3D(0.01230431, 0, -0.9999243, 0, 1, 0, 0.9999243, 0, 0.01230431, -64.67229, 68.34582, -17.623356)
+ObjId = 502
+StationaryEmplacementType = 2
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 30
+P_ApplyDamageToAbandonVehicle = false
+P_AbandonVehiclesOutOfCombatArea = false
 
-[node name="VEH_M2MG_South" parent="HumanEmplacements" unique_id=1806224179 instance=ExtResource("18_y8q8x")]
-transform = Transform3D(-0.869159, 0, 0.494534, 0, 1, 0, -0.494534, 0, -0.869159, -77.3122, 64.0331, -51.0499)
+[node name="Spawner_TOW_MainStreet" parent="HumanEmplacements" unique_id=1967741013 instance=ExtResource("32_7nd5d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.567955, 67.566444, -53.333096)
+ObjId = 503
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 30
+P_ApplyDamageToAbandonVehicle = false
+P_AbandonVehiclesOutOfCombatArea = false
 
-[node name="VEH_M2MG_MainStreet" parent="HumanEmplacements" unique_id=1075730272 instance=ExtResource("23_nol6w")]
-transform = Transform3D(0.7061929, 0, -0.70801944, 0, 1, 0, 0.70801944, 0, 0.7061929, -65.835976, 68.23832, 26.10777)
+[node name="Spawner_TOW_FlankLeft" parent="HumanEmplacements" unique_id=1598493867 instance=ExtResource("32_7nd5d")]
+transform = Transform3D(-0.047176175, 0, -0.9988866, 0, 1, 0, 0.9988866, 0, -0.047176175, -91.046585, 67.556984, -58.921326)
+ObjId = 504
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 30
+P_ApplyDamageToAbandonVehicle = false
+P_AbandonVehiclesOutOfCombatArea = false
 
-[node name="VEH_Stationary_BGM71TOW2" parent="HumanEmplacements" unique_id=284169696 instance=ExtResource("24_rlt8q")]
-transform = Transform3D(-0.1636359, 0, -0.9865208, 0, 1, 0, 0.9865208, 0, -0.1636359, -90.26831, 67.512115, -59.376186)
-
-[node name="VEH_Stationary_BGM71TOW" parent="HumanEmplacements" unique_id=383235908 instance=ExtResource("22_nol6w")]
-transform = Transform3D(0.984902, 0, 0.173115, 0, 1, 0, -0.173115, 0, 0.984902, -89.0962, 67.5121, -53.3373)
-
-[node name="VEH_M2MG" parent="HumanEmplacements" unique_id=182046064 instance=ExtResource("23_nol6w")]
-transform = Transform3D(0.007400163, 0, -0.99997264, 0, 1, 0, 0.99997264, 0, 0.007400163, -64.9521, 68.388855, -17.565405)
+[node name="Spawner_MG_HQ" parent="HumanEmplacements" unique_id=2072464209 instance=ExtResource("32_7nd5d")]
+transform = Transform3D(0.008464788, 0, 0.9999642, 0, 1, 0, -0.9999642, 0, 0.008464788, -86.795685, 67.806915, -56.14695)
+ObjId = 505
+StationaryEmplacementType = 2
+P_AutoSpawnEnabled = true
+P_DefaultRespawnTime = 30
+P_ApplyDamageToAbandonVehicle = false
+P_AbandonVehiclesOutOfCombatArea = false
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1729699963]
 transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, -80.4583, 263.722, -30.3798)
@@ -478,12 +548,14 @@ ObjId = 702
 
 [node name="FX_BASE_Dust_Large_Area" parent="FX" unique_id=1128501259 instance=ExtResource("36_xtr1y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.10229, 64.23114, 49.987526)
+ObjId = 800
 
 [node name="BarrelBurned_01" parent="FX" unique_id=1809769416 instance=ExtResource("37_luh81")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -124.60651, 64.09276, -59.012455)
 
 [node name="FX_BASE_Fire_M" parent="FX/BarrelBurned_01" unique_id=1682464196 instance=ExtResource("38_mrcqk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07865143, 0.20366669, 0.006752014)
+ObjId = 801
 
 [editable path="HumanHQ/HQ_Team1"]
 [editable path="Static/MP_Abbasid_Terrain"]

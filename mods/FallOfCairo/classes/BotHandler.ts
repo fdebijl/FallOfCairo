@@ -265,6 +265,12 @@ export class BotHandler {
     }
   }
 
+  static async SpotAllBots() {
+    for (const bot of BotHandler.botPlayers) {
+      mod.SpotTarget(bot.player, 60, mod.SpotStatus.SpotInBoth);
+    }
+  }
+
   static AIHelpMoveTowardsPoint(
     from: any,
     to: any,
